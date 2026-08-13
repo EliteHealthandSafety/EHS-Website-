@@ -1,0 +1,35 @@
+---
+import { business as b } from '../data/site.js';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': b.url + '/#business',
+  name: b.legalName,
+  url: b.url,
+  email: b.email,
+  telephone: b.phone,
+  description: b.description,
+  foundingDate: b.foundingDate,
+  priceRange: b.priceRange,
+  areaServed: b.areaServed.map((n) => ({ '@type': 'AdministrativeArea', name: n })),
+  logo: b.url + '/favicon.svg',
+};
+
+// Enrich only when the client data is present, so we never publish placeholders.
+if (b.address && b.address.postalCode) {
+  schema.address = { '@type': 'PostalAddress', ...b.address };
+}
+if (b.openingHours) {
+  schema.openingHoursSpecification = [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: b.openingHours.days,
+      opens: b.openingHours.opens,
+      closes: b.openingHours.closes,
+    },
+  ];
+}
+if (b.sameAs && b.sameAs.length) schema.sameAs = b.sameAs;
+---
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

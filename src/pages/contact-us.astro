@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import { business as b } from '../data/site.js';
 ---
 <Base
   title="Contact Elite Health & Safety | Glasgow & Scotland"
@@ -12,40 +13,109 @@ import PageHero from '../components/PageHero.astro';
     title="Contact Elite Health & Safety"
     lead="Tell us about your business and we'll come back to you quickly with clear, practical next steps — no obligation."
     ctaText="Email us"
-    ctaHref="mailto:info@elitehealthandsafety.co.uk" />
+    ctaHref={`mailto:${b.email}`} />
 
   <section>
     <div class="wrap">
       <div class="grid-3">
         <article class="card">
           <div class="eyebrow">Email</div>
-          <h3><a href="mailto:info@elitehealthandsafety.co.uk">info@elitehealthandsafety.co.uk</a></h3>
+          <h3><a href={`mailto:${b.email}`}>{b.email}</a></h3>
           <p style="color:var(--muted);margin-top:8px">The quickest way to reach us — we aim to reply the same working day.</p>
         </article>
         <article class="card">
           <div class="eyebrow">Phone</div>
-          <h3><a href="tel:+441410000000">0141 000 0000</a></h3>
+          <h3><a href={`tel:${b.phone}`}>{b.phoneDisplay}</a></h3>
           <p style="color:var(--muted);margin-top:8px">Call us to discuss training, fire risk assessments or a compliance question.</p>
         </article>
         <article class="card">
           <div class="eyebrow">Coverage</div>
           <h3>Glasgow &amp; all of Scotland</h3>
-          <p style="color:var(--muted);margin-top:8px">On-site services delivered across Scotland. Company No. SC656384.</p>
+          <p style="color:var(--muted);margin-top:8px">On-site services delivered across Scotland. Company No. {b.companyNumber}.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="courses section-narrow">
-    <div class="wrap section-narrow">
+  <section class="courses">
+    <div class="wrap">
       <div class="sec-head">
-        <div class="eyebrow">Free consultation</div>
-        <h2>Not sure what you need?</h2>
-        <p class="lead">Book a free 30-minute consultation and we'll map out exactly what's required for your business — which assessments, which training, and in what order.</p>
+        <div class="eyebrow">Send us a message</div>
+        <h2>Request a free quote or consultation</h2>
+        <p class="lead">Fill in the form and we'll get back to you with the right next step for your business.</p>
       </div>
-      <div class="cta-row" style="display:flex;gap:14px;flex-wrap:wrap">
-        <a class="btn btn-accent" href="mailto:info@elitehealthandsafety.co.uk?subject=Free%20consultation%20request">Request a free consultation</a>
-      </div>
+
+      <form id="contactForm" class="cform" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value={b.web3formsKey} />
+        <input type="hidden" name="subject" value="New enquiry from elitehealthandsafety.co.uk" />
+        <input type="hidden" name="from_name" value="Elite H&S Website" />
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" />
+
+        <div class="cform-row">
+          <label>Name
+            <input type="text" name="name" required autocomplete="name" />
+          </label>
+          <label>Email
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+        </div>
+        <div class="cform-row">
+          <label>Phone
+            <input type="tel" name="phone" autocomplete="tel" />
+          </label>
+          <label>I'm interested in
+            <select name="service">
+              <option>General enquiry</option>
+              <option>Fire risk assessment</option>
+              <option>First aid training</option>
+              <option>IOSH / SSSTS training</option>
+              <option>Manual handling training</option>
+              <option>Fire awareness training</option>
+              <option>H&amp;S consultancy</option>
+            </select>
+          </label>
+        </div>
+        <label>Message
+          <textarea name="message" rows="5" required placeholder="Tell us a little about what you need…"></textarea>
+        </label>
+        <div class="cform-actions">
+          <button class="btn btn-accent" type="submit">Send enquiry</button>
+          <p class="cform-status" id="cformStatus" role="status" aria-live="polite"></p>
+        </div>
+      </form>
     </div>
   </section>
+
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('contactForm');
+      var status = document.getElementById('cformStatus');
+      if (!form) return;
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        status.className = 'cform-status';
+        status.textContent = 'Sending…';
+        var data = Object.fromEntries(new FormData(form));
+        try {
+          var res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(data),
+          });
+          var json = await res.json();
+          if (json.success) {
+            form.reset();
+            status.textContent = "Thanks — your enquiry has been sent. We'll be in touch shortly.";
+            status.className = 'cform-status ok';
+          } else {
+            status.textContent = json.message || 'Something went wrong. Please email us directly.';
+            status.className = 'cform-status err';
+          }
+        } catch (err) {
+          status.textContent = 'Network error. Please email us at info@elitehealthandsafety.co.uk.';
+          status.className = 'cform-status err';
+        }
+      });
+    })();
+  </script>
 </Base>

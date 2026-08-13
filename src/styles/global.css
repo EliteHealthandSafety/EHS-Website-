@@ -340,3 +340,17 @@
 @media (max-width:940px){.post-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:760px){.info-grid{grid-template-columns:1fr}}
 @media (max-width:560px){.post-grid{grid-template-columns:1fr}}
+
+/* ============ CONTACT FORM ============ */
+.cform{max-width:760px;display:grid;gap:16px}
+.cform .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.cform-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cform label{display:grid;gap:6px;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cform input,.cform select,.cform textarea{font-family:var(--sans);font-size:1rem;color:var(--ink);background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.7em .85em;width:100%;text-transform:none;letter-spacing:normal}
+.cform input:focus,.cform select:focus,.cform textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.cform textarea{resize:vertical}
+.cform-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
+.cform-status{font-family:var(--mono);font-size:.82rem;margin:0}
+.cform-status.ok{color:var(--accent-strong)}
+.cform-status.err{color:var(--risk)}
+@media (max-width:560px){.cform-row{grid-template-columns:1fr}}
