@@ -16,7 +16,7 @@ export const business = {
 
   // Web3Forms free access key for the contact form (get one at https://web3forms.com
   // using info@elitehealthandsafety.co.uk, then paste it here).
-  web3formsKey: 'YOUR_WEB3FORMS_ACCESS_KEY',
+  web3formsKey: 'a5330766-5eb6-4d51-91f9-8ae2b6ec50c4',
 
   // TODO (from client) — fill these in and the LocalBusiness schema enriches automatically:
   address: {
