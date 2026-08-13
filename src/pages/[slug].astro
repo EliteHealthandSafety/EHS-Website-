@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const url = `https://elitehealthandsafety.co.uk/${post.id}/`;
+const dateStr = post.data.pubDate.toLocaleDateString('en-GB', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+---
+<Base title={`${post.data.title} | Elite Health & Safety`} description={post.data.description} canonical={url}>
+  <article class="post">
+    <div class="wrap post-inner">
+      <a class="post-back" href="/blog/">&larr; All articles</a>
+      <div class="eyebrow">Health &amp; Safety Blog</div>
+      <h1>{post.data.title}</h1>
+      <p class="post-date">{dateStr}</p>
+      <div class="post-body">
+        <Content />
+      </div>
+      <div class="post-cta">
+        <a class="btn btn-accent" href="/contact-us/">Get a free quote</a>
+      </div>
+    </div>
+  </article>
+</Base>

@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const courses = [
+  { dur: '3 days', name: 'IOSH Managing Safely' },
+  { dur: '1 day', name: 'IOSH Working Safely' },
+  { dur: '2 days', name: 'SSSTS Site Supervisor' },
+  { dur: '1 day', name: 'CITB H&S Awareness' },
+  { dur: '1–3 days', name: 'First Aid at Work' },
+  { dur: '½ day', name: 'Asbestos Awareness' },
+  { dur: '½ day', name: 'Manual Handling' },
+  { dur: '½ day', name: 'Work at Height' },
+  { dur: '½ day', name: 'Abrasive Wheels' },
+  { dur: '½ day', name: 'Fire Awareness' },
+];
+---
+<Base
+  title="Health & Safety Courses Glasgow | IOSH, SSSTS & More"
+  description="Accredited health & safety training in Glasgow and Scotland: IOSH, SSSTS, first aid, asbestos awareness, manual handling and more. Book your course today."
+  canonical="https://elitehealthandsafety.co.uk/training-courses/">
+
+  <PageHero
+    eyebrow="Training courses"
+    title="Accredited Health & Safety Training Courses in Glasgow"
+    lead="Delivered in-house at your premises anywhere in Scotland, or on scheduled dates in Glasgow. Group discounts available."
+    ctaText="Book a course" />
+
+  <section class="courses">
+    <div class="wrap">
+      <div class="course-grid">
+        {courses.map((c) => (
+          <a class="course" href="/contact-us/">
+            <span class="dur">{c.dur}</span>
+            <span class="cn">{c.name}</span>
+            <span class="go">Enquire &rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-narrow">
+    <div class="wrap section-narrow">
+      <div class="sec-head">
+        <div class="eyebrow">Flexible delivery</div>
+        <h2>Training that fits around your business</h2>
+        <p class="lead">Most courses can be delivered on-site at your workplace, minimising downtime and tailoring the content to your real hazards. Prefer scheduled dates? We run open courses in Glasgow throughout the year.</p>
+      </div>
+      <ul class="check-list">
+        <li>Accredited certification on successful completion</li>
+        <li>Experienced trainers with real site backgrounds</li>
+        <li>On-site delivery across Glasgow &amp; Scotland</li>
+        <li>Discounts for group and repeat bookings</li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand heading="Ready to book your team in?" text="Tell us which course and how many delegates, and we'll get you a date and a price." />
+</Base>

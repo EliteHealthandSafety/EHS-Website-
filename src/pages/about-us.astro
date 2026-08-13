@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+<Base
+  title="About Elite Health & Safety | Glasgow H&S Consultants"
+  description="Meet Elite Health & Safety — trusted health & safety consultants serving Glasgow and Scotland since 2019 across construction, rail and industry."
+  canonical="https://elitehealthandsafety.co.uk/about-us/">
+
+  <PageHero
+    eyebrow="About us"
+    title="Trusted health & safety partners in Glasgow & Scotland"
+    lead="Established in 2019, Elite Health & Safety helps businesses across Scotland stay compliant and keep their people safe — with practical, no-nonsense advice built on real site experience." />
+
+  <section>
+    <div class="wrap section-narrow">
+      <div class="sec-head">
+        <div class="eyebrow">Who we are</div>
+        <h2>Real-world experience, not box-ticking</h2>
+        <p class="lead">We work the way you work. Our team has hands-on experience across live construction, rail and industrial sites — so our assessments, training and advice are grounded in what actually happens on the ground, not just what looks good on paper.</p>
+      </div>
+      <ul class="check-list">
+        <li>Trusted on site by names including Balfour Beatty and Network Rail</li>
+        <li>Accredited training delivered in-house or on scheduled dates</li>
+        <li>Clear, jargon-free reports with prioritised actions</li>
+        <li>Ongoing support to keep you compliant year after year</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="wrap">
+      <div class="stat"><div class="n">2019</div><div class="k">Established</div></div>
+      <div class="stat"><div class="n">Scotland-wide</div><div class="k">Coverage</div></div>
+      <div class="stat"><div class="n">Accredited</div><div class="k">Training</div></div>
+      <div class="stat"><div class="n">SC656384</div><div class="k">Company No.</div></div>
+    </div>
+  </section>
+
+  <CtaBand heading="Work with a team that gets it." text="Tell us about your business and we'll show you exactly where you stand." />
+</Base>

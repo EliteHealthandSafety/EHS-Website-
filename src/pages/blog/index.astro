@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+<Base title="Health & Safety Blog | Glasgow & Scotland | Elite H&S" description="Guides and updates on fire risk assessments, first aid, IOSH, SSSTS and workplace health & safety across Glasgow and Scotland." canonical="https://elitehealthandsafety.co.uk/blog/">
+  <section class="pagehero">
+    <div class="wrap">
+      <div class="eyebrow">Insights</div>
+      <h1>Health &amp; Safety Blog</h1>
+      <p class="lead">Practical guidance on fire risk, first aid, training and compliance for businesses across Glasgow and Scotland.</p>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <div class="post-grid">
+        {posts.map((p) => (
+          <a class="post-card" href={`/${p.id}/`}>
+            <div class="eyebrow">{p.data.pubDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</div>
+            <h3>{p.data.title}</h3>
+            <p>{p.data.description}</p>
+            <span class="post-more">Read article &rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

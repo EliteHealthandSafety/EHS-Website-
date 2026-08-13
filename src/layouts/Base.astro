@@ -1,0 +1,38 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+const { title, description = '', canonical } = Astro.props;
+---
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  {canonical && <link rel="canonical" href={canonical} />}
+  <meta name="generator" content={Astro.generator} />
+</head>
+<body>
+  <Header />
+  <slot />
+  <Footer />
+  <button class="tt" id="tt" aria-label="Toggle light / dark theme" title="Toggle theme">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3L4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/></svg>
+  </button>
+  
+  <script is:inline>
+    (function(){
+      var root=document.documentElement, btn=document.getElementById('tt');
+      function current(){
+        if(root.getAttribute('data-theme')) return root.getAttribute('data-theme');
+        return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light';
+      }
+      btn.addEventListener('click',function(){
+        root.setAttribute('data-theme', current()==='dark'?'light':'dark');
+      });
+    })();
+  </script>
+</body>
+</html>

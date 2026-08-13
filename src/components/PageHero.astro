@@ -1,0 +1,23 @@
+---
+const {
+  eyebrow,
+  title,
+  lead,
+  ctaText = 'Get a free quote',
+  ctaHref = '/contact-us/',
+  cta2Text,
+  cta2Href = '/contact-us/',
+} = Astro.props;
+---
+<section class="pagehero">
+  <div class="hazard" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="eyebrow">{eyebrow}</div>
+    <h1>{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <div class="cta-row">
+      <a class="btn btn-accent" href={ctaHref}>{ctaText}</a>
+      {cta2Text && <a class="btn btn-onbrand" href={cta2Href}>{cta2Text}</a>}
+    </div>
+  </div>
+</section>

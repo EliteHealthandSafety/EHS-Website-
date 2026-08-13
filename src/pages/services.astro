@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+<Base
+  title="Health & Safety Services Glasgow | Elite H&S"
+  description="Expert health & safety consultancy in Glasgow and across Scotland: risk assessments, CDM, ISO support, site inspections and compliance. Get a free quote."
+  canonical="https://elitehealthandsafety.co.uk/services/">
+
+  <PageHero
+    eyebrow="Consultancy · Training · Compliance"
+    title="Health & Safety Consultancy Services in Glasgow & Scotland"
+    lead="From one-off fire risk assessments to a fully managed safety programme, we help businesses across Scotland stay compliant, reduce risk and protect their people."
+    cta2Text="Book a free consultation" />
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">What we do</div>
+        <h2>Three ways we keep you compliant</h2>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <h3>H&amp;S Consultancy</h3>
+          <ul class="check-list">
+            <li>CDM 2015 advice &amp; site inspections</li>
+            <li>ISO standards &amp; PQQ completion</li>
+            <li>Legionella risk assessing</li>
+            <li>Health &amp; safety policies</li>
+            <li>Drug &amp; alcohol testing</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Accredited Training</h3>
+          <ul class="check-list">
+            <li>IOSH Managing &amp; Working Safely</li>
+            <li>SSSTS &amp; CITB courses</li>
+            <li>First aid &amp; manual handling</li>
+            <li>Asbestos awareness</li>
+            <li>On-site or scheduled dates</li>
+          </ul>
+          <a class="more" href="/training-courses/">Browse courses &rarr;</a>
+        </article>
+        <article class="card">
+          <h3>Fire Risk Assessments</h3>
+          <ul class="check-list">
+            <li>Suitable &amp; sufficient reports</li>
+            <li>Fire (Scotland) Act compliance</li>
+            <li>Clear remedial action plans</li>
+            <li>All premises types</li>
+          </ul>
+          <a class="more" href="/fire-risk-assessments/">Fire risk assessments &rarr;</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
