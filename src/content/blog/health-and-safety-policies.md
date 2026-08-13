@@ -65,6 +65,6 @@ At **Elite Health and Safety Limited**, we specialize in writing, reviewing, an
 
 **Need Help?**
 
-Let us support your journey to a safer workplace. 📞 **Call us** at 07966 995221 📧 **Email** us at info@elitehealthandsafety.co.uk 🌐 Or visit [www.elitehealthandsafety.co.uk](https://elitehealthandsafety.co.uk) to learn more.
+Let us support your journey to a safer workplace. 📞 **Call us** at 0141 345 0549 📧 **Email** us at info@elitehealthandsafety.co.uk 🌐 Or visit [www.elitehealthandsafety.co.uk](https://elitehealthandsafety.co.uk) to learn more.
 
 **Your policy isn’t just paperwork—it’s protection.** Let Elite Health and Safety Limited help you get it right.

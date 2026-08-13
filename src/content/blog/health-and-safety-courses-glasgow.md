@@ -95,7 +95,7 @@ Get started today ensuring the safety and well-being of your workforce is not ju
 
 Partner with Elite Health and Safety to cultivate a safer, more compliant workplace environment.
 
-📞 Contact Us: 07966 995221
+📞 Contact Us: 0141 345 0549
 
 📧 Email: info@elitehealthandsafety.co.uk
 

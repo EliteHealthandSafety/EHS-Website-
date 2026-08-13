@@ -87,7 +87,7 @@ Schedule Your Fire Risk Assessment today, don’t wait until it’s too late.
 
 Contact us for a free initial consultation or visit our website at www.elitehealthandsafety.co.uk to discover more about our services.
 
-📞 Call Us: 07966 995221 📧 Email: info@elitehealthandsafety.co.uk
+📞 Call Us: 0141 345 0549 📧 Email: info@elitehealthandsafety.co.uk
 
 Make fire safety a priority for your business. Reach out today and let us help you protect what matters most!
 
