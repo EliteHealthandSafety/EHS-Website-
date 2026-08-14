@@ -9,10 +9,10 @@ export const business = {
   phoneDisplay: '0141 345 0549',
   companyNumber: 'SC656384',
   foundingDate: '2019-01-07',
-  areaServed: ['Glasgow', 'Scotland'],
+  areaServed: ['Glasgow', 'Scotland', 'United Kingdom'],
   priceRange: '££',
   description:
-    'Health & safety consultancy and accredited training in Glasgow and across Scotland — fire risk assessments, IOSH & SSSTS courses, first aid, manual handling, CDM and ISO support.',
+    'Health & safety consultancy and accredited training based in Glasgow, serving businesses across Scotland and UK-wide — fire risk assessments, IOSH & SSSTS courses, first aid, manual handling, CDM and ISO support.',
 
   // Web3Forms free access key for the contact form (get one at https://web3forms.com
   // using info@elitehealthandsafety.co.uk, then paste it here).
