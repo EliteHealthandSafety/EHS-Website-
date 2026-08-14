@@ -1,0 +1,99 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { business as b } from '../data/site.js';
+---
+<Base
+  title="Free H&S Compliance Checklist for Scottish Businesses | Elite H&S"
+  description="Download our free, plain-English health & safety compliance checklist for Scottish businesses — fire, first aid, policies, risk assessments and training."
+  canonical="https://elitehealthandsafety.co.uk/compliance-checklist/">
+
+  <PageHero
+    eyebrow="Free resource"
+    title="The Scottish Business H&S Compliance Checklist"
+    lead="A plain-English checklist of the essentials every Scottish business should have in place. Tick what you've got, spot the gaps — free, no jargon."
+    ctaText="Get the checklist"
+    ctaHref="#get" />
+
+  <section>
+    <div class="wrap section-narrow">
+      <div class="sec-head">
+        <div class="eyebrow">What's inside</div>
+        <h2>Everything you should have covered</h2>
+      </div>
+      <ul class="check-list">
+        <li><b>Fire safety</b> — fire risk assessment, alarms, extinguishers, escape routes</li>
+        <li><b>First aid</b> — needs assessment, trained first-aiders, kits, accident recording</li>
+        <li><b>Policies &amp; documents</b> — H&amp;S policy, risk assessments, COSHH, insurance</li>
+        <li><b>Training &amp; competence</b> — inductions, role-specific training, records</li>
+        <li><b>Ongoing management</b> — review dates, named responsible person, contractors</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="get" class="courses">
+    <div class="wrap section-narrow">
+      <div class="sec-head">
+        <div class="eyebrow">Get your free copy</div>
+        <h2>Where should we send it?</h2>
+        <p class="lead">Enter your details and your checklist opens straight away. We'll also email you a copy — and only ever get in touch if we can help.</p>
+      </div>
+
+      <form id="leadForm" class="cform" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value={b.web3formsKey} />
+        <input type="hidden" name="subject" value="Compliance checklist download" />
+        <input type="hidden" name="from_name" value="Elite H&S — Checklist" />
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" />
+        <div class="cform-row">
+          <label>Name<input type="text" name="name" required autocomplete="name" /></label>
+          <label>Work email<input type="email" name="email" required autocomplete="email" /></label>
+        </div>
+        <label>Company (optional)<input type="text" name="company" autocomplete="organization" /></label>
+        <div class="cform-actions">
+          <button class="btn btn-accent" type="submit">Send me the checklist</button>
+          <p class="cform-status" id="leadStatus" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <div id="leadDone" class="card" style="display:none;margin-top:8px">
+        <div class="eyebrow">You're all set ✓</div>
+        <h3 style="margin:6px 0 8px">Your checklist is ready</h3>
+        <p style="color:var(--muted);margin:0 0 16px">Open it below (use your browser's "Save as PDF" to keep a copy). We've noted your details and will only reach out if we can help.</p>
+        <a class="btn btn-accent" href="/downloads/ehs-compliance-checklist.html" target="_blank" rel="noopener">Open your checklist</a>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('leadForm');
+      var status = document.getElementById('leadStatus');
+      var done = document.getElementById('leadDone');
+      if (!form) return;
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        status.className = 'cform-status';
+        status.textContent = 'Sending…';
+        try {
+          var res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(form))),
+          });
+          var json = await res.json();
+          if (json.success) {
+            form.style.display = 'none';
+            done.style.display = 'block';
+            done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            status.textContent = json.message || 'Something went wrong — please email us for the checklist.';
+            status.className = 'cform-status err';
+          }
+        } catch (err) {
+          status.textContent = 'Network error — email info@elitehealthandsafety.co.uk and we’ll send it over.';
+          status.className = 'cform-status err';
+        }
+      });
+    })();
+  </script>
+</Base>
