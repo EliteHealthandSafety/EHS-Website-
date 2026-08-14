@@ -8,7 +8,7 @@ export const business = {
   phone: '+441413450549',        // Glasgow CircleLoop number (national backup: 0333 090 6074)
   phoneDisplay: '0141 345 0549',
   companyNumber: 'SC656384',
-  foundingDate: '2019-01-07',
+  foundingDate: '2026', // Elite H&S Ltd began trading 2026 (Total H&S, est. 2019, was a separate, now-closed company)
   areaServed: ['Glasgow', 'Scotland', 'United Kingdom'],
   priceRange: '££',
   description:
