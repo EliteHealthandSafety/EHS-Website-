@@ -354,3 +354,22 @@
 .cform-status.ok{color:var(--accent-strong)}
 .cform-status.err{color:var(--risk)}
 @media (max-width:560px){.cform-row{grid-template-columns:1fr}}
+
+/* ============ HEADER: mobile menu + link tidy ============ */
+.menu-btn{display:none;background:none;border:none;color:var(--on-brand);cursor:pointer;padding:6px;margin-left:auto}
+.nav .links .nav-portal,.nav .links .nav-cta{display:none}
+@media (max-width:940px){
+  .menu-btn{display:block}
+  .nav .actions{display:none}
+  nav.links.open{
+    display:flex;flex-direction:column;gap:0;
+    position:absolute;top:100%;left:0;right:0;
+    background:var(--brand);border-top:1px solid rgba(255,255,255,.08);
+    box-shadow:0 22px 44px -12px rgba(0,0,0,.55);
+    padding:8px 24px 20px;z-index:60;
+  }
+  nav.links.open a{padding:14px 2px;color:var(--on-brand);font-size:1rem;border-bottom:1px solid rgba(255,255,255,.07)}
+  nav.links.open a::after{display:none}
+  nav.links.open .nav-portal{display:block;color:var(--accent);font-weight:700;border-bottom:none}
+  nav.links.open .nav-cta{display:block;margin-top:14px;background:var(--accent);color:#fff;text-align:center;border-radius:9px;font-weight:700;padding:13px;border-bottom:none}
+}

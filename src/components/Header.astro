@@ -1,13 +1,13 @@
 ---
+const PORTAL = 'https://portal.elitehealthandsafety.co.uk';
 ---
 <div class="util">
   <div class="wrap">
     <a href="tel:+441413450549">☎ 0141 345 0549</a>
     <a href="mailto:info@elitehealthandsafety.co.uk">info@elitehealthandsafety.co.uk</a>
     <span class="spring"></span>
-    <span>Glasgow · Scotland · UK-wide</span>
     <a href="/compliance-checklist/">Free H&amp;S checklist</a>
-    <a class="portal" href="/#portal">● Client Portal login →</a>
+    <a class="portal" href={PORTAL}>● Client login →</a>
   </div>
 </div>
 
@@ -24,18 +24,36 @@
         <small>Consultancy · Training · Compliance</small>
       </span>
     </a>
-    <nav class="links">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="links" id="navLinks">
       <a href="/services/">Services</a>
       <a href="/training-courses/">Training</a>
       <a href="/fire-risk-assessments/">Fire Risk</a>
-      <a href="/#portal">Portal</a>
+      <a href="/blog/">Blog</a>
       <a href="/about-us/">About</a>
       <a href="/contact-us/">Contact</a>
+      <a class="nav-portal" href={PORTAL}>Client login</a>
+      <a class="nav-cta" href="/contact-us/">Get a free quote</a>
     </nav>
     <span class="spring"></span>
     <div class="actions">
-      <a class="btn btn-onbrand" href="/#portal">Client login</a>
       <a class="btn btn-accent" href="/contact-us/">Get a free quote</a>
     </div>
   </div>
 </header>
+
+<script is:inline>
+  (function () {
+    var b = document.getElementById('menuBtn'), n = document.getElementById('navLinks');
+    if (!b || !n) return;
+    b.addEventListener('click', function () {
+      var open = n.classList.toggle('open');
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    n.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') { n.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); }
+    });
+  })();
+</script>
