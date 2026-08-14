@@ -13,23 +13,26 @@
   .head .txt b{display:block;font-size:20px;letter-spacing:-.01em;color:var(--navy)}
   .head .txt small{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
   h1{font-size:26px;letter-spacing:-.02em;color:var(--navy);margin:0 0 6px}
-  .lead{color:var(--muted);margin:0 0 24px;max-width:60ch}
+  .lead{color:var(--muted);margin:0 0 14px;max-width:64ch}
+  .cycle-note{display:flex;gap:9px;align-items:flex-start;background:#f0f7f4;border:1px solid rgba(14,158,110,.3);border-radius:8px;padding:11px 14px;margin:0 0 24px;font-size:12.5px;color:var(--navy)}
+  .cycle-note b{color:var(--green)}
   .sec{margin:0 0 22px;break-inside:avoid}
-  .sec h2{font-size:15px;color:#fff;background:var(--navy);display:inline-block;padding:5px 12px;border-radius:6px;margin:0 0 12px;letter-spacing:.01em}
+  .sec h2{font-size:15px;color:#fff;background:var(--navy);display:inline-block;padding:5px 12px;border-radius:6px;margin:0 0 12px}
   .sec .law{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--green);margin:-6px 0 10px}
-  ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+  ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
   li{display:flex;gap:11px;align-items:flex-start}
-  .box{width:17px;height:17px;border:2px solid var(--navy);border-radius:4px;flex:none;margin-top:1px}
+  .box{width:17px;height:17px;border:2px solid var(--navy);border-radius:4px;flex:none;margin-top:2px}
   li b{font-weight:600;color:var(--ink)}
-  li span{color:var(--muted)}
+  li span.d{color:var(--muted)}
+  .cycle{display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:.02em;color:var(--green);background:rgba(14,158,110,.1);border:1px solid rgba(14,158,110,.35);border-radius:99px;padding:2px 9px;margin-left:2px;white-space:nowrap}
   .cta{margin-top:26px;background:var(--navy);color:#fff;border-radius:10px;padding:22px 24px}
   .cta b{display:block;font-size:17px;margin-bottom:4px}
   .cta p{margin:0;color:#c3d0dd;font-size:13.5px}
   .cta a{color:#4bd6a1;font-weight:700;text-decoration:none}
   .foot{margin-top:20px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-  .print-hint{max-width:820px;margin:0 auto 0;text-align:center}
+  .print-hint{max-width:820px;margin:0 auto;text-align:center}
   .print-hint button{font:inherit;font-weight:700;background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 18px;cursor:pointer;margin:8px}
-  @media print{body{background:#fff}.sheet{border:none;margin:0;max-width:none;padding:0 6mm}.print-hint{display:none}@page{margin:14mm}}
+  @media print{body{background:#fff}.sheet{border:none;margin:0;max-width:none;padding:0 6mm}.print-hint{display:none}@page{margin:12mm}}
 </style>
 </head>
 <body>
@@ -41,17 +44,19 @@
   </div>
 
   <h1>The Scottish Business H&amp;S Compliance Checklist</h1>
-  <p class="lead">A plain-English check of the essentials every Scottish business should have in place. Tick what you've got, spot the gaps — and if anything's missing, we can help.</p>
+  <p class="lead">A plain-English check of the essentials every Scottish business should have in place. Tick what you've got, spot the gaps — and note when each item is due for review.</p>
+  <div class="cycle-note"><span>⏱</span><span><b>Green tags show a suggested review cycle.</b> These are best-practice guides — some intervals are risk-based rather than fixed by law, so the right frequency can vary by premises. Not sure what applies to you? That's exactly what a free consultation covers.</span></div>
 
   <div class="sec">
     <h2>1 · Fire safety</h2>
     <div class="law">Fire (Scotland) Act 2005 · Fire Safety (Scotland) Regulations 2006</div>
     <ul>
-      <li><span class="box"></span><span><b>Current fire risk assessment</b> — suitable &amp; sufficient, reviewed regularly and after any change.</span></li>
-      <li><span class="box"></span><span><b>Fire detection &amp; alarms</b> — in place, tested and maintained.</span></li>
-      <li><span class="box"></span><span><b>Extinguishers serviced</b> — right types, in date, accessible.</span></li>
-      <li><span class="box"></span><span><b>Escape routes &amp; signage</b> — clear, unobstructed, well signed.</span></li>
-      <li><span class="box"></span><span><b>Staff fire awareness</b> — everyone knows what to do and how to evacuate.</span></li>
+      <li><span class="box"></span><span class="d"><b>Fire risk assessment</b> — suitable &amp; sufficient, kept current. <span class="cycle">⏱ review annually &amp; after any change</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Fire detection &amp; alarms</b> — in place and maintained. <span class="cycle">⏱ user test weekly · service 6-monthly</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Emergency lighting</b> — working on escape routes. <span class="cycle">⏱ monthly flick test · annual full test</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Fire extinguishers</b> — right types, accessible. <span class="cycle">⏱ service annually · extended 5-yearly</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Escape routes &amp; signage</b> — clear and well signed. <span class="cycle">⏱ check ongoing</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Staff fire awareness</b> — everyone knows what to do. <span class="cycle">⏱ refresh ~annually</span></span></li>
     </ul>
   </div>
 
@@ -59,10 +64,10 @@
     <h2>2 · First aid</h2>
     <div class="law">Health and Safety (First-Aid) Regulations 1981</div>
     <ul>
-      <li><span class="box"></span><span><b>First-aid needs assessment</b> — done for your risk level and headcount.</span></li>
-      <li><span class="box"></span><span><b>Enough trained first-aiders</b> — appropriate to the size and layout of the workplace.</span></li>
-      <li><span class="box"></span><span><b>Stocked, in-date first-aid kit(s)</b> — and someone responsible for them.</span></li>
-      <li><span class="box"></span><span><b>Accident recording</b> — accident book kept; RIDDOR-reportable events understood.</span></li>
+      <li><span class="box"></span><span class="d"><b>First-aid needs assessment</b> — for your risk level &amp; headcount. <span class="cycle">⏱ review after any change</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Enough trained first-aiders</b> — for the size &amp; layout of the workplace. <span class="cycle">⏱ requalify every 3 years</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Stocked, in-date first-aid kit(s)</b> — with someone responsible. <span class="cycle">⏱ check monthly</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Accident recording</b> — accident book kept; RIDDOR understood. <span class="cycle">⏱ RIDDOR: report within legal timescales</span></span></li>
     </ul>
   </div>
 
@@ -70,34 +75,35 @@
     <h2>3 · Policies &amp; documents</h2>
     <div class="law">Health and Safety at Work etc. Act 1974</div>
     <ul>
-      <li><span class="box"></span><span><b>Written H&amp;S policy</b> — a legal requirement once you have 5 or more employees.</span></li>
-      <li><span class="box"></span><span><b>Risk assessments</b> — for your significant hazards, written down and up to date.</span></li>
-      <li><span class="box"></span><span><b>COSHH assessments</b> — where hazardous substances are used or stored.</span></li>
-      <li><span class="box"></span><span><b>Employers' liability insurance</b> — in place and certificate displayed/available.</span></li>
+      <li><span class="box"></span><span class="d"><b>Written H&amp;S policy</b> — legally required at 5+ employees. <span class="cycle">⏱ review annually</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Risk assessments</b> — for your significant hazards. <span class="cycle">⏱ review annually &amp; on change</span></span></li>
+      <li><span class="box"></span><span class="d"><b>COSHH assessments</b> — where hazardous substances are used. <span class="cycle">⏱ review on change of substance/process</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Legionella risk assessment</b> — for your water systems <em>(commonly missed)</em>. <span class="cycle">⏱ review ~every 2 years</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Employers' liability insurance</b> — in place and certificate available. <span class="cycle">⏱ renew annually</span></span></li>
     </ul>
   </div>
 
   <div class="sec">
     <h2>4 · Training &amp; competence</h2>
     <ul>
-      <li><span class="box"></span><span><b>Inductions</b> — new starters receive H&amp;S induction for their role and site.</span></li>
-      <li><span class="box"></span><span><b>Role-specific training</b> — manual handling, IOSH/SSSTS, asbestos awareness, work at height as relevant.</span></li>
-      <li><span class="box"></span><span><b>Training records</b> — kept, with refresher dates tracked.</span></li>
+      <li><span class="box"></span><span class="d"><b>Inductions</b> — H&amp;S induction for role &amp; site. <span class="cycle">⏱ on joining</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Role-specific training</b> — manual handling, IOSH/SSSTS, asbestos awareness, work at height. <span class="cycle">⏱ refresh every 1–3 years</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Training records</b> — kept, with refresher dates tracked. <span class="cycle">⏱ keep current</span></span></li>
     </ul>
   </div>
 
   <div class="sec">
     <h2>5 · Ongoing management</h2>
     <ul>
-      <li><span class="box"></span><span><b>Named responsible person</b> — someone owns H&amp;S day to day.</span></li>
-      <li><span class="box"></span><span><b>Review dates set</b> — assessments and documents have a review schedule.</span></li>
-      <li><span class="box"></span><span><b>Contractors managed</b> — CDM duties met where you carry out construction work.</span></li>
+      <li><span class="box"></span><span class="d"><b>Named responsible person</b> — someone owns H&amp;S day to day. <span class="cycle">⏱ ongoing</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Review dates diarised</b> — so nothing lapses. <span class="cycle">⏱ set reminders</span></span></li>
+      <li><span class="box"></span><span class="d"><b>Contractors managed</b> — CDM duties met for construction work. <span class="cycle">⏱ per project</span></span></li>
     </ul>
   </div>
 
   <div class="cta">
-    <b>Gaps in your list?</b>
-    <p>We help businesses across Glasgow &amp; Scotland close them — quickly and affordably. Book a <strong>free 30-minute consultation</strong>: call <a href="tel:+441413450549">0141 345 0549</a> or email <a href="mailto:info@elitehealthandsafety.co.uk">info@elitehealthandsafety.co.uk</a>.</p>
+    <b>Not sure of the right review cycle for your premises?</b>
+    <p>That's exactly what we sort out. Book a <strong>free 30-minute consultation</strong> and we'll confirm what applies to you: call <a href="tel:+441413450549">0141 345 0549</a> or email <a href="mailto:info@elitehealthandsafety.co.uk">info@elitehealthandsafety.co.uk</a>.</p>
   </div>
 
   <div class="foot">
