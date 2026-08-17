@@ -1,123 +1,120 @@
-// Indicative public pricing.
+// PUBLIC PRICING — presentation layer only.
 //
-// SOURCE: Elite_HS_Service_Brochure_2026.pdf ("Services & Indicative Costs",
-// 2026 Edition) — the commercial position we publish. All figures EXCLUDE VAT.
+// ⚠ NO PRICES LIVE IN THIS FILE. Every figure comes from pricing-live.json,
+// which is generated from the portal's own tables (services, subscription_plans)
+// by `npm run sync:pricing`. Prices are set in the portal — Subscription builder
+// → Service catalogue → Edit — and the website follows.
 //
-// ⚠ KNOWN DIVERGENCE (17 Aug 2026): the live Supabase pricing tables that drive
-// the portal, quotes and booking hold materially different ad-hoc figures — e.g.
-// services.adhoc_price has FRA Small £350 / Medium £650 / Large £950 and site
-// visit £250, against £815 / £2,270 / £610 here. Those DB values look like the
-// illustrative design-stage numbers, not the 2026 commercial ones. The
-// membership tiers DO match the DB exactly (82 / 300 / 699 / 1301).
-// Until the DB is reconciled to this brochure, the site advertises prices the
-// portal will not charge. Do not "fix" one side without deciding which is right.
+// This file decides only:
+//   • which services are shown publicly (the catalogue also holds internal
+//     draw-units and £0 portal inclusions that don't belong on a sales page)
+//   • the public-facing wording, where the internal title is unclear ("... pp")
+//   • how each unit_type reads to a customer
 //
-// Minimum terms come from subscription_plans.min_term_months in the live DB.
+// To publish a new service: set its price in the portal, run the sync, then add
+// its service_code to a group below.
 
-export const vatNote = 'All prices exclude VAT.';
+import live from './pricing-live.json';
 
-export const serviceGroups = [
+const byCode = Object.fromEntries(live.services.map((s) => [s.service_code, s]));
+
+// unit_type in the DB → how it should read on a public page
+const UNIT_LABEL = {
+  Count: 'each',
+  Hours: 'per hour',
+  'Person-days': 'per day',
+  'GBP-pot': 'per visit',
+};
+
+// Public groups. `code` must match services.service_code exactly.
+// `name`/`detail` override the internal title/description only where needed.
+const GROUPS = [
+  {
+    id: 'fire',
+    title: 'Fire risk assessments',
+    blurb:
+      'Assessed to the PAS 79 standard and priced by the size and complexity of your premises — so you pay for the building you actually have.',
+    items: [
+      { code: 'FRA SMALL', name: 'Fire Risk Assessment — small premises' },
+      { code: 'FRA MEDIUM', name: 'Fire Risk Assessment — medium premises' },
+      { code: 'FRA', name: 'Fire Risk Assessment — large premises' },
+    ],
+  },
   {
     id: 'assessments',
-    title: 'Risk assessments, inspections & audits',
+    title: 'Assessments & site inspections',
     blurb: 'Identify the hazards, evidence your compliance, and keep your people safe.',
-    priceLabel: 'From (ex VAT)',
     items: [
-      {
-        name: 'Fire Risk Assessment — small / standard premises',
-        detail: 'Single office, shop or unit; site visit plus written report.',
-        price: 815,
-      },
-      {
-        name: 'Fire Risk Assessment — large / complex premises',
-        detail: 'Multi-storey, HMO or industrial; detailed assessment & action plan.',
-        price: 2270,
-      },
-      {
-        name: 'Site inspection / safety visit',
-        detail: 'Per visit (1–2 hrs) — routine safety check with a prioritised report to action.',
-        price: 610,
-      },
-      {
-        name: 'Full H&S management system audit',
-        detail: 'In-depth review of your whole H&S system — scoped to your organisation, typically annual.',
-        price: 1220,
-      },
-      {
-        name: 'Legionella risk assessment',
-        detail: 'Water systems assessment with compliant records.',
-        price: 610,
-      },
-      {
-        name: 'Incident / accident investigation',
-        detail: 'Per day — root-cause analysis & corrective-action report.',
-        price: 905,
-      },
+      { code: 'SITE_VISIT' },
+      { code: 'GEN_RA' },
+      { code: 'COSHH' },
+      { code: 'DSE', name: 'DSE workstation assessment', unit: 'per person' },
+      { code: 'SPECIALIST' },
     ],
   },
   {
     id: 'documentation',
-    title: 'Policies & documentation',
+    title: 'Policies, documents & advice',
     blurb: "The paperwork that proves you're compliant — written clearly and kept current.",
-    priceLabel: 'From (ex VAT)',
     items: [
-      {
-        name: 'Health & Safety Policy + arrangements',
-        detail: 'Full policy statement, organisation & arrangements, for new or refreshed clients.',
-        price: 1360,
-      },
-      {
-        name: 'Bespoke Risk Assessment / Method Statement (RAMS)',
-        detail: 'Each — task-specific, site-specific documentation.',
-        price: 365,
-      },
-      {
-        name: 'SSIP accreditation support (CHAS, SafeContractor, etc.)',
-        detail: 'Full submission preparation & evidence pack.',
-        price: 815,
-      },
-      {
-        name: 'CDM 2015 advisory',
-        detail: 'Per day — PD / PC duties, pre-construction information & phase plans.',
-        price: 905,
-      },
-      {
-        name: 'ISO 45001 implementation',
-        detail: 'Full management-system project, scoped to your organisation.',
-        price: 7255,
-      },
+      { code: 'POLICY_REVIEW' },
+      { code: 'RAMS_REVIEW' },
+      { code: 'MGMT_REVIEW' },
+      // unit_type is "Hours" in the catalogue but £480 is clearly a job price,
+      // not an hourly rate — shown without a unit so we don't advertise £480/hr.
+      // Worth correcting the unit in the portal.
+      { code: 'INCIDENT', unit: '' },
+      { code: 'CONSULTANCY' },
+      { code: 'CDM' },
     ],
   },
   {
     id: 'training',
     title: 'Training',
     blurb: 'Accredited and bespoke courses, delivered at your premises or ours.',
-    priceLabel: 'Per delegate (ex VAT)',
     items: [
-      { name: 'IOSH Managing Safely', detail: '3-day accredited course for supervisors & managers.', price: 375 },
-      { name: 'IOSH Working Safely', detail: '1-day accredited course for all staff.', price: 125 },
-      { name: 'Emergency First Aid at Work', detail: '1-day certificated course.', price: 105 },
-      { name: 'Manual Handling', detail: 'Half-day practical course.', price: 49 },
-      { name: 'Fire Marshal / Fire Warden', detail: 'Half-day certificated course.', price: 49 },
-      {
-        name: 'Bespoke on-site training day',
-        detail: 'Per day at your premises — tailored to your risks (group rate, not per delegate).',
-        price: 975,
-        perDay: true,
-      },
+      { code: 'SPECIALIST TRAINING', name: 'Emergency First Aid at Work (1 day)', unit: 'per delegate' },
+      { code: 'FIRST AID AT WORK', name: 'First Aid at Work (3 day)', unit: 'per delegate' },
+      { code: 'TRAINING_DAY', name: 'On-site training day', unit: 'per trainer day' },
+      { code: 'TOOLBOX', name: 'Toolbox talk', unit: 'each' },
     ],
     footnote:
-      'Accredited courses are priced per delegate and subject to minimum and maximum class sizes.',
+      'Accredited courses are subject to minimum and maximum class sizes. An on-site training day covers Manual Handling, Fire Awareness, Work at Height, Abrasive Wheels or Asbestos Awareness (IIRSM certified).',
   },
 ];
 
-export const tiers = [
-  {
-    code: 'ESSENTIALS',
-    name: 'Essentials',
+// Resolve each group against the live data. A code with no matching live row is
+// dropped rather than rendered priceless — and reported, so it is not silent.
+export const missingCodes = [];
+
+export const serviceGroups = GROUPS.map((g) => ({
+  ...g,
+  items: g.items
+    .map((item) => {
+      const row = byCode[item.code];
+      if (!row) {
+        missingCodes.push(item.code);
+        return null;
+      }
+      return {
+        code: item.code,
+        name: item.name || row.title,
+        detail: item.detail || row.description || '',
+        price: row.adhoc_price,
+        from: row.price_from,
+        // ?? not || so an explicit '' can suppress a misleading unit
+        unit: item.unit ?? UNIT_LABEL[row.unit_type] ?? '',
+        memberDiscountPct: row.member_discount_pct,
+      };
+    })
+    .filter(Boolean),
+})).filter((g) => g.items.length);
+
+// Membership tiers, straight from subscription_plans. Copy that the DB does not
+// hold (who it suits, what's included) lives here, keyed by plan_code.
+const TIER_COPY = {
+  ESSENTIALS: {
     tagline: 'Cover the basics',
-    price: 82,
-    minTermMonths: 0,
     who: 'Small businesses that need to stay compliant with expert help on call, without a big monthly commitment.',
     portal: 'Core portal — dashboard, documents & booking',
     includes: [
@@ -125,16 +122,12 @@ export const tiers = [
       'Annual site inspection & report',
       'Annual H&S policy review',
       'Document & RAMS template library',
-      'In-house & accredited training at member rates',
+      'Training at member rates',
       'Member rates on all additional work',
     ],
   },
-  {
-    code: 'PLUS',
-    name: 'Plus',
+  PLUS: {
     tagline: 'Stay on top of it',
-    price: 300,
-    minTermMonths: 12,
     who: 'Growing businesses that want regular proactive checks and their paperwork actively managed.',
     portal: 'Core portal + training management',
     includes: [
@@ -145,13 +138,8 @@ export const tiers = [
       'Priority advice line',
     ],
   },
-  {
-    code: 'COMPLETE',
-    name: 'Complete',
+  COMPLETE: {
     tagline: 'Proactively managed',
-    price: 699,
-    minTermMonths: 12,
-    popular: true,
     who: 'Businesses that want H&S proactively managed, with a named consultant and an annual system audit.',
     portal: 'Portal + subcontractor management & permits',
     includes: [
@@ -159,17 +147,13 @@ export const tiers = [
       'Weekly site inspections & reports',
       'Annual full-system audit',
       '1 fire risk assessment per year',
-      'Premium assessments included (e.g. Legionella)',
+      'Premium assessments included',
       '2 in-house training days per year',
       'Named consultant + priority response',
     ],
   },
-  {
-    code: 'MANAGED',
-    name: 'Managed',
+  MANAGED: {
     tagline: 'Fully outsourced',
-    price: 1301,
-    minTermMonths: 12,
     who: 'Organisations outsourcing their H&S function across one or more sites.',
     portal: 'Full portal — all users & all sites',
     includes: [
@@ -181,11 +165,28 @@ export const tiers = [
       'Named lead consultant + priority response',
     ],
   },
-];
+};
+
+export const tiers = live.plans.map((p) => ({
+  code: p.plan_code,
+  name: p.title,
+  price: p.base_monthly,
+  minTermMonths: p.min_term_months,
+  popular: p.is_anchor,
+  blurb: p.blurb,
+  ...(TIER_COPY[p.plan_code] || {}),
+}));
+
+// The member discount actually set on the catalogue, if it is consistent.
+const discounts = [...new Set(live.services.filter((s) => s.member_discount_pct > 0).map((s) => s.member_discount_pct))];
+export const memberDiscountPct = discounts.length === 1 ? discounts[0] : null;
+
+export const vatPct = live.config.vat_pct;
+export const pricesGeneratedAt = live.generatedAt;
 
 export const howItWorks = [
   { no: '1', title: 'Quick scoping call', text: 'A short conversation about your sites, sector and obligations — no charge.' },
-  { no: '2', title: 'Clear fixed quote', text: 'A written proposal with the exact scope and price, drawn from this guide.' },
+  { no: '2', title: 'Clear fixed quote', text: 'A written proposal with the exact scope and price, drawn from these rates.' },
   { no: '3', title: 'Delivery & report', text: 'We carry out the work and hand over clear, audit-ready documentation.' },
   { no: '4', title: 'Ongoing support', text: 'Keep us on hand for advice and renewals — ad-hoc or on an Elite Assured membership.' },
 ];

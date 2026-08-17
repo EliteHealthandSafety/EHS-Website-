@@ -4,7 +4,9 @@ import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { serviceGroups } from '../data/pricing.js';
 
-const fra = serviceGroups.find((g) => g.id === 'assessments').items[0];
+// Cheapest live FRA band — never a hardcoded figure.
+const fraItems = serviceGroups.find((g) => g.id === 'fire').items;
+const fraFrom = Math.min(...fraItems.map((i) => i.price));
 ---
 <Base
   title="Fire Risk Assessments Glasgow | Business Fire Safety Compliance"
@@ -35,9 +37,9 @@ const fra = serviceGroups.find((g) => g.id === 'assessments').items[0];
       </ul>
 
       <div class="price-flash">
-        <b>From £{fra.price.toLocaleString('en-GB')}</b>
-        <span>ex VAT for a single office, shop or unit — larger or more complex premises are scoped
-          individually. <a href="/pricing/">See full pricing</a></span>
+        <b>From £{fraFrom.toLocaleString('en-GB')}</b>
+        <span>ex VAT for small premises such as an office, shop or garage. Medium and large premises
+          are priced by size and complexity. <a href="/pricing/#fire">See all fire risk assessment prices</a></span>
       </div>
     </div>
   </section>

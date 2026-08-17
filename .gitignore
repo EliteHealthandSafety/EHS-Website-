@@ -4,8 +4,10 @@ dist/
 node_modules/
 # astro
 .astro/
-# env & logs
+# env & logs — .env.local holds the Supabase service key for `npm run sync:pricing`
 .env
+.env.*
+!.env.example
 .env.production
 *.log
 npm-debug.log*

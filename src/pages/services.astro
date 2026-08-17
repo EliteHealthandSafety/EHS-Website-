@@ -2,6 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
+import { serviceGroups, tiers } from '../data/pricing.js';
+
+const fraFrom = Math.min(...serviceGroups.find((g) => g.id === 'fire').items.map((i) => i.price));
+const tierFrom = Math.min(...tiers.map((t) => t.price));
 ---
 <Base
   title="Health & Safety Services Glasgow | Elite H&S"
@@ -62,8 +66,9 @@ import CtaBand from '../components/CtaBand.astro';
         <div class="eyebrow">What it costs</div>
         <h2>Indicative pricing, published up front</h2>
         <p class="lead">We publish guide prices for everything we do, so you can budget before you get in
-          touch. Fire risk assessments from £815, H&amp;S policies from £1,360, and Elite Assured membership
-          from £82 a month. Your fixed price is confirmed in writing once we've scoped the work.</p>
+          touch. Fire risk assessments from £{fraFrom.toLocaleString('en-GB')}, and Elite Assured
+          membership from £{tierFrom.toLocaleString('en-GB')} a month. Your fixed price is confirmed in
+          writing once we've scoped the work.</p>
       </div>
       <div class="cta-row" style="display:flex;gap:12px;flex-wrap:wrap">
         <a class="btn btn-accent" href="/pricing/">See pricing &amp; membership</a>

@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "sync:pricing": "node scripts/sync-pricing.mjs",
+    "deploy:prep": "npm run sync:pricing && npm run build"
   },
   "dependencies": {
     "astro": "^5.0.0",
