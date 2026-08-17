@@ -48,6 +48,16 @@ const KEY = process.env.SUPABASE_SERVICE_KEY;
 if (!URL_BASE || !KEY) {
   console.log('[sync:pricing] SUPABASE_URL / SUPABASE_SERVICE_KEY not set — keeping the existing snapshot.');
   console.log('[sync:pricing] Add them to .env.local to pull live prices from the portal.');
+  // Shout if the snapshot is going stale, so an old price list cannot quietly
+  // keep shipping build after build.
+  try {
+    const snap = JSON.parse(readFileSync(OUT, 'utf8'));
+    const ageDays = Math.floor((Date.now() - new Date(snap.generatedAt).getTime()) / 86400000);
+    if (ageDays >= 30) {
+      console.warn(`[sync:pricing] ⚠ Published prices were last synced ${ageDays} days ago (${snap.generatedAt}).`);
+      console.warn('[sync:pricing] ⚠ They may no longer match the portal. Add credentials and re-run before deploying.');
+    }
+  } catch { /* snapshot unreadable — the build will fail loudly anyway */ }
   process.exit(0);
 }
 
