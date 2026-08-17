@@ -2,6 +2,9 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
+import { serviceGroups } from '../data/pricing.js';
+
+const fra = serviceGroups.find((g) => g.id === 'assessments').items[0];
 ---
 <Base
   title="Fire Risk Assessments Glasgow | Business Fire Safety Compliance"
@@ -30,6 +33,12 @@ import CtaBand from '../components/CtaBand.astro';
         <li>A prioritised action plan you can actually follow</li>
         <li>Straightforward guidance on what to fix and when</li>
       </ul>
+
+      <div class="price-flash">
+        <b>From £{fra.price.toLocaleString('en-GB')}</b>
+        <span>ex VAT for a single office, shop or unit — larger or more complex premises are scoped
+          individually. <a href="/pricing/">See full pricing</a></span>
+      </div>
     </div>
   </section>
 

@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business as b } from '../data/site.js';
+import { serviceGroups, tiers, howItWorks, vatNote } from '../data/pricing.js';
+
+const gbp = (n) => '£' + n.toLocaleString('en-GB');
+---
+<Base
+  title="Health & Safety Pricing Glasgow | Indicative Costs | Elite H&S"
+  description="Indicative costs for fire risk assessments, H&S policies, audits and accredited training in Glasgow and Scotland, plus Elite Assured membership from £82/month. Clear guide prices, fixed quote before any work."
+  canonical="https://elitehealthandsafety.co.uk/pricing/">
+
+  <PageHero
+    eyebrow="Services & indicative costs"
+    title="Practical health & safety support, priced with no surprises"
+    lead="A clear guide to what our services typically cost, so you can budget before you pick up the phone. Every figure below is an honest, real-world example — not a teaser. Your final fixed price is confirmed in writing once we've scoped the work."
+    ctaText="Get a fixed quote"
+    cta2Text="Free compliance check"
+    cta2Href="/compliance-checklist/" />
+
+  <!-- ONE-OFF SERVICES -->
+  {serviceGroups.map((g) => (
+    <section id={g.id} class={g.id === 'documentation' ? 'courses' : undefined}>
+      <div class="wrap section-narrow">
+        <div class="sec-head">
+          <div class="eyebrow">{g.id === 'training' ? 'Training' : 'One-off services'}</div>
+          <h2>{g.title}</h2>
+          <p class="lead">{g.blurb}</p>
+        </div>
+
+        <div class="ptable">
+          <div class="ptable-head">
+            <span>Service</span>
+            <span>{g.priceLabel}</span>
+          </div>
+          {g.items.map((item) => (
+            <div class="prow">
+              <div class="prow-main">
+                <div class="prow-name">{item.name}</div>
+                <div class="prow-detail">{item.detail}</div>
+              </div>
+              <div class="prow-price">
+                <b>{gbp(item.price)}</b>
+                <span>{item.perDay ? 'per day' : g.id === 'training' ? 'per delegate' : 'from'}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        {g.footnote && <p class="pnote">{g.footnote}</p>}
+      </div>
+    </section>
+  ))}
+
+  <p class="wrap pdisclaimer">
+    Figures are indicative examples to help you budget. The final fixed price is confirmed in your
+    written quote once we've scoped the work — number of sites, size, sector and complexity.
+    {' '}{vatNote} Third-party and scheme fees are passed on at cost.
+  </p>
+
+  <!-- MEMBERSHIP -->
+  <section id="membership" class="courses">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Elite Assured membership</div>
+        <h2>Prefer not to buy piece by piece?</h2>
+        <p class="lead">Membership turns one-off jobs into one predictable monthly fee — a bundle of
+          support, included work and your own online portal. Every tier includes the portal.</p>
+      </div>
+
+      <div class="tier-grid">
+        {tiers.map((t) => (
+          <article class={`tier${t.popular ? ' is-popular' : ''}`}>
+            {t.popular && <div class="tier-flag">Most popular</div>}
+            <h3>{t.name}</h3>
+            <div class="tier-tag">{t.tagline}</div>
+            <div class="tier-price"><b>{gbp(t.price)}</b><span>/month ex VAT</span></div>
+            <div class="tier-term">
+              {t.minTermMonths ? `Minimum ${t.minTermMonths}-month term` : 'No minimum term'}
+            </div>
+            <p class="tier-who">{t.who}</p>
+            <div class="tier-portal">{t.portal}</div>
+            <ul>
+              {t.includes.map((inc) => (
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  {inc}
+                </li>
+              ))}
+            </ul>
+            <a class="btn btn-accent" href="/contact-us/">Ask about {t.name}</a>
+          </article>
+        ))}
+      </div>
+
+      <div class="credit-note">
+        <b>How your support allowance works.</b> Behind the included services, your membership carries a
+        pool of support credits for the year — 1 credit is about 15 minutes of a consultant's time — so you
+        can flex it across advice, extra site visits, risk assessments or documents. Training is separate:
+        each included in-house training day covers one on-site session for a group, up to that course's
+        maximum. Your portal shows every balance live. Work beyond your allowance is charged at member rates.
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW WE WORK -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">How we work</div>
+        <h2>From first call to fixed quote</h2>
+      </div>
+      <div class="steps">
+        {howItWorks.map((s) => (
+          <div class="step">
+            <div class="no">0{s.no}</div>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    heading="Tell us what's on your plate and we'll send a fixed quote."
+    text={`A clear, fixed quote within two working days — no obligation, and the scoping call is always free. Call ${b.phoneDisplay} or send us the details.`} />
+</Base>
