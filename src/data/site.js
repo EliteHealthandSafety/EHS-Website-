@@ -44,7 +44,7 @@ export const business = {
   // automatically. Leave blank to hide.
   social: {
     facebook: 'https://www.facebook.com/profile.php?id=61593352649838',
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/company/elite-health-and-safety-scotland/',
     instagram: '',
     googleBusiness: '',
   },
