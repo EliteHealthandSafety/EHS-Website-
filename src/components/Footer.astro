@@ -1,5 +1,16 @@
 ---
 import { business as b } from '../data/site.js';
+
+// Only renders the networks that actually have a URL set in site.js.
+const SOCIAL_META = {
+  facebook: { label: 'Facebook', path: 'M14 8.5h2.5V5.6C16.1 5.5 15.2 5.4 14.2 5.4c-2.1 0-3.5 1.3-3.5 3.6v2H8v3.1h2.7V22h3.2v-7.9h2.6l.4-3.1h-3V9.3c0-.6.2-.8.8-.8z' },
+  linkedin: { label: 'LinkedIn', path: 'M6.9 8.8H3.8V21h3.1V8.8zM5.3 3.4a1.8 1.8 0 100 3.6 1.8 1.8 0 000-3.6zM21 21h-3.1v-6c0-1.5-.5-2.5-1.8-2.5-1 0-1.6.7-1.8 1.3-.1.2-.1.6-.1.9V21H11V8.8h3.1v1.7a3.4 3.4 0 013-1.7c2.2 0 3.9 1.5 3.9 4.6V21z' },
+  instagram: { label: 'Instagram', path: 'M12 7.4a4.6 4.6 0 100 9.2 4.6 4.6 0 000-9.2zm0 7.6a3 3 0 110-6 3 3 0 010 6zm5.8-7.8a1.1 1.1 0 11-2.2 0 1.1 1.1 0 012.2 0zM16.5 3h-9A4.5 4.5 0 003 7.5v9A4.5 4.5 0 007.5 21h9a4.5 4.5 0 004.5-4.5v-9A4.5 4.5 0 0016.5 3zm2.9 13.5a2.9 2.9 0 01-2.9 2.9h-9a2.9 2.9 0 01-2.9-2.9v-9a2.9 2.9 0 012.9-2.9h9a2.9 2.9 0 012.9 2.9v9z' },
+  googleBusiness: { label: 'Google Business Profile', path: 'M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z' },
+};
+const socials = Object.entries(b.social)
+  .filter(([, url]) => url)
+  .map(([key, url]) => ({ url, ...SOCIAL_META[key] }));
 ---
 <footer>
   <div class="wrap">
@@ -39,6 +50,15 @@ import { business as b } from '../data/site.js';
         <a href="mailto:info@elitehealthandsafety.co.uk">info@elitehealthandsafety.co.uk</a>
         <a href="/contact-us/">Get a free quote</a>
         <p class="foot-hours">{b.openingHoursDisplay}<br /><span>Mobile service — we come to you</span></p>
+        {socials.length > 0 && (
+          <div class="foot-social">
+            {socials.map((s) => (
+              <a href={s.url} aria-label={s.label} title={s.label} target="_blank" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={s.path} /></svg>
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
     <div class="base">

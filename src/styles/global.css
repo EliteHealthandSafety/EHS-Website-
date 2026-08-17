@@ -375,6 +375,10 @@
 .coverage-note{max-width:70ch;margin:26px auto 0;text-align:center;font-size:.9rem;color:var(--muted)}
 .foot-hours{margin:14px 0 0;font-family:var(--mono);font-size:.76rem;color:var(--on-brand);line-height:1.7}
 .foot-hours span{color:var(--on-brand-muted);font-size:.72rem}
+.foot-social{display:flex;gap:10px;margin-top:16px}
+.foot-social a{display:grid;place-items:center;width:36px;height:36px;padding:0;border-radius:9px;
+  border:1px solid rgba(255,255,255,.16);color:var(--on-brand-muted);transition:color .16s,border-color .16s,background .16s}
+.foot-social a:hover{color:var(--accent);border-color:var(--accent);background:rgba(255,255,255,.05)}
 
 /* ============ HOMEPAGE FREE-TOOL PROMO ============ */
 .btn-lg{font-size:1.05rem;padding:1em 1.7em}

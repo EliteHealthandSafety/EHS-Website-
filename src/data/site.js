@@ -40,5 +40,15 @@ export const business = {
   },
   openingHoursDisplay: 'Mon–Fri, 7am–6pm',
 
-  sameAs: [],                    // e.g. ['https://www.linkedin.com/company/...', Facebook, Instagram, Google Business Profile URL]
+  // Add a URL here and it appears as a footer icon AND in the schema's sameAs
+  // automatically. Leave blank to hide.
+  social: {
+    facebook: 'https://www.facebook.com/profile.php?id=61593352649838',
+    linkedin: '',
+    instagram: '',
+    googleBusiness: '',
+  },
 };
+
+// Schema sameAs is derived, so there is only one place to keep up to date.
+business.sameAs = Object.values(business.social).filter(Boolean);
