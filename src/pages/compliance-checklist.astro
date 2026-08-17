@@ -2,96 +2,381 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import { business as b } from '../data/site.js';
+import { checklist, totalItems } from '../data/checklist.js';
 ---
 <Base
-  title="Free H&S Compliance Checklist for Scottish Businesses | Elite H&S"
-  description="Download our free, plain-English health & safety compliance checklist for Scottish businesses — fire, first aid, policies, risk assessments and training."
+  title="Free H&S Compliance Check for Scottish Businesses | Elite H&S"
+  description="Free interactive health & safety compliance self-check. Answer 21 plain-English questions on fire, first aid, policies and training — get your score and priority actions instantly. No sign-up."
   canonical="https://elitehealthandsafety.co.uk/compliance-checklist/">
 
   <PageHero
-    eyebrow="Free resource"
-    title="The Scottish Business H&S Compliance Checklist"
-    lead="A plain-English checklist of the essentials every Scottish business should have in place. Tick what you've got, spot the gaps — free, no jargon."
-    ctaText="Get the checklist"
-    ctaHref="#get" />
+    eyebrow="Free tool · no sign-up"
+    title="How compliant is your business, really?"
+    lead={`Work through ${totalItems} plain-English checks covering fire, first aid, policies, training and ongoing management. You get a compliance score and a priority action list the moment you finish — nothing to fill in first.`}
+    ctaText="Start the check"
+    ctaHref="#tool"
+    cta2Text="Printable version"
+    cta2Href="/downloads/ehs-compliance-checklist.html" />
 
-  <section>
+  <!-- ============ THE TOOL ============ -->
+  <section id="tool" class="ck-wrap-sec">
     <div class="wrap section-narrow">
-      <div class="sec-head">
-        <div class="eyebrow">What's inside</div>
-        <h2>Everything you should have covered</h2>
+
+      <div class="ck-bar" id="ckBar">
+        <div class="ck-bar-txt">
+          <b id="ckAnswered">0</b> of {totalItems} answered
+        </div>
+        <div class="ck-bar-track"><i id="ckBarFill" style="width:0%"></i></div>
+        <button class="ck-reset" id="ckReset" type="button">Start again</button>
       </div>
-      <ul class="check-list">
-        <li><b>Fire safety</b> — fire risk assessment, alarms, extinguishers, escape routes</li>
-        <li><b>First aid</b> — needs assessment, trained first-aiders, kits, accident recording</li>
-        <li><b>Policies &amp; documents</b> — H&amp;S policy, risk assessments, COSHH, insurance</li>
-        <li><b>Training &amp; competence</b> — inductions, role-specific training, records</li>
-        <li><b>Ongoing management</b> — review dates, named responsible person, contractors</li>
-      </ul>
+
+      <p class="ck-intro">
+        For each item choose <b>Yes</b>, <b>Not sure</b>, <b>No</b> — or <b>N/A</b> if it genuinely
+        does not apply to your business. Your answers stay in your browser; nothing is sent anywhere
+        unless you choose to email yourself the results at the end.
+      </p>
+
+      {checklist.map((sec, si) => (
+        <div class="ck-sec" id={`sec-${sec.id}`}>
+          <div class="ck-sec-head">
+            <h2><span class="ck-sec-no">{si + 1}</span>{sec.title}</h2>
+            <div class="ck-law">{sec.law}</div>
+          </div>
+
+          {sec.items.map((item) => (
+            <div class="ck-item" data-item={item.id} data-section={sec.title} data-fix={item.fix}>
+              <div class="ck-item-main">
+                <div class="ck-t">{item.t}</div>
+                <div class="ck-d">{item.d}</div>
+                <div class="ck-cycle">⏱ {item.cycle}</div>
+              </div>
+              <div class="ck-seg" role="group" aria-label={item.t}>
+                <button type="button" data-val="yes" aria-pressed="false">Yes</button>
+                <button type="button" data-val="unsure" aria-pressed="false">Not sure</button>
+                <button type="button" data-val="no" aria-pressed="false">No</button>
+                <button type="button" data-val="na" aria-pressed="false">N/A</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+
+      <div class="ck-note">
+        Review cycles shown are best-practice guides. Some intervals are risk-based rather than fixed
+        in law, so the right frequency can vary by premises — that is exactly what a free consultation sorts out.
+      </div>
+
+      <div class="ck-actions">
+        <button class="btn btn-accent" id="ckShow" type="button">See my results</button>
+        <span class="ck-actions-hint" id="ckHint"></span>
+      </div>
     </div>
   </section>
 
-  <section id="get" class="courses">
+  <!-- ============ RESULTS ============ -->
+  <section id="results" class="ck-results-sec" hidden>
     <div class="wrap section-narrow">
-      <div class="sec-head">
-        <div class="eyebrow">Get your free copy</div>
-        <h2>Where should we send it?</h2>
-        <p class="lead">Enter your details and your checklist opens straight away. We'll also email you a copy — and only ever get in touch if we can help.</p>
+
+      <div class="ck-scorecard">
+        <div class="ck-ring-wrap">
+          <svg class="ck-ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="52" class="ck-ring-bg" />
+            <circle cx="60" cy="60" r="52" class="ck-ring-fg" id="ckRing" />
+          </svg>
+          <div class="ck-ring-num"><b id="ckPct">0</b><small>%</small></div>
+        </div>
+        <div class="ck-scoretext">
+          <div class="eyebrow">Your result</div>
+          <h2 id="ckBand">—</h2>
+          <p id="ckBandText" class="lead"></p>
+          <div class="ck-counts">
+            <div class="ck-count ok"><b id="ckYes">0</b><span>In place</span></div>
+            <div class="ck-count warn"><b id="ckUnsure">0</b><span>Not sure</span></div>
+            <div class="ck-count risk"><b id="ckNo">0</b><span>Not in place</span></div>
+            <div class="ck-count na"><b id="ckNa">0</b><span>N/A</span></div>
+          </div>
+        </div>
       </div>
 
-      <form id="leadForm" class="cform" action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value={b.web3formsKey} />
-        <input type="hidden" name="subject" value="Compliance checklist download" />
-        <input type="hidden" name="from_name" value="Elite H&S — Checklist" />
-        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" />
-        <div class="cform-row">
-          <label>Name<input type="text" name="name" required autocomplete="name" /></label>
-          <label>Work email<input type="email" name="email" required autocomplete="email" /></label>
+      <div id="ckGapsWrap">
+        <div class="sec-head" style="margin:48px 0 20px">
+          <div class="eyebrow">What to do next</div>
+          <h2>Your priority actions</h2>
+          <p class="lead" id="ckGapsLead"></p>
         </div>
-        <label>Company (optional)<input type="text" name="company" autocomplete="organization" /></label>
-        <div class="cform-actions">
-          <button class="btn btn-accent" type="submit">Send me the checklist</button>
-          <p class="cform-status" id="leadStatus" role="status" aria-live="polite"></p>
-        </div>
-      </form>
-
-      <div id="leadDone" class="card" style="display:none;margin-top:8px">
-        <div class="eyebrow">You're all set ✓</div>
-        <h3 style="margin:6px 0 8px">Your checklist is ready</h3>
-        <p style="color:var(--muted);margin:0 0 16px">Open it below (use your browser's "Save as PDF" to keep a copy). We've noted your details and will only reach out if we can help.</p>
-        <a class="btn btn-accent" href="/downloads/ehs-compliance-checklist.html" target="_blank" rel="noopener">Open your checklist</a>
+        <ol class="ck-gaps" id="ckGaps"></ol>
       </div>
+
+      <!-- CTA after the value is delivered -->
+      <div class="ck-cta">
+        <div class="ck-cta-main">
+          <div class="eyebrow" style="color:var(--accent)">Free 30-minute consultation</div>
+          <h3>Want us to go through this with you?</h3>
+          <p>
+            We will confirm what actually applies to your premises, tell you honestly what is urgent
+            and what can wait, and quote for anything you want us to take off your hands.
+            No obligation, no hard sell.
+          </p>
+          <div class="ck-cta-row">
+            <a class="btn btn-accent" href="/contact-us/">Book my free review</a>
+            <a class="btn btn-onbrand" href={`tel:${b.phone}`}>☎ {b.phoneDisplay}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ck-post">
+        <div class="ck-post-card">
+          <h3>Email these results to yourself</h3>
+          <p>Optional — we will send your score and action list so you have a record, and we will only
+            get in touch if we think we can genuinely help.</p>
+
+          <form id="ckMail" class="cform">
+            <input type="hidden" name="access_key" value={b.web3formsKey} />
+            <input type="hidden" name="subject" value="H&S self-check results" />
+            <input type="hidden" name="from_name" value="Elite H&S — Compliance Check" />
+            <input type="hidden" name="results" id="ckResultsField" />
+            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" />
+            <div class="cform-row">
+              <label>Name<input type="text" name="name" required autocomplete="name" /></label>
+              <label>Work email<input type="email" name="email" required autocomplete="email" /></label>
+            </div>
+            <label>Company (optional)<input type="text" name="company" autocomplete="organization" /></label>
+            <div class="cform-actions">
+              <button class="btn btn-accent" type="submit">Email me my results</button>
+              <p class="cform-status" id="ckMailStatus" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </div>
+
+        <div class="ck-post-card">
+          <h3>Keep a copy</h3>
+          <p>Print your results, or open the blank printable checklist to work through on site.</p>
+          <div class="ck-cta-row">
+            <button class="btn btn-ghost" type="button" id="ckPrint">🖨 Print my results</button>
+            <a class="btn btn-ghost" href="/downloads/ehs-compliance-checklist.html" target="_blank" rel="noopener">Printable checklist</a>
+          </div>
+          <div class="ck-cta-row" style="margin-top:14px">
+            <a class="btn btn-ghost" href="#tool" id="ckBackUp">← Change my answers</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <script is:inline>
+  <!-- Print rules live here, not in global.css, so they only apply to this page. -->
+  <style is:global>
+    @media print{
+      .util,header.nav,footer,.pagehero,.ck-wrap-sec,.tt,.ck-post,.ck-cta-row{display:none !important}
+      .ck-results-sec{padding:0}
+      .ck-scorecard,.ck-gap,.ck-cta{box-shadow:none;break-inside:avoid}
+      .ck-cta{color:#000;background:none;border:1px solid #999}
+      .ck-cta h3,.ck-cta p{color:#000}
+    }
+  </style>
+
+  <script is:inline define:vars={{ total: totalItems }}>
     (function () {
-      var form = document.getElementById('leadForm');
-      var status = document.getElementById('leadStatus');
-      var done = document.getElementById('leadDone');
-      if (!form) return;
-      form.addEventListener('submit', async function (e) {
+      var KEY = 'ehs-selfcheck-v1';
+      var state = {};
+      try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; }
+
+      var items = Array.prototype.slice.call(document.querySelectorAll('.ck-item'));
+      var results = document.getElementById('results');
+      var revealed = false;
+
+      function save() {
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+      }
+
+      function paintItem(el) {
+        var id = el.dataset.item;
+        var val = state[id] || null;
+        el.classList.remove('is-yes', 'is-unsure', 'is-no', 'is-na');
+        if (val) el.classList.add('is-' + val);
+        el.querySelectorAll('.ck-seg button').forEach(function (btn) {
+          var on = btn.dataset.val === val;
+          btn.classList.toggle('on', on);
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      }
+
+      function counts() {
+        var c = { yes: 0, unsure: 0, no: 0, na: 0, answered: 0 };
+        items.forEach(function (el) {
+          var v = state[el.dataset.item];
+          if (v) { c[v]++; c.answered++; }
+        });
+        c.scored = c.yes + c.unsure + c.no;
+        c.pct = c.scored ? Math.round((c.yes / c.scored) * 100) : 0;
+        return c;
+      }
+
+      function paintProgress() {
+        var c = counts();
+        document.getElementById('ckAnswered').textContent = c.answered;
+        document.getElementById('ckBarFill').style.width = Math.round((c.answered / total) * 100) + '%';
+        var hint = document.getElementById('ckHint');
+        var left = total - c.answered;
+        hint.textContent = left > 0 ? left + (left === 1 ? ' item' : ' items') + ' still unanswered — you can still see your score.' : 'All done ✓';
+      }
+
+      var BANDS = [
+        { min: 90, name: 'Strong position', cls: 'ok', text: 'You are in good shape. The value now is in keeping it current — reviews, refreshers and servicing that do not lapse.' },
+        { min: 70, name: 'Mostly there, with gaps', cls: 'ok', text: 'The foundations are in place, but the items below are the ones that tend to be picked up in an inspection or after an incident.' },
+        { min: 40, name: 'Notable gaps', cls: 'warn', text: 'Enough is missing that an inspection or a serious incident would be uncomfortable. The good news is that most of this is quick to put right.' },
+        { min: 0, name: 'Significant risk', cls: 'risk', text: 'Several legal duties look unmet. This is worth acting on now — not as a paperwork exercise, but because these are the controls that protect your people.' },
+      ];
+
+      function summaryText(c, gaps) {
+        var lines = [];
+        lines.push('COMPLIANCE SELF-CHECK RESULT');
+        lines.push('Score: ' + c.pct + '% (' + c.yes + ' in place, ' + c.unsure + ' not sure, ' + c.no + ' not in place, ' + c.na + ' N/A)');
+        lines.push('');
+        lines.push('PRIORITY ACTIONS (' + gaps.length + '):');
+        gaps.forEach(function (g, i) {
+          lines.push((i + 1) + '. [' + g.label.toUpperCase() + '] ' + g.section + ' — ' + g.title);
+          lines.push('   ' + g.fix);
+        });
+        if (!gaps.length) lines.push('None flagged — everything answered is in place.');
+        return lines.join('\n');
+      }
+
+      function render() {
+        var c = counts();
+
+        // score ring
+        document.getElementById('ckPct').textContent = c.pct;
+        var r = 52, circ = 2 * Math.PI * r;
+        var ring = document.getElementById('ckRing');
+        ring.style.strokeDasharray = circ.toFixed(1);
+        ring.style.strokeDashoffset = (circ * (1 - c.pct / 100)).toFixed(1);
+
+        var band = BANDS.find(function (x) { return c.pct >= x.min; });
+        var card = document.querySelector('.ck-scorecard');
+        card.classList.remove('band-ok', 'band-warn', 'band-risk');
+        card.classList.add('band-' + band.cls);
+        document.getElementById('ckBand').textContent = c.scored ? band.name : 'Nothing answered yet';
+        document.getElementById('ckBandText').textContent = c.scored ? band.text : 'Answer a few items above and your score will appear here.';
+
+        document.getElementById('ckYes').textContent = c.yes;
+        document.getElementById('ckUnsure').textContent = c.unsure;
+        document.getElementById('ckNo').textContent = c.no;
+        document.getElementById('ckNa').textContent = c.na;
+
+        // gaps: "no" first, then "not sure", then unanswered
+        var order = { no: 0, unsure: 1, unanswered: 2 };
+        var labels = { no: 'Not in place', unsure: 'Needs checking', unanswered: 'Not answered' };
+        var gaps = [];
+        items.forEach(function (el) {
+          var v = state[el.dataset.item] || 'unanswered';
+          if (v === 'yes' || v === 'na') return;
+          gaps.push({
+            key: v,
+            label: labels[v],
+            section: el.dataset.section,
+            title: el.querySelector('.ck-t').textContent,
+            fix: el.dataset.fix,
+          });
+        });
+        gaps.sort(function (a, z) { return order[a.key] - order[z.key]; });
+
+        var list = document.getElementById('ckGaps');
+        list.innerHTML = '';
+        gaps.forEach(function (g) {
+          var li = document.createElement('li');
+          li.className = 'ck-gap ' + g.key;
+          var tag = document.createElement('span');
+          tag.className = 'ck-gap-tag';
+          tag.textContent = g.label;
+          var h = document.createElement('div');
+          h.className = 'ck-gap-t';
+          h.textContent = g.title;
+          var s = document.createElement('div');
+          s.className = 'ck-gap-s';
+          s.textContent = g.section;
+          var p = document.createElement('p');
+          p.textContent = g.fix;
+          li.appendChild(tag); li.appendChild(s); li.appendChild(h); li.appendChild(p);
+          list.appendChild(li);
+        });
+
+        document.getElementById('ckGapsWrap').hidden = gaps.length === 0;
+        document.getElementById('ckGapsLead').textContent = gaps.length
+          ? 'Ordered by urgency — what is not in place, then what you were unsure about.'
+          : '';
+
+        document.getElementById('ckResultsField').value = summaryText(c, gaps);
+      }
+
+      // wire the segmented controls
+      items.forEach(function (el) {
+        el.querySelectorAll('.ck-seg button').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var id = el.dataset.item, v = btn.dataset.val;
+            if (state[id] === v) { delete state[id]; } else { state[id] = v; }
+            save();
+            paintItem(el);
+            paintProgress();
+            if (revealed) render();
+          });
+        });
+        paintItem(el);
+      });
+      paintProgress();
+
+      document.getElementById('ckShow').addEventListener('click', function () {
+        revealed = true;
+        results.hidden = false;
+        render();
+        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      document.getElementById('ckReset').addEventListener('click', function () {
+        state = {};
+        save();
+        items.forEach(paintItem);
+        paintProgress();
+        results.hidden = true;
+        revealed = false;
+        document.getElementById('tool').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      document.getElementById('ckPrint').addEventListener('click', function () { window.print(); });
+
+      // if they've been here before, show their results straight away
+      if (Object.keys(state).length) {
+        revealed = true;
+        results.hidden = false;
+        render();
+      }
+
+      // optional email-my-results
+      var mail = document.getElementById('ckMail');
+      var mstatus = document.getElementById('ckMailStatus');
+      mail.addEventListener('submit', async function (e) {
         e.preventDefault();
-        status.className = 'cform-status';
-        status.textContent = 'Sending…';
+        mstatus.className = 'cform-status';
+        mstatus.textContent = 'Sending…';
         try {
           var res = await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify(Object.fromEntries(new FormData(form))),
+            body: JSON.stringify(Object.fromEntries(new FormData(mail))),
           });
           var json = await res.json();
           if (json.success) {
-            form.style.display = 'none';
-            done.style.display = 'block';
-            done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            mail.style.display = 'none';
+            mstatus.className = 'cform-status ok';
+            mstatus.textContent = 'Sent ✓ — check your inbox. We will be in touch only if we can help.';
+            mstatus.style.display = 'block';
           } else {
-            status.textContent = json.message || 'Something went wrong — please email us for the checklist.';
-            status.className = 'cform-status err';
+            mstatus.textContent = json.message || 'Something went wrong — please email us instead.';
+            mstatus.className = 'cform-status err';
           }
         } catch (err) {
-          status.textContent = 'Network error — email info@elitehealthandsafety.co.uk and we’ll send it over.';
-          status.className = 'cform-status err';
+          mstatus.textContent = 'Network error — email info@elitehealthandsafety.co.uk and we will send it over.';
+          mstatus.className = 'cform-status err';
         }
       });
     })();
