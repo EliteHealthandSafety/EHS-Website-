@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import CtaBand from '../../components/CtaBand.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog'))
@@ -19,7 +20,7 @@ const posts = (await getCollection('blog'))
       <div class="post-grid">
         {posts.map((p) => (
           <a class="post-card" href={`/${p.id}/`}>
-            <div class="eyebrow">{p.data.pubDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</div>
+            <div class="eyebrow">Guide</div>
             <h3>{p.data.title}</h3>
             <p>{p.data.description}</p>
             <span class="post-more">Read article &rarr;</span>
@@ -28,4 +29,8 @@ const posts = (await getCollection('blog'))
       </div>
     </div>
   </section>
+
+  <CtaBand
+    heading="Reading up because something needs sorting?"
+    text="Tell us what you're dealing with and we'll give you a straight answer — free 30-minute consultation, no obligation." />
 </Base>

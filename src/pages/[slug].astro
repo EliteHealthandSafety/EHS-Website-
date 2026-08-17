@@ -10,9 +10,8 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const url = `https://elitehealthandsafety.co.uk/${post.id}/`;
-const dateStr = post.data.pubDate.toLocaleDateString('en-GB', {
-  year: 'numeric', month: 'long', day: 'numeric',
-});
+// Publish dates are kept in frontmatter for ordering, but not shown — these are
+// evergreen guides and a visible 2025 date made a live site read as dormant.
 ---
 <Base title={`${post.data.title} | Elite Health & Safety`} description={post.data.description} canonical={url}>
   <article class="post">
@@ -20,12 +19,17 @@ const dateStr = post.data.pubDate.toLocaleDateString('en-GB', {
       <a class="post-back" href="/blog/">&larr; All articles</a>
       <div class="eyebrow">Health &amp; Safety Blog</div>
       <h1>{post.data.title}</h1>
-      <p class="post-date">{dateStr}</p>
       <div class="post-body">
         <Content />
       </div>
       <div class="post-cta">
-        <a class="btn btn-accent" href="/contact-us/">Get a free quote</a>
+        <div class="eyebrow">Where does your business stand?</div>
+        <h2 class="post-cta-h">Check your compliance free, in 5 minutes</h2>
+        <p>21 plain-English checks, an instant score and a priority action list. No sign-up.</p>
+        <div class="post-cta-row">
+          <a class="btn btn-accent" href="/compliance-checklist/">Start the free check</a>
+          <a class="btn btn-ghost" href="/contact-us/">Get a free quote</a>
+        </div>
       </div>
     </div>
   </article>

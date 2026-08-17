@@ -70,7 +70,10 @@
   }
   .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:24px}
   a{color:inherit;text-decoration:none}
-  h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.02em;line-height:1.05;font-weight:800}
+  /* break-word stops long unbreakable strings (e.g. the email address on the
+     contact cards) from forcing the whole page wider than a phone screen */
+  h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.02em;line-height:1.05;font-weight:800;
+    overflow-wrap:break-word}
   p{margin:0}
 
   .eyebrow{
@@ -183,6 +186,9 @@
 
   /* services */
   .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  /* grid items default to min-width:auto, so one long unbreakable string (the
+     contact email) would otherwise widen the whole page on a phone */
+  .grid-3>*,.course-grid>*,.post-grid>*,.info-grid>*,.steps>*,.stats .wrap>*{min-width:0}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
     padding:28px;box-shadow:var(--shadow);transition:transform .18s ease,border-color .18s ease;position:relative}
   .card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
@@ -354,6 +360,65 @@
 .cform-status.ok{color:var(--accent-strong)}
 .cform-status.err{color:var(--risk)}
 @media (max-width:560px){.cform-row{grid-template-columns:1fr}}
+
+/* ============ HOMEPAGE FREE-TOOL PROMO ============ */
+.btn-lg{font-size:1.05rem;padding:1em 1.7em}
+.promo{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center;
+  background:var(--ground);border:1px solid var(--border);border-left:5px solid var(--accent);
+  border-radius:18px;padding:44px;box-shadow:var(--shadow)}
+.promo > *{min-width:0}
+.promo-txt h2{font-size:clamp(1.6rem,3vw,2.3rem);margin-top:12px}
+.promo-txt .lead{margin-top:14px}
+.promo-txt .check-list{margin-top:20px}
+.promo-vis{display:grid;gap:18px;justify-items:center}
+.promo-ring{position:relative;width:170px;height:170px}
+.promo-ring svg{width:170px;height:170px;transform:rotate(-90deg)}
+.promo-ring circle{fill:none;stroke-width:12;stroke:var(--surface-2)}
+.promo-ring circle.fg{stroke:var(--accent);stroke-linecap:round;
+  stroke-dasharray:327;stroke-dashoffset:98}
+.promo-num{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.promo-num b{font-size:2.8rem;font-weight:800;color:var(--accent-strong);line-height:1}
+.promo-num small{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.promo-rows{display:grid;gap:8px;width:100%}
+.promo-row{font-family:var(--mono);font-size:.72rem;padding:8px 12px;border-radius:8px;
+  background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border)}
+.promo-row.ok{border-left-color:var(--accent)}
+.promo-row.warn{border-left-color:var(--warn)}
+.promo-row.risk{border-left-color:var(--risk)}
+
+/* honest labelling on product mockups */
+.mock-note{padding:10px 20px 16px;font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;
+  color:var(--muted);border-top:1px solid var(--border)}
+
+/* secondary line under a final CTA band */
+.final-alt{margin-top:22px;font-size:.95rem;color:var(--on-brand-muted)}
+.final-alt a{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.final-alt a:hover{color:var(--accent-strong)}
+
+/* header: nav highlight + always-visible mobile CTA */
+.nav .links .nav-tool{color:var(--accent)}
+.nav .links .nav-tool::after{background:var(--accent)}
+.btn-sm{font-size:.85rem;padding:.6em .95em;border-radius:9px}
+.mob-cta{display:none}
+
+/* blog post foot CTA */
+.post-cta-h{font-size:1.35rem;margin:10px 0 8px}
+.post-cta p{color:var(--muted);margin-bottom:20px}
+.post-cta-row{display:flex;gap:12px;flex-wrap:wrap}
+
+@media (max-width:940px){
+  .promo{grid-template-columns:1fr;gap:32px;padding:32px}
+  .promo-vis{order:-1;grid-template-columns:auto 1fr;align-items:center;justify-items:stretch}
+  .mob-cta{display:inline-flex;margin-left:auto}
+  .menu-btn{margin-left:12px}
+}
+@media (max-width:560px){
+  .promo{padding:26px 20px}
+  .promo-vis{grid-template-columns:1fr;justify-items:center}
+  .promo-rows{max-width:280px}
+  /* long CTA labels must wrap rather than force the page wider */
+  .btn{white-space:normal;text-align:center}
+}
 
 /* ============ COMPLIANCE SELF-CHECK TOOL ============ */
 .ck-wrap-sec{background:var(--surface);padding-block:56px}

@@ -1,7 +1,9 @@
 ---
+import { business as b } from '../data/site.js';
 const {
   heading = "Let's get your business compliant.",
   text = "Book a free 30-minute consultation and we'll map out exactly what you need — no obligation.",
+  showTool = true,
 } = Astro.props;
 ---
 <section class="final">
@@ -11,7 +13,12 @@ const {
     <p>{text}</p>
     <div class="cta-row">
       <a class="btn btn-accent" href="/contact-us/">Get a free quote</a>
-      <a class="btn btn-onbrand" href="mailto:info@elitehealthandsafety.co.uk">Email us</a>
+      <a class="btn btn-onbrand" href={`tel:${b.phone}`}>☎ {b.phoneDisplay}</a>
     </div>
+    {showTool && (
+      <p class="final-alt">
+        Not ready to talk yet? <a href="/compliance-checklist/">Take the free compliance check</a> — no sign-up, instant results.
+      </p>
+    )}
   </div>
 </section>
