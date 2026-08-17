@@ -371,6 +371,15 @@
 .cform-status.err{color:var(--risk)}
 @media (max-width:560px){.cform-row{grid-template-columns:1fr}}
 
+/* review ask */
+.review-ask{display:flex;gap:32px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--border);border-left:5px solid var(--accent);
+  border-radius:16px;padding:32px;box-shadow:var(--shadow)}
+.review-ask>div{flex:1;min-width:260px}
+.review-ask h2{font-size:clamp(1.3rem,2.4vw,1.75rem);margin-top:10px}
+.review-ask p{color:var(--muted);margin-top:10px;font-size:.95rem;max-width:56ch}
+.review-ask .btn{flex:none}
+
 /* service-area business notes */
 .coverage-note{max-width:70ch;margin:26px auto 0;text-align:center;font-size:.9rem;color:var(--muted)}
 .foot-hours{margin:14px 0 0;font-family:var(--mono);font-size:.76rem;color:var(--on-brand);line-height:1.7}

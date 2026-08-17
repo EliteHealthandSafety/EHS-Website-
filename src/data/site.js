@@ -46,8 +46,13 @@ export const business = {
     facebook: 'https://www.facebook.com/profile.php?id=61593352649838',
     linkedin: 'https://www.linkedin.com/company/elite-health-and-safety-scotland/',
     instagram: '',
-    googleBusiness: '',
+    // Same short link without /review resolves to the Business Profile itself.
+    googleBusiness: 'https://g.page/r/CeBBieFFzzrEEBM',
   },
+
+  // Deep link that opens the "write a review" box on the Google Business
+  // Profile. Used for review CTAs, not for schema sameAs.
+  reviewUrl: 'https://g.page/r/CeBBieFFzzrEEBM/review',
 };
 
 // Schema sameAs is derived, so there is only one place to keep up to date.
