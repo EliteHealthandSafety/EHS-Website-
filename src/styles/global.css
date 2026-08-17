@@ -176,13 +176,23 @@
   .sec-head h2{font-size:clamp(1.7rem,3.2vw,2.5rem);margin-top:12px}
   .sec-head p{margin-top:14px}
 
-  /* clients strip */
-  .clients{padding-block:30px;border-block:1px solid var(--border);background:var(--surface)}
-  .clients .wrap{display:flex;align-items:center;gap:34px;flex-wrap:wrap;justify-content:center}
-  .clients .cap{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  .clients .logo{font-weight:800;font-size:1.02rem;letter-spacing:-.01em;color:var(--ink);opacity:.62;
-    filter:grayscale(1);transition:opacity .2s}
+  /* clients strip — set as a deliberate credibility bar, not stray text */
+  .clients{padding-block:26px;border-block:1px solid var(--border);background:var(--surface)}
+  .clients .wrap{display:flex;align-items:center;gap:14px 30px;flex-wrap:wrap;justify-content:center}
+  .clients .cap{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .clients .cap::after{content:"";width:26px;height:1px;background:var(--border)}
+  .client-names{display:flex;align-items:center;gap:12px 26px;flex-wrap:wrap;justify-content:center}
+  .clients .logo{font-weight:700;font-size:.95rem;letter-spacing:.01em;color:var(--ink);opacity:.78;
+    display:flex;align-items:center;gap:26px;transition:opacity .2s}
+  .clients .logo:not(:last-child)::after{content:"";width:4px;height:4px;border-radius:50%;
+    background:var(--accent);opacity:.5}
   .clients .logo:hover{opacity:1}
+  @media (max-width:560px){
+    .clients .logo{font-size:.88rem;gap:14px}
+    .clients .logo:not(:last-child)::after{display:none}
+    .client-names{gap:8px 18px}
+  }
 
   /* services */
   .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
