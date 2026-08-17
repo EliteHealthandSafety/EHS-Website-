@@ -371,6 +371,11 @@
 .cform-status.err{color:var(--risk)}
 @media (max-width:560px){.cform-row{grid-template-columns:1fr}}
 
+/* service-area business notes */
+.coverage-note{max-width:70ch;margin:26px auto 0;text-align:center;font-size:.9rem;color:var(--muted)}
+.foot-hours{margin:14px 0 0;font-family:var(--mono);font-size:.76rem;color:var(--on-brand);line-height:1.7}
+.foot-hours span{color:var(--on-brand-muted);font-size:.72rem}
+
 /* ============ HOMEPAGE FREE-TOOL PROMO ============ */
 .btn-lg{font-size:1.05rem;padding:1em 1.7em}
 .promo{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center;

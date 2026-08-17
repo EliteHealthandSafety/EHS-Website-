@@ -18,14 +18,27 @@ export const business = {
   // using info@elitehealthandsafety.co.uk, then paste it here).
   web3formsKey: 'a5330766-5eb6-4d51-91f9-8ae2b6ec50c4',
 
-  // TODO (from client) — fill these in and the LocalBusiness schema enriches automatically:
+  // Elite is a SERVICE-AREA business: we travel to the client, there is no
+  // premises the public visits. The only address on file is a home address, so
+  // street and postcode are deliberately left blank and are NOT stored in this
+  // repo. Locality/region alone still gives search engines the local signal
+  // without publishing where someone lives.
+  // If a real business/visiting address is taken on later, fill these in.
+  serviceAreaBusiness: true,
   address: {
-    streetAddress: '',           // e.g. "123 Example Street"
+    streetAddress: '',
     addressLocality: 'Glasgow',
     addressRegion: 'Scotland',
-    postalCode: '',              // e.g. "G1 1AA"
+    postalCode: '',
     addressCountry: 'GB',
   },
-  openingHours: null,            // e.g. { days: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '09:00', closes: '17:00' }
-  sameAs: [],                    // e.g. ['https://www.facebook.com/...', 'https://www.linkedin.com/company/...', Google Business Profile URL]
+
+  openingHours: {
+    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '07:00',
+    closes: '18:00',
+  },
+  openingHoursDisplay: 'Mon–Fri, 7am–6pm',
+
+  sameAs: [],                    // e.g. ['https://www.linkedin.com/company/...', Facebook, Instagram, Google Business Profile URL]
 };

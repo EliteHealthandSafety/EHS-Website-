@@ -29,11 +29,16 @@ import { business as b } from '../data/site.js';
           <p style="color:var(--muted);margin-top:8px">Call us to discuss training, fire risk assessments or a compliance question.</p>
         </article>
         <article class="card">
-          <div class="eyebrow">Coverage</div>
-          <h3>Glasgow &amp; all of Scotland</h3>
-          <p style="color:var(--muted);margin-top:8px">On-site services delivered across Scotland. Company No. {b.companyNumber}.</p>
+          <div class="eyebrow">Opening hours</div>
+          <h3>{b.openingHoursDisplay}</h3>
+          <p style="color:var(--muted);margin-top:8px">Outside these hours, leave a message or email us and we'll come back to you the next working day.</p>
         </article>
       </div>
+
+      <p class="coverage-note">
+        We're a mobile service — we come to you. On-site delivery across Glasgow, Scotland and UK-wide,
+        so there's no premises to visit. {b.legalName}, registered in Scotland, Company No. {b.companyNumber}.
+      </p>
     </div>
   </section>
 
