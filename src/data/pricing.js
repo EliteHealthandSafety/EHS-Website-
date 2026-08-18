@@ -49,7 +49,9 @@ const GROUPS = [
       { code: 'GEN_RA' },
       { code: 'COSHH' },
       { code: 'DSE', name: 'DSE workstation assessment', unit: 'per person' },
+      { code: 'LEGIONELLA' },
       { code: 'SPECIALIST' },
+      { code: 'DRUG_ALCOHOL', name: 'Drug & alcohol testing', unit: 'per person' },
     ],
   },
   {
@@ -66,6 +68,7 @@ const GROUPS = [
       { code: 'INCIDENT', unit: '' },
       { code: 'CONSULTANCY' },
       { code: 'CDM' },
+      { code: 'ISO_PQQ', name: 'ISO standards & PQQ support', unit: '' },
     ],
   },
   {
