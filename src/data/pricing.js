@@ -180,9 +180,10 @@ export const tiers = live.plans.map((p) => ({
   ...(TIER_COPY[p.plan_code] || {}),
 }));
 
-// The member discount actually set on the catalogue, if it is consistent.
-const discounts = [...new Set(live.services.filter((s) => s.member_discount_pct > 0).map((s) => s.member_discount_pct))];
-export const memberDiscountPct = discounts.length === 1 ? discounts[0] : null;
+// The best member discount on the catalogue. Discounts vary by service, so the
+// page phrases it as "up to X%". null only if nothing is discounted.
+const discounts = live.services.map((s) => s.member_discount_pct).filter((d) => d > 0);
+export const memberDiscountPct = discounts.length ? Math.max(...discounts) : null;
 
 export const vatPct = live.config.vat_pct;
 export const pricesGeneratedAt = live.generatedAt;
