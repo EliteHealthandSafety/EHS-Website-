@@ -1,8 +1,10 @@
 {
   "_comment": "GENERATED FILE — do not hand-edit. Prices are set in the portal (Subscription builder → Service catalogue). Refresh with `npm run sync:pricing`.",
   "_source": "Supabase txkfuodkrssvafxyeskg · tables: services, subscription_plans, pricing_config",
-  "generatedAt": "2026-08-17",
+  "generatedAt": "2026-08-18",
   "config": {
+    "overnight_from_multiplier": 1.5,
+    "overnight_rate": 130,
     "ppc": 17,
     "pppc": 22.95,
     "trainday": 150,
@@ -10,92 +12,22 @@
   },
   "services": [
     {
-      "service_code": "FRA SMALL",
-      "title": "Fire Risk Assessment (Small)",
-      "description": "Fire Risk Assessment to PAS79 standard for small premises (office, shop, garage)",
-      "category": "On-site",
-      "unit_type": "Count",
-      "adhoc_price": 350,
+      "service_code": "TOOLBOX TALK PACK",
+      "title": "Toolbox Talk 52 weeks",
+      "description": "A full years worth of weekly toolbox talks with additional tbt's included along with blank template for ad hoc spot tbt's",
+      "category": "Advisory",
+      "unit_type": "Unlimited",
+      "adhoc_price": 0,
       "price_from": false,
       "member_discount_pct": 15
     },
     {
-      "service_code": "FRA MEDIUM",
-      "title": "Fire Risk Assessment (Medium)",
-      "description": "Fire Risk Assessment to PAS79 standard for Medium sized property (Warehouse, car dealership, factory)",
-      "category": "On-site",
-      "unit_type": "Count",
-      "adhoc_price": 650,
-      "price_from": false,
-      "member_discount_pct": 15
-    },
-    {
-      "service_code": "FRA",
-      "title": "Fire Risk Assessment (Large)",
-      "description": "Fire Risk Assessment to PAS79 standard for large establishment (Brewery, High Rise Office Block, School)",
-      "category": "On-site",
-      "unit_type": "Count",
-      "adhoc_price": 950,
-      "price_from": false,
-      "member_discount_pct": 15
-    },
-    {
-      "service_code": "SITE_VISIT",
-      "title": "Site visit / inspection",
-      "description": "A visit from your adviser to inspect the site, check compliance and catch issues early.",
-      "category": "On-site",
-      "unit_type": "GBP-pot",
-      "adhoc_price": 250,
-      "price_from": false,
-      "member_discount_pct": 15
-    },
-    {
-      "service_code": "SPECIALIST",
-      "title": "Specialist assessment (noise/LEV)",
-      "description": "Specialist monitoring such as noise exposure and LEV (dust/fume extraction) examination and testing.",
-      "category": "Assessment",
-      "unit_type": "Count",
-      "adhoc_price": 420,
-      "price_from": true,
-      "member_discount_pct": 15
-    },
-    {
-      "service_code": "COSHH",
-      "title": "COSHH assessment",
-      "description": "Assessment of hazardous substances in use, with the controls needed to protect your people.",
-      "category": "Assessment",
-      "unit_type": "Count",
-      "adhoc_price": 20,
-      "price_from": false,
-      "member_discount_pct": 15
-    },
-    {
-      "service_code": "GEN_RA",
-      "title": "General risk assessment",
-      "description": "Task- or area-based risk assessments identifying the hazards and the controls to manage them.",
-      "category": "Assessment",
-      "unit_type": "Count",
-      "adhoc_price": 20,
-      "price_from": false,
-      "member_discount_pct": 15
-    },
-    {
-      "service_code": "DSE",
-      "title": "DSE assessment pp",
-      "description": "Display-screen workstation assessments to prevent discomfort and musculoskeletal injury for office staff.",
-      "category": "Assessment",
-      "unit_type": "Count",
-      "adhoc_price": 25,
-      "price_from": false,
-      "member_discount_pct": 15
-    },
-    {
-      "service_code": "POLICY_REVIEW",
-      "title": "Policy & document review",
-      "description": "We review and refresh your H&S policy and supporting documents to keep them current and compliant for up to 20 documents.",
+      "service_code": "FIRST AID AT WORK",
+      "title": "First Aid at Work 3 day pp",
+      "description": "First Aid at Work 3 day training including Defib, resuscitation, recovery, bandages, choking, asthma, anaphylactic shock. Qualsafe accreditation certificate",
       "category": "Advisory",
       "unit_type": "Count",
-      "adhoc_price": 45,
+      "adhoc_price": 300,
       "price_from": false,
       "member_discount_pct": 15
     },
@@ -110,11 +42,31 @@
       "member_discount_pct": 15
     },
     {
+      "service_code": "ISO_PQQ",
+      "title": "ISO standards & PQQ completion",
+      "description": "Preparing and submitting a PQQ or accreditation application (CHAS, SSIP, ISO 45001).",
+      "category": "Advisory",
+      "unit_type": "Count",
+      "adhoc_price": 450,
+      "price_from": true,
+      "member_discount_pct": 14
+    },
+    {
+      "service_code": "POLICY_REVIEW",
+      "title": "Policy & document review",
+      "description": "We review and refresh your H&S policy and supporting documents to keep them current and compliant for up to 20 documents.",
+      "category": "Advisory",
+      "unit_type": "Count",
+      "adhoc_price": 45,
+      "price_from": false,
+      "member_discount_pct": 15
+    },
+    {
       "service_code": "INCIDENT",
       "title": "Accident / incident investigation",
       "description": "Root-cause investigation after an accident or near-miss, with corrective actions and RIDDOR reporting guidance/instruction.",
       "category": "Advisory",
-      "unit_type": "Hours",
+      "unit_type": "Count",
       "adhoc_price": 480,
       "price_from": true,
       "member_discount_pct": 15
@@ -137,7 +89,7 @@
       "unit_type": "Hours",
       "adhoc_price": 55,
       "price_from": false,
-      "member_discount_pct": 15
+      "member_discount_pct": 12
     },
     {
       "service_code": "CDM",
@@ -147,56 +99,106 @@
       "unit_type": "Hours",
       "adhoc_price": 55,
       "price_from": false,
-      "member_discount_pct": 15
+      "member_discount_pct": 12
     },
     {
-      "service_code": "SPECIALIST TRAINING",
-      "title": "Emergency First Aid at Work (1 Day) pp",
-      "description": "Emergency First Aid at Work (EFAW) training with DEFIB with Qualsafe accreditation",
-      "category": "Training",
+      "service_code": "GEN_RA",
+      "title": "General risk assessment",
+      "description": "Task- or area-based risk assessments identifying the hazards and the controls to manage them.",
+      "category": "Assessment",
       "unit_type": "Count",
-      "adhoc_price": 100,
+      "adhoc_price": 20,
       "price_from": false,
       "member_discount_pct": 15
     },
     {
-      "service_code": "FIRST AID AT WORK",
-      "title": "First Aid at Work 3 day pp",
-      "description": "First Aid at Work 3 day training including Defib, resuscitation, recovery, bandages, choking, asthma, anaphylactic shock. Qualsafe accreditation certificate",
-      "category": "Advisory",
+      "service_code": "COSHH",
+      "title": "COSHH assessment",
+      "description": "Assessment of hazardous substances in use, with the controls needed to protect your people.",
+      "category": "Assessment",
       "unit_type": "Count",
-      "adhoc_price": 300,
+      "adhoc_price": 20,
       "price_from": false,
       "member_discount_pct": 15
     },
     {
-      "service_code": "TRAINING_DAY",
-      "title": "Training (person-days)",
-      "description": "Accredited H&S training delivered to your staff, counted in trainer person-days. This is for general training (Manual Handling, Fire Awareness, Work at Height, Abrasive Wheel, Asbestos). IIRSM Certified",
-      "category": "Training",
-      "unit_type": "Person-days",
-      "adhoc_price": 600,
-      "price_from": false,
-      "member_discount_pct": 15
-    },
-    {
-      "service_code": "TOOLBOX",
-      "title": "Toolbox talk (Individual)",
-      "description": "Short, focused safety briefings delivered to your team on a specific topic or risk.",
-      "category": "Training",
+      "service_code": "DSE",
+      "title": "DSE assessment pp",
+      "description": "Display-screen workstation assessments to prevent discomfort and musculoskeletal injury for office staff.",
+      "category": "Assessment",
       "unit_type": "Count",
-      "adhoc_price": 5,
+      "adhoc_price": 25,
       "price_from": false,
       "member_discount_pct": 15
     },
     {
-      "service_code": "TOOLBOX TALK PACK",
-      "title": "Toolbox Talk 52 weeks",
-      "description": "A full years worth of weekly toolbox talks with additional tbt's included along with blank template for ad hoc spot tbt's",
-      "category": "Advisory",
+      "service_code": "LEGIONELLA",
+      "title": "Legionella risk assessment",
+      "description": "Water system risk assessment to ACOP L8 / HSG274, with a written scheme of control.",
+      "category": "Assessment",
       "unit_type": "Count",
-      "adhoc_price": 0,
+      "adhoc_price": 350,
+      "price_from": true,
+      "member_discount_pct": 15
+    },
+    {
+      "service_code": "DRUG_ALCOHOL",
+      "title": "Drug & alcohol testing",
+      "description": "On-site screening per person, to the client's drug & alcohol policy.",
+      "category": "Assessment",
+      "unit_type": "Count",
+      "adhoc_price": 55,
       "price_from": false,
+      "member_discount_pct": 13
+    },
+    {
+      "service_code": "SPECIALIST",
+      "title": "Specialist assessment (noise/LEV)",
+      "description": "Specialist monitoring such as noise exposure and LEV (dust/fume extraction) examination and testing.",
+      "category": "Assessment",
+      "unit_type": "Count",
+      "adhoc_price": 420,
+      "price_from": true,
+      "member_discount_pct": 15
+    },
+    {
+      "service_code": "SITE_VISIT",
+      "title": "Site visit / inspection",
+      "description": "A visit from your adviser to inspect the site, check compliance and catch issues early.",
+      "category": "On-site",
+      "unit_type": "GBP-pot",
+      "adhoc_price": 250,
+      "price_from": false,
+      "member_discount_pct": 15
+    },
+    {
+      "service_code": "FRA SMALL",
+      "title": "Fire Risk Assessment (Small)",
+      "description": "Fire Risk Assessment to PAS79 standard for small premises (office, shop, garage)",
+      "category": "On-site",
+      "unit_type": "Count",
+      "adhoc_price": 350,
+      "price_from": true,
+      "member_discount_pct": 15
+    },
+    {
+      "service_code": "FRA MEDIUM",
+      "title": "Fire Risk Assessment (Medium)",
+      "description": "Fire Risk Assessment to PAS79 standard for Medium sized property (Warehouse, car dealership, factory)",
+      "category": "On-site",
+      "unit_type": "Count",
+      "adhoc_price": 650,
+      "price_from": true,
+      "member_discount_pct": 15
+    },
+    {
+      "service_code": "FRA",
+      "title": "Fire Risk Assessment (Large)",
+      "description": "Fire Risk Assessment to PAS79 standard for large establishment (Brewery, High Rise Office Block, School)",
+      "category": "On-site",
+      "unit_type": "Count",
+      "adhoc_price": 950,
+      "price_from": true,
       "member_discount_pct": 15
     },
     {
@@ -238,42 +240,72 @@
       "adhoc_price": 0,
       "price_from": false,
       "member_discount_pct": 0
+    },
+    {
+      "service_code": "SPECIALIST TRAINING",
+      "title": "Emergency First Aid at Work (1 Day) pp",
+      "description": "Emergency First Aid at Work (EFAW) training with DEFIB with Qualsafe accreditation",
+      "category": "Training",
+      "unit_type": "Count",
+      "adhoc_price": 100,
+      "price_from": false,
+      "member_discount_pct": 15
+    },
+    {
+      "service_code": "TOOLBOX",
+      "title": "Toolbox talk (Individual)",
+      "description": "Short, focused safety briefings delivered to your team on a specific topic or risk.",
+      "category": "Training",
+      "unit_type": "Count",
+      "adhoc_price": 5,
+      "price_from": false,
+      "member_discount_pct": 3
+    },
+    {
+      "service_code": "TRAINING_DAY",
+      "title": "Training (days)",
+      "description": "Accredited H&S training delivered to your staff, counted in trainer person-days. This is for general training (Manual Handling, Fire Awareness, Work at Height, Abrasive Wheel, Asbestos). IIRSM Certified",
+      "category": "Training",
+      "unit_type": "Person-days",
+      "adhoc_price": 600,
+      "price_from": false,
+      "member_discount_pct": 15
     }
   ],
   "plans": [
     {
-      "plan_code": "ESSENTIALS",
-      "title": "Essentials",
-      "blurb": "Core compliance cover for smaller sites.",
+      "plan_code": "LITE",
+      "title": "Lite",
+      "blurb": "Your documents, visits and actions in one place. Everything we issue you, always to hand.",
+      "band": "portal",
+      "base_monthly": 29,
+      "min_term_months": 0,
+      "is_anchor": false
+    },
+    {
+      "plan_code": "STANDARD",
+      "title": "Standard",
+      "blurb": "Run day-to-day H&S yourself - toolbox talks, checks, hazard reporting and your training matrix.",
+      "band": "portal",
+      "base_monthly": 49,
+      "min_term_months": 0,
+      "is_anchor": true
+    },
+    {
+      "plan_code": "PRO",
+      "title": "Pro",
+      "blurb": "The full self-serve portal, including subcontractor management, change control and your own document authoring.",
       "band": "portal",
       "base_monthly": 82,
       "min_term_months": 0,
       "is_anchor": false
     },
     {
-      "plan_code": "PLUS",
-      "title": "Plus",
-      "blurb": "Broader assessment cover and more site time.",
+      "plan_code": "MANAGED_SVC",
+      "title": "Managed Service",
+      "blurb": "We deliver your health & safety. You choose the services to include; we price them to your premises and scope. Includes full Pro portal access.",
       "band": "service",
-      "base_monthly": 300,
-      "min_term_months": 12,
-      "is_anchor": false
-    },
-    {
-      "plan_code": "COMPLETE",
-      "title": "Complete",
-      "blurb": "Our recommended managed membership for most SMEs.",
-      "band": "service",
-      "base_monthly": 699,
-      "min_term_months": 12,
-      "is_anchor": true
-    },
-    {
-      "plan_code": "MANAGED",
-      "title": "Managed",
-      "blurb": "Full managed service with premium & specialist cover.",
-      "band": "service",
-      "base_monthly": 1301,
+      "base_monthly": 0,
       "min_term_months": 12,
       "is_anchor": false
     }
