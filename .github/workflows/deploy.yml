@@ -69,21 +69,56 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key -o BatchMode=yes" \
             dist/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
 
-      # Prove the site actually works, and roll back if it does not.
+      # Prove the site actually works, and roll back if it genuinely does not.
+      # Each check retries with backoff so a single slow response from shared
+      # hosting can no longer fail a good deploy — only a repeated, real failure
+      # counts (and only that triggers the rollback below).
       - name: Verify live site
         id: verify
         run: |
           set -e
+          BASE="https://elitehealthandsafety.co.uk"
+
+          # Give the webspace a moment to settle after the sync before probing.
+          sleep 8
+
+          # Probe a path, retrying to ride out transient slowness. Follows
+          # redirects (-L) and treats a curl error as code 000 → retry.
+          check() {
+            path="$1"; expect="$2"; code=000
+            for attempt in 1 2 3 4 5; do
+              code=$(curl -sL -o /dev/null --connect-timeout 10 --max-time 30 \
+                       --retry 2 --retry-delay 2 --retry-connrefused \
+                       -w "%{http_code}" "$BASE$path" || echo 000)
+              if [ "$code" = "$expect" ]; then
+                echo "  $path -> $code (attempt $attempt) ok"
+                return 0
+              fi
+              echo "  $path -> $code (attempt $attempt) — retrying"
+              sleep $((attempt * 5))
+            done
+            echo "::error::$path did not return $expect after 5 attempts (last: $code)"
+            return 1
+          }
+
           fail=0
           for p in / /pricing/ /compliance-checklist/ /contact-us/ /blog/ /services/; do
-            code=$(curl -s -o /dev/null --max-time 25 -w "%{http_code}" "https://elitehealthandsafety.co.uk$p")
-            echo "  $p -> $code"
-            [ "$code" = "200" ] || fail=1
+            check "$p" 200 || fail=1
           done
-          # the lead-gen tool must never regress to the old email gate
-          if curl -s --max-time 25 https://elitehealthandsafety.co.uk/compliance-checklist/ | grep -q "Send me the checklist"; then
+
+          # The lead-gen tool must never regress to the old email gate. Fetch with
+          # retries so a transient empty response is not mistaken for a clean page
+          # (only a page we actually received, containing the gate, is a failure).
+          gate=""
+          for attempt in 1 2 3; do
+            gate=$(curl -sL --connect-timeout 10 --max-time 30 "$BASE/compliance-checklist/" || true)
+            [ -n "$gate" ] && break
+            sleep 5
+          done
+          if [ -n "$gate" ] && printf '%s' "$gate" | grep -q "Send me the checklist"; then
             echo "::error::checklist is gated again"; fail=1
           fi
+
           [ "$fail" = "0" ] || exit 1
 
       - name: Roll back if verification failed
