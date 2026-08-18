@@ -4,11 +4,10 @@ import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { business as b } from '../data/site.js';
 import {
-  serviceGroups, tiers, howItWorks, memberDiscountPct, missingCodes,
+  serviceGroups, howItWorks, memberDiscountPct, missingCodes,
 } from '../data/pricing.js';
 
 const gbp = (n) => '£' + n.toLocaleString('en-GB');
-const cheapestTier = Math.min(...tiers.map((t) => t.price));
 
 // Surface a curation mistake at build time rather than shipping a gap.
 if (missingCodes.length) {
@@ -17,7 +16,7 @@ if (missingCodes.length) {
 ---
 <Base
   title="Health & Safety Pricing Glasgow | What It Costs | Elite H&S"
-  description={`Clear prices for fire risk assessments, risk assessments, H&S advice and accredited training in Glasgow and Scotland, plus Elite Assured membership from £${cheapestTier} a month. Fixed quote before any work begins.`}
+  description="Clear prices for fire risk assessments, risk assessments, H&S advice and accredited training in Glasgow and Scotland, plus Elite Assured membership for ongoing support. Fixed quote before any work begins."
   canonical="https://elitehealthandsafety.co.uk/pricing/">
 
   <PageHero
@@ -67,50 +66,42 @@ if (missingCodes.length) {
     {memberDiscountPct && ` Elite Assured members pay ${memberDiscountPct}% less on work beyond their included allowance.`}
   </p>
 
-  <!-- MEMBERSHIP -->
+  <!-- MEMBERSHIP — described, not priced. Tiers are being revised, so this
+       sends people to a conversation rather than publishing figures that move. -->
   <section id="membership" class="courses">
-    <div class="wrap">
+    <div class="wrap section-narrow">
       <div class="sec-head">
         <div class="eyebrow">Elite Assured membership</div>
         <h2>Prefer not to buy piece by piece?</h2>
-        <p class="lead">Membership turns one-off jobs into one predictable monthly fee — a bundle of
-          support, included work and your own online portal. Every tier includes the portal, and
-          members pay less on anything beyond their allowance.</p>
+        <p class="lead">If you would rather not raise a purchase order every time something needs
+          doing, our Elite Assured membership rolls your health &amp; safety into one predictable
+          monthly fee — with your own online portal included.</p>
       </div>
 
-      <div class="tier-grid">
-        {tiers.map((t) => (
-          <article class={`tier${t.popular ? ' is-popular' : ''}`}>
-            {t.popular && <div class="tier-flag">Most popular</div>}
-            <h3>{t.name}</h3>
-            <div class="tier-tag">{t.tagline || t.blurb}</div>
-            <div class="tier-price"><b>{gbp(t.price)}</b><span>/month ex VAT</span></div>
-            <div class="tier-term">
-              {t.minTermMonths ? `Minimum ${t.minTermMonths}-month term` : 'No minimum term'}
-            </div>
-            {t.who && <p class="tier-who">{t.who}</p>}
-            {t.portal && <div class="tier-portal">{t.portal}</div>}
-            {t.includes && (
-              <ul>
-                {t.includes.map((inc) => (
-                  <li>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    {inc}
-                  </li>
-                ))}
-              </ul>
-            )}
-            <a class="btn btn-accent" href="/contact-us/">Ask about {t.name}</a>
-          </article>
-        ))}
-      </div>
-
-      <div class="credit-note">
-        <b>How your support allowance works.</b> Behind the included services, your membership carries a
-        pool of support credits for the year — so you can flex it across advice, extra site visits, risk
-        assessments or documents. Training is separate: each included in-house training day covers one
-        on-site session for a group, up to that course's maximum. Your portal shows every balance live,
-        and work beyond your allowance is charged at member rates.
+      <div class="member-band">
+        <div class="member-main">
+          <h3>What membership covers</h3>
+          <ul class="check-list">
+            <li>An agreed programme of site inspections and reports through the year</li>
+            <li>Your policies, risk assessments and documents kept current</li>
+            <li>An advice line for the questions that come up week to week</li>
+            <li>Included training days, booked straight from the portal</li>
+            <li>Member rates on anything beyond your allowance</li>
+            <li>The portal on every level — documents, renewal reminders and booking in one place</li>
+          </ul>
+        </div>
+        <div class="member-aside">
+          <div class="eyebrow" style="color:var(--accent)">Pricing</div>
+          <p>Membership levels are tailored to your sites, headcount and sector — and we are
+            currently updating them, so we would rather quote you properly than publish a number
+            that does not fit your business.</p>
+          <p><b>Tell us what you have and we will recommend the right level with a fixed monthly
+            price.</b></p>
+          <div class="ck-cta-row">
+            <a class="btn btn-accent" href="/contact-us/">Ask about membership</a>
+            <a class="btn btn-ghost" href={`tel:${b.phone}`}>☎ {b.phoneDisplay}</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
