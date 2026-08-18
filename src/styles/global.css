@@ -92,6 +92,9 @@
   .btn-ghost{border-color:var(--border);color:var(--ink);background:transparent}
   .btn-ghost:hover{border-color:var(--accent)}
   .btn-onbrand{border-color:rgba(255,255,255,.28);color:var(--on-brand)}
+  /* header secondary action — visible next to the accent CTA without competing */
+  .btn-check{border-color:var(--accent);color:var(--accent);background:transparent;font-weight:700}
+  .btn-check:hover{background:var(--accent);color:#fff}
   .btn-onbrand:hover{border-color:var(--accent);background:rgba(255,255,255,.06)}
 
   /* ============ UTILITY BAR ============ */
@@ -106,14 +109,15 @@
   /* ============ HEADER ============ */
   header.nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--brand) 92%,transparent);
     backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
-  .nav .wrap{display:flex;align-items:center;gap:28px;min-height:70px}
+  .nav .wrap{display:flex;align-items:center;gap:24px;min-height:70px;flex-wrap:nowrap}
   .brandmark{display:flex;align-items:center;gap:12px;color:var(--on-brand);font-weight:800;letter-spacing:-.01em}
   .brandmark .glyph{width:31px;height:35px;flex:none}
   .brandmark small{display:block;font-family:var(--mono);font-size:.58rem;font-weight:500;
     letter-spacing:.22em;color:var(--on-brand-muted);text-transform:uppercase;margin-top:2px}
   .brandmark .name{font-size:1.02rem;line-height:1.05}
-  nav.links{display:flex;gap:22px;margin-left:12px}
-  nav.links a{color:var(--on-brand-muted);font-size:.95rem;font-weight:600;padding:6px 0;position:relative}
+  nav.links{display:flex;gap:20px;margin-left:12px;flex-wrap:nowrap}
+  nav.links a{color:var(--on-brand-muted);font-size:.95rem;font-weight:600;padding:6px 0;position:relative;
+    white-space:nowrap}
   nav.links a:hover{color:var(--on-brand)}
   nav.links a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--accent);
     transform:scaleX(0);transform-origin:left;transition:transform .18s ease}
@@ -301,8 +305,9 @@
     .hero .wrap,.portal-sec .grid{grid-template-columns:1fr;gap:38px}
     .grid-3,.course-grid,.stats .wrap,.steps{grid-template-columns:repeat(2,1fr)}
     footer .cols{grid-template-columns:1fr 1fr}
-    nav.links{display:none}
   }
+  /* header has two action buttons now, so it needs the room sooner */
+  @media (max-width:1180px){ nav.links{display:none} }
   @media (max-width:560px){
     body{font-size:16px}
     .grid-3,.course-grid,.stats .wrap,.steps,footer .cols{grid-template-columns:1fr}
@@ -433,10 +438,12 @@
 .review-ask{display:flex;gap:32px;align-items:center;justify-content:space-between;flex-wrap:wrap;
   background:var(--surface);border:1px solid var(--border);border-left:5px solid var(--accent);
   border-radius:16px;padding:32px;box-shadow:var(--shadow)}
-.review-ask>div{flex:1;min-width:260px}
+.review-ask>div{flex:1 1 260px;min-width:0}
 .review-ask h2{font-size:clamp(1.3rem,2.4vw,1.75rem);margin-top:10px}
 .review-ask p{color:var(--muted);margin-top:10px;font-size:.95rem;max-width:56ch}
 .review-ask .btn{flex:none}
+
+@media (max-width:560px){ .review-ask{padding:24px 20px;gap:20px} }
 
 /* service-area business notes */
 .coverage-note{max-width:70ch;margin:26px auto 0;text-align:center;font-size:.9rem;color:var(--muted)}
@@ -495,6 +502,8 @@
 @media (max-width:940px){
   .promo{grid-template-columns:1fr;gap:32px;padding:32px}
   .promo-vis{order:-1;grid-template-columns:auto 1fr;align-items:center;justify-items:stretch}
+}
+@media (max-width:1180px){
   .mob-cta{display:inline-flex;margin-left:auto}
   .menu-btn{margin-left:12px}
 }
@@ -502,8 +511,19 @@
   .promo{padding:26px 20px}
   .promo-vis{grid-template-columns:1fr;justify-items:center}
   .promo-rows{max-width:280px}
-  /* long CTA labels must wrap rather than force the page wider */
+  /* long CTA labels must wrap rather than force the page wider... */
   .btn{white-space:normal;text-align:center}
+  /* ...but never the compact header buttons, which must stay one line */
+  .nav .btn,.util .btn{white-space:nowrap}
+  /* keep the brandmark on one line so the sticky header cannot grow tall */
+  .brandmark small{display:none}
+  .brandmark .name{white-space:nowrap;font-size:.95rem;overflow:hidden;text-overflow:ellipsis}
+  .brandmark .glyph{width:26px;height:29px}
+  /* tighten the bar so brand + CTA + burger fit a 320px phone on one line */
+  .nav .wrap{gap:10px;padding-inline:14px}
+  .brandmark{min-width:0}
+  .mob-cta{padding:.55em .75em;font-size:.8rem}
+  .menu-btn{margin-left:4px;padding:4px}
 }
 
 /* ============ COMPLIANCE SELF-CHECK TOOL ============ */
@@ -642,7 +662,7 @@
 /* ============ HEADER: mobile menu + link tidy ============ */
 .menu-btn{display:none;background:none;border:none;color:var(--on-brand);cursor:pointer;padding:6px;margin-left:auto}
 .nav .links .nav-portal,.nav .links .nav-cta{display:none}
-@media (max-width:940px){
+@media (max-width:1180px){
   .menu-btn{display:block}
   .nav .actions{display:none}
   nav.links.open{

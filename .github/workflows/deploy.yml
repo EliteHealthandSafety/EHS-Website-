@@ -1,0 +1,103 @@
+name: Deploy to IONOS
+
+# IONOS Deploy Now is unavailable, so this workflow is what puts the site live.
+# It runs on every push to main, can be run by hand, and runs nightly so a price
+# changed in the portal reaches the website without anyone touching the repo.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'   # 03:00 UTC nightly — picks up portal price changes
+
+concurrency:
+  group: deploy-production      # never let two deploys overlap
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # prebuild runs scripts/sync-pricing.mjs, so the build carries whatever
+      # prices are currently set in the portal.
+      - name: Build (syncs live pricing first)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: npm run build
+
+      - name: Sanity-check the build
+        run: |
+          set -e
+          test -f dist/index.html
+          test -f dist/.htaccess
+          pages=$(find dist -name index.html | wc -l)
+          echo "built $pages pages"
+          [ "$pages" -ge 20 ] || { echo "::error::only $pages pages built — refusing to deploy"; exit 1; }
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Back up the current live site
+        run: |
+          ssh -i ~/.ssh/deploy_key -o BatchMode=yes \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            'set -e
+             D="${{ secrets.DEPLOY_PATH }}"; B=/home/www/_backups; mkdir -p "$B"
+             tar czf "$B/site-predeploy-$(date +%Y%m%d-%H%M%S).tar.gz" -C "$D" .
+             # keep the 10 most recent, bin the rest
+             ls -1t "$B"/site-predeploy-*.tar.gz | tail -n +11 | xargs -r rm --
+             echo "backup done"'
+
+      - name: Deploy
+        run: |
+          rsync -az --delete --checksum \
+            -e "ssh -i ~/.ssh/deploy_key -o BatchMode=yes" \
+            dist/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      # Prove the site actually works, and roll back if it does not.
+      - name: Verify live site
+        id: verify
+        run: |
+          set -e
+          fail=0
+          for p in / /pricing/ /compliance-checklist/ /contact-us/ /blog/ /services/; do
+            code=$(curl -s -o /dev/null --max-time 25 -w "%{http_code}" "https://elitehealthandsafety.co.uk$p")
+            echo "  $p -> $code"
+            [ "$code" = "200" ] || fail=1
+          done
+          # the lead-gen tool must never regress to the old email gate
+          if curl -s --max-time 25 https://elitehealthandsafety.co.uk/compliance-checklist/ | grep -q "Send me the checklist"; then
+            echo "::error::checklist is gated again"; fail=1
+          fi
+          [ "$fail" = "0" ] || exit 1
+
+      - name: Roll back if verification failed
+        if: failure() && steps.verify.outcome == 'failure'
+        run: |
+          ssh -i ~/.ssh/deploy_key -o BatchMode=yes \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            'set -e
+             D="${{ secrets.DEPLOY_PATH }}"; B=/home/www/_backups
+             LATEST=$(ls -1t "$B"/site-predeploy-*.tar.gz | head -1)
+             echo "rolling back to $LATEST"
+             rm -rf "${D:?}"/* && tar xzf "$LATEST" -C "$D"'
+          echo "::error::Deploy verification failed — site rolled back to the previous version."
+
+      - name: Clean up key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
