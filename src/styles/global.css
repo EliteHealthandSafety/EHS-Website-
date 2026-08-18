@@ -443,7 +443,10 @@
 .review-ask p{color:var(--muted);margin-top:10px;font-size:.95rem;max-width:56ch}
 .review-ask .btn{flex:none}
 
-@media (max-width:560px){ .review-ask{padding:24px 20px;gap:20px} }
+@media (max-width:560px){
+  .review-ask{padding:24px 20px;gap:20px}
+  .ck-scorecard{padding:24px 20px;gap:24px}
+}
 
 /* service-area business notes */
 .coverage-note{max-width:70ch;margin:26px auto 0;text-align:center;font-size:.9rem;color:var(--muted)}
@@ -562,7 +565,7 @@
 .ck-item.is-unsure{border-left-color:var(--warn)}
 .ck-item.is-no{border-left-color:var(--risk)}
 .ck-item.is-na{border-left-color:var(--muted);opacity:.62}
-.ck-item-main{flex:1;min-width:240px}
+.ck-item-main{flex:1 1 240px;min-width:0}
 .ck-t{font-weight:700;font-size:1rem;letter-spacing:-.01em}
 .ck-d{color:var(--muted);font-size:.9rem;margin-top:3px}
 .ck-cycle{font-family:var(--mono);font-size:.68rem;letter-spacing:.02em;color:var(--accent-strong);
@@ -607,7 +610,7 @@
 .ck-ring-num{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
 .ck-ring-num b{font-size:2.6rem;font-weight:800;letter-spacing:-.03em;line-height:1}
 .ck-ring-num small{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em}
-.ck-scoretext{flex:1;min-width:260px}
+.ck-scoretext{flex:1 1 260px;min-width:0}
 .ck-scoretext h2{font-size:clamp(1.4rem,2.6vw,2rem);margin-top:10px}
 .ck-scoretext .lead{margin-top:12px;font-size:1rem}
 .ck-counts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
@@ -676,4 +679,31 @@
   nav.links.open a::after{display:none}
   nav.links.open .nav-portal{display:block;color:var(--accent);font-weight:700;border-bottom:none}
   nav.links.open .nav-cta{display:block;margin-top:14px;background:var(--accent);color:#fff;text-align:center;border-radius:9px;font-weight:700;padding:13px;border-bottom:none}
+}
+
+/* ============ SELF-CHECK: TWO-PAGE FLOW ============ */
+.ck-resume{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:color-mix(in srgb,var(--accent) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--accent) 32%,transparent);
+  border-radius:12px;padding:16px 20px;margin-bottom:18px}
+.ck-resume>div{min-width:0;flex:1 1 240px}
+.ck-resume b{display:block}
+.ck-resume span{color:var(--muted);font-size:.9rem}
+.ck-res-hero .post-back{display:inline-block;margin-bottom:10px;color:var(--accent)}
+.ck-empty{text-align:center;background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:48px 32px;box-shadow:var(--shadow)}
+.ck-empty p{color:var(--muted);margin:14px auto 24px;max-width:52ch}
+
+/* Utility bar: keep it to a single 40px line. The email address is long enough
+   to wrap the bar onto 2-3 rows on a phone, which threw the whole top of every
+   page out of alignment. Tapping the number is the mobile action; the address
+   is still in the footer and on /contact-us/. */
+@media (max-width:760px){
+  .util .wrap{flex-wrap:nowrap;gap:14px;min-height:40px}
+  .util a[href^="mailto:"]{display:none}
+  .util .spring{display:block;margin-left:auto}
+}
+@media (max-width:420px){
+  .util .wrap{gap:10px;padding-inline:14px;font-size:.76rem}
+  .util a{white-space:nowrap}
 }

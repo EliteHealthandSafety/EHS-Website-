@@ -1,0 +1,146 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { checklist, totalItems } from '../../data/checklist.js';
+---
+<Base
+  title="Free H&S Compliance Check for Scottish Businesses | Elite H&S"
+  description="Free interactive health & safety compliance self-check. Answer 21 plain-English questions on fire, first aid, policies and training — get your score and priority actions instantly. No sign-up."
+  canonical="https://elitehealthandsafety.co.uk/compliance-checklist/">
+
+  <PageHero
+    eyebrow="Free tool · no sign-up"
+    title="How compliant is your business, really?"
+    lead={`Work through ${totalItems} plain-English checks covering fire, first aid, policies, training and ongoing management. You get a compliance score and a priority action list the moment you finish — nothing to fill in first.`}
+    ctaText="Start the check"
+    ctaHref="#tool"
+    cta2Text="Printable version"
+    cta2Href="/downloads/ehs-compliance-checklist.html" />
+
+  <section id="tool" class="ck-wrap-sec">
+    <div class="wrap section-narrow">
+
+      <!-- shown only if they already have answers saved from a previous visit -->
+      <div class="ck-resume" id="ckResume" hidden>
+        <div>
+          <b>You've started this before.</b>
+          <span id="ckResumeCount"></span>
+        </div>
+        <a class="btn btn-accent" href="/compliance-checklist/results/">View my results</a>
+      </div>
+
+      <div class="ck-bar" id="ckBar">
+        <div class="ck-bar-txt"><b id="ckAnswered">0</b> of {totalItems} answered</div>
+        <div class="ck-bar-track"><i id="ckBarFill" style="width:0%"></i></div>
+        <button class="ck-reset" id="ckReset" type="button">Start again</button>
+      </div>
+
+      <p class="ck-intro">
+        For each item choose <b>Yes</b>, <b>Not sure</b>, <b>No</b> — or <b>N/A</b> if it genuinely
+        does not apply to your business. Your answers stay in your browser; nothing is sent anywhere
+        unless you choose to email yourself the results at the end.
+      </p>
+
+      {checklist.map((sec, si) => (
+        <div class="ck-sec" id={`sec-${sec.id}`}>
+          <div class="ck-sec-head">
+            <h2><span class="ck-sec-no">{si + 1}</span>{sec.title}</h2>
+            <div class="ck-law">{sec.law}</div>
+          </div>
+
+          {sec.items.map((item) => (
+            <div class="ck-item" data-item={item.id}>
+              <div class="ck-item-main">
+                <div class="ck-t">{item.t}</div>
+                <div class="ck-d">{item.d}</div>
+                <div class="ck-cycle">⏱ {item.cycle}</div>
+              </div>
+              <div class="ck-seg" role="group" aria-label={item.t}>
+                <button type="button" data-val="yes" aria-pressed="false">Yes</button>
+                <button type="button" data-val="unsure" aria-pressed="false">Not sure</button>
+                <button type="button" data-val="no" aria-pressed="false">No</button>
+                <button type="button" data-val="na" aria-pressed="false">N/A</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+
+      <div class="ck-note">
+        Review cycles shown are best-practice guides. Some intervals are risk-based rather than fixed
+        in law, so the right frequency can vary by premises — that is exactly what a free consultation sorts out.
+      </div>
+
+      <div class="ck-actions">
+        <a class="btn btn-accent" id="ckShow" href="/compliance-checklist/results/">
+          See my results
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <span class="ck-actions-hint" id="ckHint"></span>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ total: totalItems }}>
+    (function () {
+      var KEY = 'ehs-selfcheck-v1';
+      var state = {};
+      try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; }
+
+      var items = Array.prototype.slice.call(document.querySelectorAll('.ck-item'));
+      var save = function () { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+
+      function paintItem(el) {
+        var val = state[el.dataset.item] || null;
+        el.classList.remove('is-yes', 'is-unsure', 'is-no', 'is-na');
+        if (val) el.classList.add('is-' + val);
+        el.querySelectorAll('.ck-seg button').forEach(function (btn) {
+          var on = btn.dataset.val === val;
+          btn.classList.toggle('on', on);
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      }
+
+      function answered() {
+        return items.filter(function (el) { return state[el.dataset.item]; }).length;
+      }
+
+      function paintProgress() {
+        var n = answered();
+        document.getElementById('ckAnswered').textContent = n;
+        document.getElementById('ckBarFill').style.width = Math.round((n / total) * 100) + '%';
+        var left = total - n;
+        document.getElementById('ckHint').textContent = left > 0
+          ? left + (left === 1 ? ' item' : ' items') + ' still unanswered — you can still see your score.'
+          : 'All done ✓';
+      }
+
+      items.forEach(function (el) {
+        el.querySelectorAll('.ck-seg button').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var id = el.dataset.item, v = btn.dataset.val;
+            if (state[id] === v) { delete state[id]; } else { state[id] = v; }
+            save(); paintItem(el); paintProgress();
+          });
+        });
+        paintItem(el);
+      });
+      paintProgress();
+
+      // Returning visitor with saved answers — offer the results straight away.
+      if (answered() > 0) {
+        var box = document.getElementById('ckResume');
+        document.getElementById('ckResumeCount').textContent =
+          'Your ' + answered() + ' saved answer' + (answered() === 1 ? '' : 's') + ' are below — change any of them, or jump to your results.';
+        box.hidden = false;
+      }
+
+      document.getElementById('ckReset').addEventListener('click', function () {
+        state = {}; save();
+        items.forEach(paintItem); paintProgress();
+        document.getElementById('ckResume').hidden = true;
+        document.getElementById('tool').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    })();
+  </script>
+</Base>

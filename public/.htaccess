@@ -6,6 +6,8 @@ DirectoryIndex index.html
 
 <IfModule mod_expires.c>
   ExpiresActive On
+  # HTML must revalidate, or a deploy stays invisible for days
+  ExpiresByType text/html "access plus 0 seconds"
   ExpiresByType text/css "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
   ExpiresByType text/javascript "access plus 1 month"
@@ -19,8 +21,13 @@ DirectoryIndex index.html
 </IfModule>
 
 <IfModule mod_headers.c>
+  # Pages: always revalidate so a deploy is live immediately for everyone.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  # Astro fingerprints these filenames, so they can be cached hard and forever.
   <FilesMatch "\.(css|js|png|jpg|jpeg|webp|svg|ico|woff2)$">
-    Header set Cache-Control "public, max-age=31536000"
+    Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 </IfModule>
 
