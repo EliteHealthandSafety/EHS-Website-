@@ -7,7 +7,7 @@ draft: false
 
 ..Elite Health and Safety: Your Premier Partner in Workplace Safety Solutions
 
-In today’s ever-evolving business landscape, prioritising the health and safety of employees is not merely a regulatory requirement, but a cornerstone of a productive and thriving workplace. Elite Health and Safety, proudly located in Clydebank, Scotland, is a leading name in the field of workplace safety, dedicated to providing comprehensive health and safety consultancy and training services throughout the UK and Europe.
+In today’s ever-evolving business landscape, prioritising the health and safety of employees is not merely a regulatory requirement, but a cornerstone of a productive and thriving workplace. Elite Health and Safety, based in Glasgow, provides health and safety consultancy and training services across Scotland and UK-wide.
 
 Who We Are At Elite Health and Safety.
 
@@ -89,7 +89,7 @@ We take pride in our dedication to delivering high-quality services that consist
 
 Nationwide Reach:
 
-Though based in Clydebank, our services extend throughout the UK and Europe, ensuring that clients in multiple regions can access our expertise efficiently.
+Based in Glasgow, our services extend across Scotland and UK-wide, ensuring that clients in multiple regions can access our expertise efficiently.
 
 Get started today ensuring the safety and well-being of your workforce is not just a legal obligation; it is a moral imperative for every organization.
 
@@ -107,6 +107,6 @@ Elite Health and Safety Ltd is a registered company in Scotland
 
 **First Consultation Free Of Charge**
 
-Elite Health and Safety Limited are a Health and Safety  Consultancy Service based in Clydebank, Glasgow. Our first consultation is*** free of charge.***
+Elite Health and Safety Limited are a Health and Safety  Consultancy Service based in Glasgow. Our first consultation is*** free of charge.***
 
 This can be carried out via a face to face meeting, a teams call or just an old fashioned telephone call, whatever meets your needs.

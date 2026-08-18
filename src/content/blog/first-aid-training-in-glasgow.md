@@ -59,20 +59,6 @@ Reduce workplace accidents and injuries by implementing effective safety measure
 
 Boost employee morale and efficiency by maintaining a safe and healthy work environment.
 
-## What Our Clients Say
-
-Thanks to regular inspections, our workplace has become significantly safer, and our employees feel more secure.
-
-The team at Total Health and Safety Training helped us identify risks we weren’t aware of. Their expertise is invaluable.
-
-After implementing the recommended safety measures, we’ve seen a noticeable decrease in workplace accidents.
-
-Regular inspections have ensured we remain compliant with all health and safety regulations, saving us from potential fines.
-
-Our productivity has improved since we started focusing on health and safety inspections. Highly recommend!
-
-The peace of mind that comes with knowing our workplace is safe is priceless. Thank you, Total Health and Safety Training!
-
 ## Common Questions About Inspections
 
 #### Why are health and safety inspections important?

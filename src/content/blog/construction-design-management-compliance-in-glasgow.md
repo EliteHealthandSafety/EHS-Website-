@@ -83,16 +83,6 @@ Receive thorough documentation, including health and safety files, to support pr
 
 #### Ongoing Project Oversight
 
-## What Our Clients Say
-
-#### John Smith
-
-#### Emily Johnson
-
-#### Michael Lee
-
-![](/images/blog/photo-1517245386807.webp)
-
 ## Ready to Elevate Your Project's Safety Standards?
 
 #### Contact us today to learn more about our expert CDM Principal Designer services and ensure your project is compliant and risk-free.

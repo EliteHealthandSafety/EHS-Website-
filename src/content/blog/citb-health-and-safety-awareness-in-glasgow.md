@@ -21,8 +21,6 @@ Our Glasgow‑based training team delivers the CITB Health and Safety Awareness 
 
 Completion of this course, combined with the CITB HS&E touchscreen test, allows delegates to apply for their CSCS Labourer Card. It is an ideal starting point for anyone beginning their construction career in Scotland.
 
-**Example**
-
 Follow the link below to the official CITB course guide: 👉 https://www.citb.co.uk/courses-and-qualifications
 
 For our courses please click on the link below
@@ -60,39 +58,3 @@ Familiarize yourself with essential health and safety laws that impact your work
 #### Effective Risk Assessments
 
 Develop skills in conducting risk assessments and creating method statements for safe task execution.
-
-## What Our Participants Say
-
-**★★★★★**
-
-“The Site Safety Plus course was a game-changer for me. I now feel confident in identifying and mitigating risks on-site.”
-
-![](/images/blog/new-portrait-11-800x800-1.jpg)
-
-#### John D.
-
-Site Supervisor
-
-**★★★★★**
-
-“Thanks to this training, our team has significantly reduced workplace incidents. Highly recommend it!”
-
-![](/images/blog/new-portrait-10-800x800-1.jpg)
-
-#### Sarah K.
-
-Project Manager
-
-**★★★★★**
-
-“A must for anyone in the construction industry. The knowledge I gained is invaluable.”
-
-![](/images/blog/new-portrait-9-800x800-1.jpg)
-
-#### Michael R.
-
-Construction Worker
-
-### Enhance Your Safety Skills Today
-
-Enroll in the Site Safety Plus course now to ensure a safer work environment for you and your team. Gain essential skills and knowledge to prevent accidents and promote safety on-site.

@@ -77,10 +77,6 @@ Our cutting-edge platform simplifies health and safety management, saving you ti
 
 Receive tailored health and safety documents that align perfectly with your business operations.
 
-## What Our Clients Say
-
-“Elite Health and Safety Limited has transformed our compliance process. Their expertise and dedication are unmatched.” – Alex J.
-
 ## Upcoming Training Sessions
 
 ![](/images/blog/photo-1552581234.webp)

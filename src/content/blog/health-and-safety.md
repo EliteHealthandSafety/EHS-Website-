@@ -65,16 +65,6 @@ Gain access to our team of seasoned consultants who provide ongoing support and 
 
 Equip your team with essential safety knowledge through our extensive range of training programs, designed to enhance workplace safety.
 
-## What Our Clients Say
-
-“Elite Health and Safety Limited transformed our approach to workplace safety. Their expert advice and comprehensive training programs have significantly reduced our incident rates.”
-
-“Partnering with Elite Health and Safety Limited was one of the best decisions we made. Their risk assessments and software solutions have streamlined our safety processes.”
-
-“The consultancy services provided by Elite Health and Safety Limited are unparalleled. Their team’s dedication to safety is evident in every interaction.”
-
-“Thanks to Elite Health and Safety Limited, our company now boasts a robust safety culture. Their training sessions are both informative and engaging.”
-
 ## Upcoming Training Sessions
 
 ### Workplace Safety Essentials Workshop

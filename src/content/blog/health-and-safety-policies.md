@@ -1,6 +1,6 @@
 ---
 title: "Why Every Workplace Needs a Strong Health and Safety Policy"
-description: "First Consultation Free Of Charge Elite Health and Safety Limited are a Health and Safety Consultancy Service based in Clydebank, Glasgow. Our first"
+description: "First Consultation Free Of Charge Elite Health and Safety Limited are a Health and Safety Consultancy Service based in Glasgow. Our first"
 pubDate: 2025-02-04
 draft: false
 ---
@@ -9,7 +9,7 @@ draft: false
 
 **First Consultation Free Of Charge**
 
-Elite Health and Safety Limited are a Health and Safety  Consultancy Service based in Clydebank, Glasgow. Our first consultation is*** free of charge.***
+Elite Health and Safety Limited are a Health and Safety  Consultancy Service based in Glasgow. Our first consultation is*** free of charge.***
 
 This can be carried out via a face to face meeting, a teams call or just an old fashioned telephone call, whatever meets your needs.
 
