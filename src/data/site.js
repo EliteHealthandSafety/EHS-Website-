@@ -1,13 +1,17 @@
 // Single source of truth for business details.
 // Update the TODOs here and every page + the schema updates automatically.
 export const business = {
-  legalName: 'Elite Health and Safety Ltd',
+  legalName: 'Elite Health & Safety Ltd',
   name: 'Elite Health & Safety',
   url: 'https://elitehealthandsafety.co.uk',
   email: 'info@elitehealthandsafety.co.uk',
   phone: '+441413450549',        // Glasgow CircleLoop number (national backup: 0333 090 6074)
   phoneDisplay: '0141 345 0549',
-  companyNumber: 'SC656384',
+  companyNumber: 'SC878365',
+  // Registered office per Companies House — a required disclosure on the site
+  // (EHS-BR-001-A W3). Distinct from the schema address below: Elite is still a
+  // service-area business and the registered office is already public register data.
+  registeredOffice: '443 Dumbarton Road, Clydebank, G81 4DU',
   foundingDate: '2026', // Elite H&S Ltd began trading 2026 (Total H&S, est. 2019, was a separate, now-closed company)
   areaServed: ['Glasgow', 'Scotland', 'United Kingdom'],
   priceRange: '££',
