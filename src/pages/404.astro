@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+---
+<Base
+  title="Page not found | Elite Health & Safety"
+  description="That page doesn't exist. Head back to the Elite Health & Safety homepage."
+  canonical="https://elitehealthandsafety.co.uk/404.html">
+
+  <PageHero
+    eyebrow="404"
+    title="That page doesn't exist"
+    lead="The link may be out of date, or the address mistyped." />
+
+  <section>
+    <div class="wrap section-narrow">
+      <ul class="check-list">
+        <li><a href="/">Back to the homepage</a></li>
+        <li><a href="/services/">Our services</a></li>
+        <li><a href="/training-courses/">Training courses</a></li>
+        <li><a href="/contact-us/">Contact us</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>
