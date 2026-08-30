@@ -1,6 +1,16 @@
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
 
+# IONOS's default handler 500s on paths that don't exist, before ErrorDocument
+# runs. Taking over with rewrite: anything that isn't a real file or directory
+# is answered by our 404 page, with a real 404 status.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ - [R=404,L]
+</IfModule>
+
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json image/svg+xml application/xml
 </IfModule>
