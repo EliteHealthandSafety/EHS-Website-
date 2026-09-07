@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { serviceGroups } from '../data/pricing.js';
+import { serviceGroups, gbp } from '../data/pricing.js';
 
 const fraFrom = Math.min(...serviceGroups.find((g) => g.id === 'fire').items.map((i) => i.price));
 ---
@@ -65,7 +65,7 @@ const fraFrom = Math.min(...serviceGroups.find((g) => g.id === 'fire').items.map
         <div class="eyebrow">What it costs</div>
         <h2>Indicative pricing, published up front</h2>
         <p class="lead">We publish guide prices for everything we do, so you can budget before you get in
-          touch. Fire risk assessments from £{fraFrom.toLocaleString('en-GB')}, and Elite Assured
+          touch. Fire risk assessments from {gbp(fraFrom)}, and Elite Assured
           membership for ongoing support. Your fixed price is confirmed in writing once we've scoped
           the work.</p>
       </div>

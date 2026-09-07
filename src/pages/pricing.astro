@@ -4,10 +4,8 @@ import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { business as b } from '../data/site.js';
 import {
-  serviceGroups, howItWorks, memberDiscountPct, missingCodes,
+  serviceGroups, howItWorks, memberDiscountPct, missingCodes, gbp, vatEnabled,
 } from '../data/pricing.js';
-
-const gbp = (n) => '£' + n.toLocaleString('en-GB');
 
 // Surface a curation mistake at build time rather than shipping a gap.
 if (missingCodes.length) {
@@ -39,7 +37,7 @@ if (missingCodes.length) {
         <div class="ptable">
           <div class="ptable-head">
             <span>Service</span>
-            <span>Price (ex VAT)</span>
+            <span>{vatEnabled ? 'Price (ex VAT)' : 'Price'}</span>
           </div>
           {g.items.map((item) => (
             <div class="prow">
@@ -60,7 +58,7 @@ if (missingCodes.length) {
   ))}
 
   <p class="wrap pdisclaimer">
-    Prices are ex VAT and shown as a guide to help you budget. Your final fixed price is confirmed in
+    {vatEnabled ? 'Prices are ex VAT and shown as a guide' : 'Prices are shown as a guide'} to help you budget. Your final fixed price is confirmed in
     your written quote once we've scoped the work — number of sites, size, sector and complexity.
     Travel outside our standard area and any third-party or scheme fees are charged at cost.
     {memberDiscountPct && ` Elite Assured members pay up to ${memberDiscountPct}% less on work beyond their included allowance.`}

@@ -13,10 +13,44 @@
 //
 // To publish a new service: set its price in the portal, run the sync, then add
 // its service_code to a group below.
+//
+// VAT. Catalogue prices are stored NET. The public figure follows the portal's
+// own brochure (ehs-app src/lib/vat.js withVat + SalesCollateral adhocCell):
+//   • registering window (status 'registering', enabled false): the figure is
+//     RAISED by the VAT amount and shown as a single price with no VAT wording,
+//     as HMRC requires until the registration number arrives.
+//   • VAT enabled: the stored net, and the page says "ex VAT".
+//   • VAT off: the stored net, no VAT wording.
+// The snapshot carries `vat` from the vat_config() RPC, so the nightly sync
+// moves the site with the portal when the number arrives.
 
 import live from './pricing-live.json';
 
 const byCode = Object.fromEntries(live.services.map((s) => [s.service_code, s]));
+
+// Missing config fails CLOSED (VAT on), as the portal does: a wrong price in
+// that direction overstates, which someone reports; understating is never seen.
+const VAT = live.vat && typeof live.vat === 'object' && Object.keys(live.vat).length
+  ? live.vat
+  : { enabled: true, rate: 0.2, status: null, prices_include_vat: false };
+
+export const vatRegistering = !VAT.enabled && VAT.status === 'registering';
+export const vatEnabled = VAT.enabled === true;
+export const vatPctLabel = Math.round((Number(VAT.rate) || 0.2) * 100) + '%';
+
+// The figure the public sees for a stored net price. Mirrors withVat().net.
+export function displayPrice(net) {
+  const n = Number(net) || 0;
+  if (vatRegistering) {
+    const r = Number(VAT.rate) || 0.2;
+    return VAT.prices_include_vat ? n : n * (1 + r);
+  }
+  return n;
+}
+
+// Same formatter as the brochure (subscriptionModel.js gbp): whole pounds.
+export const gbp = (n) =>
+  '£' + (Number(n) || 0).toLocaleString('en-GB', { maximumFractionDigits: 0 });
 
 // unit_type in the DB → how it should read on a public page
 const UNIT_LABEL = {
@@ -35,9 +69,9 @@ const GROUPS = [
     blurb:
       'Assessed to the PAS 79 standard and priced by the size and complexity of your premises — so you pay for the building you actually have.',
     items: [
-      { code: 'FRA SMALL', name: 'Fire Risk Assessment — small premises' },
-      { code: 'FRA MEDIUM', name: 'Fire Risk Assessment — medium premises' },
-      { code: 'FRA', name: 'Fire Risk Assessment — large premises' },
+      // One catalogue line since the FRA estimator (Sep 2026): priced per
+      // building on its recorded facts, no fixed small/medium/large bands.
+      { code: 'FRA', name: 'Fire Risk Assessment', unit: 'per building' },
     ],
   },
   {
@@ -46,12 +80,14 @@ const GROUPS = [
     blurb: 'Identify the hazards, evidence your compliance, and keep your people safe.',
     items: [
       { code: 'SITE_VISIT' },
+      { code: 'INSPECTION_DAY', unit: 'per day' },
       { code: 'GEN_RA' },
       { code: 'COSHH' },
-      { code: 'DSE', name: 'DSE workstation assessment', unit: 'per person' },
+      { code: 'DSE', name: 'DSE workstation assessment' },
       { code: 'LEGIONELLA' },
       { code: 'SPECIALIST' },
-      { code: 'DRUG_ALCOHOL', name: 'Drug & alcohol testing', unit: 'per person' },
+      // Catalogue description: "up to 10 people a visit".
+      { code: 'DRUG_ALCOHOL', unit: 'per visit' },
     ],
   },
   {
@@ -62,13 +98,11 @@ const GROUPS = [
       { code: 'POLICY_REVIEW' },
       { code: 'RAMS_REVIEW' },
       { code: 'MGMT_REVIEW' },
-      // unit_type is "Hours" in the catalogue but £480 is clearly a job price,
-      // not an hourly rate — shown without a unit so we don't advertise £480/hr.
-      // Worth correcting the unit in the portal.
-      { code: 'INCIDENT', unit: '' },
+      { code: 'INCIDENT' },
       { code: 'CONSULTANCY' },
       { code: 'CDM' },
-      { code: 'ISO_PQQ', name: 'ISO standards & PQQ support', unit: '' },
+      { code: 'ISO_PQQ', name: 'ISO standards & PQQ support' },
+      { code: 'ISO_AUDIT' },
     ],
   },
   {
@@ -79,10 +113,12 @@ const GROUPS = [
       { code: 'SPECIALIST TRAINING', name: 'Emergency First Aid at Work (1 day)', unit: 'per delegate' },
       { code: 'FIRST AID AT WORK', name: 'First Aid at Work (3 day)', unit: 'per delegate' },
       { code: 'TRAINING_DAY', name: 'On-site training day', unit: 'per trainer day' },
-      { code: 'TOOLBOX', name: 'Toolbox talk', unit: 'each' },
+      { code: 'TBT_BESPOKE', name: 'Toolbox talk written to your brief', unit: 'each' },
     ],
+    // No accreditation body is named here: IIRSM approval lapsed and is not
+    // re-granted, so the site must not badge courses with it.
     footnote:
-      'Accredited courses are subject to minimum and maximum class sizes. An on-site training day covers Manual Handling, Fire Awareness, Work at Height, Abrasive Wheels or Asbestos Awareness (IIRSM certified).',
+      'Accredited courses are subject to minimum and maximum class sizes. An on-site training day covers Manual Handling, Fire Awareness, Work at Height, Abrasive Wheels or Asbestos Awareness.',
   },
 ];
 
@@ -99,14 +135,18 @@ export const serviceGroups = GROUPS.map((g) => ({
         missingCodes.push(item.code);
         return null;
       }
+      const label = UNIT_LABEL[row.unit_type] ?? '';
       return {
         code: item.code,
         name: item.name || row.title,
         detail: item.detail || row.description || '',
-        price: row.adhoc_price,
+        // The public figure, never the raw net — see the VAT note above.
+        price: displayPrice(row.adhoc_price),
+        net: row.adhoc_price,
         from: row.price_from,
-        // ?? not || so an explicit '' can suppress a misleading unit
-        unit: item.unit ?? UNIT_LABEL[row.unit_type] ?? '',
+        // ?? not || so an explicit '' can suppress a misleading unit. As in the
+        // brochure, a "from" price drops a bare "each".
+        unit: item.unit ?? (row.price_from && label === 'each' ? '' : label),
         memberDiscountPct: row.member_discount_pct,
       };
     })
@@ -173,7 +213,7 @@ const TIER_COPY = {
 export const tiers = live.plans.map((p) => ({
   code: p.plan_code,
   name: p.title,
-  price: p.base_monthly,
+  price: displayPrice(p.base_monthly),
   minTermMonths: p.min_term_months,
   popular: p.is_anchor,
   blurb: p.blurb,

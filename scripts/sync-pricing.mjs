@@ -69,14 +69,42 @@ async function table(path) {
   return res.json();
 }
 
+// The portal reads VAT through the vat_config() RPC, never the table (app_config
+// is staff-only). Same here, so the website applies the SAME treatment the
+// portal's own brochure applies — see src/data/pricing.js.
+async function rpc(name) {
+  const res = await fetch(`${URL_BASE}/rest/v1/rpc/${name}`, {
+    method: 'POST',
+    headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
+    body: '{}',
+  });
+  if (!res.ok) throw new Error(`rpc/${name} → ${res.status} ${await res.text()}`);
+  return res.json();
+}
+
 const num = (v) => (v === null || v === undefined ? null : Number(v));
 
 try {
-  const [services, plans, config] = await Promise.all([
+  const [services, plans, config, vatRaw] = await Promise.all([
     table('services?active=is.true&select=service_code,title,description,category,unit_type,adhoc_price,price_from,member_discount_pct&order=category,sort'),
     table('subscription_plans?active=is.true&status=eq.published&select=plan_code,title,blurb,band,base_monthly,min_term_months,is_anchor&order=sort'),
     table('pricing_config?select=key,value'),
+    rpc('vat_config'),
   ]);
+
+  // An empty object means the 'vat' key is missing from app_config — a
+  // configuration problem, not an answer. Refuse rather than publish net prices.
+  if (!vatRaw || typeof vatRaw !== 'object' || !Object.keys(vatRaw).length) {
+    throw new Error('vat_config() returned nothing — cannot decide how to present prices.');
+  }
+  // Only the fields the presentation needs. The accountant's note and the
+  // registration number stay in the portal.
+  const vat = {
+    enabled: vatRaw.enabled === true,
+    rate: num(vatRaw.rate) ?? 0.2,
+    status: vatRaw.status ?? null,
+    prices_include_vat: vatRaw.prices_include_vat === true,
+  };
 
   const previous = JSON.parse(readFileSync(OUT, 'utf8'));
 
@@ -84,6 +112,7 @@ try {
     _comment: previous._comment,
     _source: previous._source,
     generatedAt: new Date().toISOString().slice(0, 10),
+    vat,
     config: Object.fromEntries(config.map((r) => [r.key, num(r.value)])),
     services: services.map((s) => ({
       ...s,
@@ -104,6 +133,10 @@ try {
       .filter((p) => planBefore[p.plan_code] !== p.base_monthly)
       .map((p) => `  ${p.plan_code}: ${planBefore[p.plan_code] ?? '—'} → ${p.base_monthly}/mo`)
   );
+  const pv = previous.vat || {};
+  if (pv.enabled !== vat.enabled || pv.status !== vat.status || pv.rate !== vat.rate) {
+    changes.push(`  VAT: ${pv.status ?? '—'}/${pv.enabled ? 'on' : 'off'} → ${vat.status ?? '—'}/${vat.enabled ? 'on' : 'off'} at ${vat.rate}`);
+  }
 
   writeFileSync(OUT, JSON.stringify(payload, null, 2) + '\n');
   console.log(`[sync:pricing] ${payload.services.length} services, ${payload.plans.length} plans.`);

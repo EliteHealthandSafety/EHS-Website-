@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { serviceGroups } from '../data/pricing.js';
+import { serviceGroups, gbp, vatEnabled } from '../data/pricing.js';
 
 const trainItems = serviceGroups.find((g) => g.id === 'training').items;
 const efaw = trainItems.find((i) => i.code === 'SPECIALIST TRAINING');
@@ -61,9 +61,9 @@ const courses = [
       </ul>
 
       <div class="price-flash">
-        <b>From £{efaw.price.toLocaleString('en-GB')}</b>
-        <span>per delegate ex VAT for Emergency First Aid at Work; on-site training days from
-          £{day.price.toLocaleString('en-GB')}. <a href="/pricing/#training">See all course prices</a></span>
+        <b>From {gbp(efaw.price)}</b>
+        <span>per delegate for Emergency First Aid at Work; on-site training days
+          {gbp(day.price)} per trainer day.{vatEnabled ? ' Prices ex VAT.' : ''} <a href="/pricing/#training">See all course prices</a></span>
       </div>
     </div>
   </section>

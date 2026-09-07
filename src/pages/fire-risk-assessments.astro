@@ -2,9 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { serviceGroups } from '../data/pricing.js';
+import { serviceGroups, gbp, vatEnabled } from '../data/pricing.js';
 
-// Cheapest live FRA band — never a hardcoded figure.
+// Cheapest live FRA price, never a hardcoded figure. pricing.js has already
+// applied the VAT treatment the portal's brochure applies.
 const fraItems = serviceGroups.find((g) => g.id === 'fire').items;
 const fraFrom = Math.min(...fraItems.map((i) => i.price));
 ---
@@ -37,9 +38,9 @@ const fraFrom = Math.min(...fraItems.map((i) => i.price));
       </ul>
 
       <div class="price-flash">
-        <b>From £{fraFrom.toLocaleString('en-GB')}</b>
-        <span>ex VAT for small premises such as an office, shop or garage. Medium and large premises
-          are priced by size and complexity. <a href="/pricing/#fire">See all fire risk assessment prices</a></span>
+        <b>From {gbp(fraFrom)}</b>
+        <span>{vatEnabled ? 'ex VAT ' : ''}per building, priced on its storeys, floor area, occupancy and use,
+          and fixed at booking. <a href="/pricing/#fire">See fire risk assessment pricing</a></span>
       </div>
     </div>
   </section>
