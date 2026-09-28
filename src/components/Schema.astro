@@ -16,6 +16,9 @@ const schema = {
   logo: b.url + '/favicon.svg',
 };
 
+// HMRC VAT registration number, no spaces, as schema.org vatID expects.
+if (b.vatNumber) schema.vatID = b.vatNumber.replace(/\s+/g, '');
+
 // Publish only the address fields that are actually filled in. For a
 // service-area business that means locality/region/country and no street or
 // postcode — enough for local search, without exposing a home address.

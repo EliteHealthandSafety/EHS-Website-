@@ -8,6 +8,9 @@ export const business = {
   phone: '+441413450549',        // Glasgow CircleLoop number (national backup: 0333 090 6074)
   phoneDisplay: '0141 345 0549',
   companyNumber: 'SC878365',
+  // HMRC VAT registration, effective 1 July 2026 (HMRC letter 10 Sep 2026).
+  // Printed in the footer and privacy notice; vatID in the schema drops the spaces.
+  vatNumber: 'GB 527 9774 38',
   // Registered office per Companies House — a required disclosure on the site
   // (EHS-BR-001-A W3). Distinct from the schema address below: Elite is still a
   // service-area business and the registered office is already public register data.

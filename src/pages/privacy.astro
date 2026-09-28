@@ -20,7 +20,7 @@ import { business as b } from '../data/site.js';
         <div class="eyebrow">Who we are</div>
         <h2>The data controller</h2>
         <p class="lead">This website is operated by <strong>Elite Health &amp; Safety Ltd</strong>,
-        registered in Scotland, company number <strong>SC878365</strong>, registered office
+        registered in Scotland, company number <strong>{b.companyNumber}</strong>, VAT number <strong>{b.vatNumber}</strong>, registered office
         {b.registeredOffice}. For any privacy question, or to exercise any of your rights, contact
         <a href={'mailto:' + b.email}>{b.email}</a> or call {b.phoneDisplay}.</p>
       </div>
