@@ -13,7 +13,7 @@ Elite Health and Safety Limited are a Health and Safety  Consultancy Service ba
 
 This can be carried out via a face to face meeting, a teams call or just an old fashioned telephone call, whatever meets your needs.
 
-At **Elite Health and Safety Limited**, we believe that protecting people is the foundation of any successful business. Whether you’re running a construction site, managing a warehouse, or operating an office, a clear and comprehensive **health and safety policy** is essential—not just to meet legal requirements, but to build a culture of care and responsibility.
+At **Elite Health and Safety Limited**, we believe that protecting people is the foundation of any successful business. Whether you’re running a construction site, managing a warehouse, or operating an office, a clear and comprehensive **health and safety policy** is essential, not just to meet legal requirements, but to build a culture of care and responsibility.
 
 **What is a Health and Safety Policy?**
 
@@ -31,7 +31,7 @@ A declaration of your company’s commitment to health and safety, signed by the
 
 - ** Responsibilities**
 
-This section defines who is responsible for implementing and managing various aspects of health and safety—from directors and managers to supervisors and frontline staff.
+This section defines who is responsible for implementing and managing various aspects of health and safety, from directors and managers to supervisors and frontline staff.
 
 - ** Arrangements**
 
@@ -51,13 +51,13 @@ This is where you outline the specific procedures and systems in place. It inclu
 
 A robust health and safety policy benefits your business in several key ways:
 
-- ✅ **Legal Compliance** – Avoid penalties and ensure alignment with current legislation.
+- ✅ **Legal Compliance**: Avoid penalties and ensure alignment with current legislation.
 
-- ✅ **Fewer Incidents** – Identify risks before they become problems.
+- ✅ **Fewer Incidents**: Identify risks before they become problems.
 
-- ✅ **Better Staff Morale** – Show your team they’re valued and protected.
+- ✅ **Better Staff Morale**: Show your team they’re valued and protected.
 
-- ✅ **Stronger Reputation** – Demonstrate professionalism to clients and partners.
+- ✅ **Stronger Reputation**: Demonstrate professionalism to clients and partners.
 
 **Our Expertise**
 
@@ -67,4 +67,4 @@ At **Elite Health and Safety Limited**, we specialize in writing, reviewing, an
 
 Let us support your journey to a safer workplace. 📞 **Call us** at 0141 345 0549 📧 **Email** us at info@elitehealthandsafety.co.uk 🌐 Or visit [www.elitehealthandsafety.co.uk](https://elitehealthandsafety.co.uk) to learn more.
 
-**Your policy isn’t just paperwork—it’s protection.** Let Elite Health and Safety Limited help you get it right.
+**Your policy isn’t just paperwork. It’s protection.** Let Elite Health and Safety Limited help you get it right.

@@ -1,9 +1,9 @@
-// PUBLIC PRICING — presentation layer only.
+// PUBLIC PRICING - presentation layer only.
 //
 // ⚠ NO PRICES LIVE IN THIS FILE. Every figure comes from pricing-live.json,
 // which is generated from the portal's own tables (services, subscription_plans)
-// by `npm run sync:pricing`. Prices are set in the portal — Subscription builder
-// → Service catalogue → Edit — and the website follows.
+// by `npm run sync:pricing`. Prices are set in the portal - Subscription builder
+// → Service catalogue → Edit - and the website follows.
 //
 // This file decides only:
 //   • which services are shown publicly (the catalogue also holds internal
@@ -67,7 +67,7 @@ const GROUPS = [
     id: 'fire',
     title: 'Fire risk assessments',
     blurb:
-      'Assessed to the PAS 79 standard and priced by the size and complexity of your premises — so you pay for the building you actually have.',
+      'Assessed to the PAS 79 standard and priced by the size and complexity of your premises, so you pay for the building you actually have.',
     items: [
       // One catalogue line since the FRA estimator (Sep 2026): priced per
       // building on its recorded facts, no fixed small/medium/large bands.
@@ -93,7 +93,7 @@ const GROUPS = [
   {
     id: 'documentation',
     title: 'Policies, documents & advice',
-    blurb: "The paperwork that proves you're compliant — written clearly and kept current.",
+    blurb: "The paperwork that proves you're compliant, written clearly and kept current.",
     items: [
       { code: 'POLICY_REVIEW' },
       { code: 'RAMS_REVIEW' },
@@ -110,8 +110,12 @@ const GROUPS = [
     title: 'Training',
     blurb: 'Accredited and bespoke courses, delivered at your premises or ours.',
     items: [
-      { code: 'SPECIALIST TRAINING', name: 'Emergency First Aid at Work (1 day)', unit: 'per delegate' },
-      { code: 'FIRST AID AT WORK', name: 'First Aid at Work (3 day)', unit: 'per delegate' },
+      // The catalogue descriptions for these two name an awarding body Elite is
+      // not accredited by, so the site overrides them with plain wording.
+      { code: 'SPECIALIST TRAINING', name: 'Emergency First Aid at Work (1 day)', unit: 'per delegate',
+        detail: 'Emergency first aid training, including defibrillator use, with a certificate on completion' },
+      { code: 'FIRST AID AT WORK', name: 'First Aid at Work (3 day)', unit: 'per delegate',
+        detail: 'First aid training with a certificate on completion: defibrillator use, resuscitation, recovery position, bandaging, choking, asthma and anaphylaxis' },
       { code: 'TRAINING_DAY', name: 'On-site training day', unit: 'per trainer day' },
       { code: 'TBT_BESPOKE', name: 'Toolbox talk written to your brief', unit: 'each' },
     ],
@@ -123,7 +127,7 @@ const GROUPS = [
 ];
 
 // Resolve each group against the live data. A code with no matching live row is
-// dropped rather than rendered priceless — and reported, so it is not silent.
+// dropped rather than rendered priceless - and reported, so it is not silent.
 export const missingCodes = [];
 
 export const serviceGroups = GROUPS.map((g) => ({
@@ -140,7 +144,7 @@ export const serviceGroups = GROUPS.map((g) => ({
         code: item.code,
         name: item.name || row.title,
         detail: item.detail || row.description || '',
-        // The public figure, never the raw net — see the VAT note above.
+        // The public figure, never the raw net - see the VAT note above.
         price: displayPrice(row.adhoc_price),
         net: row.adhoc_price,
         from: row.price_from,
@@ -159,7 +163,7 @@ const TIER_COPY = {
   ESSENTIALS: {
     tagline: 'Cover the basics',
     who: 'Small businesses that need to stay compliant with expert help on call, without a big monthly commitment.',
-    portal: 'Core portal — dashboard, documents & booking',
+    portal: 'Core portal: dashboard, documents & booking',
     includes: [
       'H&S advice line (phone & email)',
       'Annual site inspection & report',
@@ -198,7 +202,7 @@ const TIER_COPY = {
   MANAGED: {
     tagline: 'Fully outsourced',
     who: 'Organisations outsourcing their H&S function across one or more sites.',
-    portal: 'Full portal — all users & all sites',
+    portal: 'Full portal: all users & all sites',
     includes: [
       'Everything in Complete',
       'We act as your competent person, end to end',
@@ -229,8 +233,8 @@ export const vatPct = live.config.vat_pct;
 export const pricesGeneratedAt = live.generatedAt;
 
 export const howItWorks = [
-  { no: '1', title: 'Quick scoping call', text: 'A short conversation about your sites, sector and obligations — no charge.' },
+  { no: '1', title: 'Quick scoping call', text: 'A short conversation about your sites, sector and obligations, at no charge.' },
   { no: '2', title: 'Clear fixed quote', text: 'A written proposal with the exact scope and price, drawn from these rates.' },
   { no: '3', title: 'Delivery & report', text: 'We carry out the work and hand over clear, audit-ready documentation.' },
-  { no: '4', title: 'Ongoing support', text: 'Keep us on hand for advice and renewals — ad-hoc or on an Elite Assured membership.' },
+  { no: '4', title: 'Ongoing support', text: 'Keep us on hand for advice and renewals, ad-hoc or on an Elite Assured membership.' },
 ];

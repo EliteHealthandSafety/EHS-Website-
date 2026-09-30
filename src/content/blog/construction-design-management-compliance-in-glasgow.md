@@ -9,13 +9,13 @@ draft: false
 
 #### Construction Design and Management (CDM) Compliance in Glasgow
 
-The Construction Design and Management (CDM) Regulations 2015 ensure that every construction project in Glasgow—from small refurbishments to large developments—is planned and managed safely. CDM compliance reduces accidents, improves communication, and strengthens the planning process across all duty holders.
+The Construction Design and Management (CDM) Regulations 2015 ensure that every construction project in Glasgow, from small refurbishments to large developments, is planned and managed safely. CDM compliance reduces accidents, improves communication, and strengthens the planning process across all duty holders.
 
 Businesses undertaking construction work must understand the responsibilities of clients, principal designers, and contractors. Failure to comply can lead to investigations, enforcement notices, or legal action. Proper documentation, risk management, and communication are essential to maintaining safe working environments.
 
 Elite Health and Safety supports Glasgow construction companies with practical CDM compliance services. We assist with construction phase plans, RAMS, site audits, and contractor competency checks. Our advisors help ensure your project meets legal requirements from start to finish.
 
-Whether you’re overseeing a one‑off project or managing multiple sites, professional support helps reduce risk and strengthen safety performance. CDM compliance is not just a legal obligation—it is a vital part of delivering successful and safe projects in Glasgow.
+Whether you’re overseeing a one‑off project or managing multiple sites, professional support helps reduce risk and strengthen safety performance. CDM compliance is not just a legal obligation; it is a vital part of delivering successful and safe projects in Glasgow.
 
 Our expert CDM Principal Designer Services prioritize your project’s health and safety standards, ensuring seamless compliance and peace of mind.
 

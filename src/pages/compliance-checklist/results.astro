@@ -10,7 +10,7 @@ const ITEMS = checklist.flatMap((sec) =>
 ---
 <Base
   title="Your H&S Compliance Results | Elite Health & Safety"
-  description="Your free health & safety compliance self-check results — your score and a priority action list for your business."
+  description="Your free health & safety compliance self-check results: your score and a priority action list for your business."
   canonical="https://elitehealthandsafety.co.uk/compliance-checklist/results/">
 
   <section class="pagehero ck-res-hero">
@@ -27,7 +27,7 @@ const ITEMS = checklist.flatMap((sec) =>
       <div class="ck-empty">
         <h2>We haven't got any answers yet</h2>
         <p>Your answers are stored in your own browser, so there's nothing here until you work
-          through the check — it takes about five minutes and there's no sign-up.</p>
+          through the check. It takes about five minutes and there's no sign-up.</p>
         <a class="btn btn-accent" href="/compliance-checklist/">Take the free check</a>
       </div>
     </div>
@@ -46,7 +46,7 @@ const ITEMS = checklist.flatMap((sec) =>
         </div>
         <div class="ck-scoretext">
           <div class="eyebrow">Compliance score</div>
-          <h2 id="ckBand">—</h2>
+          <h2 id="ckBand">...</h2>
           <p id="ckBandText" class="lead"></p>
           <div class="ck-counts">
             <div class="ck-count ok"><b id="ckYes">0</b><span>In place</span></div>
@@ -83,12 +83,12 @@ const ITEMS = checklist.flatMap((sec) =>
       <div class="ck-post">
         <div class="ck-post-card">
           <h3>Email these results to yourself</h3>
-          <p>Optional — we will send your score and action list so you have a record, and we will only
+          <p>Optional: we will send your score and action list so you have a record, and we will only
             get in touch if we think we can genuinely help.</p>
           <form id="ckMail" class="cform">
             <input type="hidden" name="access_key" value={b.web3formsKey} />
             <input type="hidden" name="subject" value="H&S self-check results" />
-            <input type="hidden" name="from_name" value="Elite H&S — Compliance Check" />
+            <input type="hidden" name="from_name" value="Elite H&S: Compliance Check" />
             <input type="hidden" name="results" id="ckResultsField" />
             <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" />
             <div class="cform-row">
@@ -142,10 +142,10 @@ const ITEMS = checklist.flatMap((sec) =>
       var pct = scored ? Math.round((c.yes / scored) * 100) : 0;
 
       var BANDS = [
-        { min: 90, name: 'Strong position', cls: 'ok', text: 'You are in good shape. The value now is in keeping it current — reviews, refreshers and servicing that do not lapse.' },
+        { min: 90, name: 'Strong position', cls: 'ok', text: 'You are in good shape. The value now is in keeping it current: reviews, refreshers and servicing that do not lapse.' },
         { min: 70, name: 'Mostly there, with gaps', cls: 'ok', text: 'The foundations are in place, but the items below are the ones that tend to be picked up in an inspection or after an incident.' },
         { min: 40, name: 'Notable gaps', cls: 'warn', text: 'Enough is missing that an inspection or a serious incident would be uncomfortable. The good news is that most of this is quick to put right.' },
-        { min: 0, name: 'Significant risk', cls: 'risk', text: 'Several legal duties look unmet. This is worth acting on now — not as a paperwork exercise, but because these are the controls that protect your people.' }
+        { min: 0, name: 'Significant risk', cls: 'risk', text: 'Several legal duties look unmet. This is worth acting on now, not as a paperwork exercise, but because these are the controls that protect your people.' }
       ];
       var band = BANDS.find(function (x) { return pct >= x.min; });
 
@@ -196,7 +196,7 @@ const ITEMS = checklist.flatMap((sec) =>
       });
       document.getElementById('ckGapsWrap').hidden = gaps.length === 0;
       document.getElementById('ckGapsLead').textContent = gaps.length
-        ? 'Ordered by urgency — what is not in place, then what you were unsure about.'
+        ? 'Ordered by urgency: what is not in place, then what you were unsure about.'
         : '';
 
       var lines = [
@@ -206,10 +206,10 @@ const ITEMS = checklist.flatMap((sec) =>
         'PRIORITY ACTIONS (' + gaps.length + '):'
       ];
       gaps.forEach(function (g, i) {
-        lines.push((i + 1) + '. [' + g.label.toUpperCase() + '] ' + g.section + ' — ' + g.title);
+        lines.push((i + 1) + '. [' + g.label.toUpperCase() + '] ' + g.section + ': ' + g.title);
         lines.push('   ' + g.fix);
       });
-      if (!gaps.length) lines.push('None flagged — everything answered is in place.');
+      if (!gaps.length) lines.push('None flagged: everything answered is in place.');
       document.getElementById('ckResultsField').value = lines.join('\n');
 
       document.getElementById('ckPrint').addEventListener('click', function () { window.print(); });
@@ -230,13 +230,13 @@ const ITEMS = checklist.flatMap((sec) =>
           if (json.success) {
             mail.style.display = 'none';
             mstatus.className = 'cform-status ok';
-            mstatus.textContent = 'Sent ✓ — check your inbox. We will be in touch only if we can help.';
+            mstatus.textContent = 'Sent ✓. Check your inbox. We will be in touch only if we can help.';
           } else {
-            mstatus.textContent = json.message || 'Something went wrong — please email us instead.';
+            mstatus.textContent = json.message || 'Something went wrong. Please email us instead.';
             mstatus.className = 'cform-status err';
           }
         } catch (err) {
-          mstatus.textContent = 'Network error — email info@elitehealthandsafety.co.uk and we will send it over.';
+          mstatus.textContent = 'Network error. Email info@elitehealthandsafety.co.uk and we will send it over.';
           mstatus.className = 'cform-status err';
         }
       });

@@ -11,15 +11,17 @@ export const business = {
   // HMRC VAT registration, effective 1 July 2026 (HMRC letter 10 Sep 2026).
   // Printed in the footer and privacy notice; vatID in the schema drops the spaces.
   vatNumber: 'GB 527 9774 38',
-  // Registered office per Companies House — a required disclosure on the site
+  // Registered office per Companies House - a required disclosure on the site
   // (EHS-BR-001-A W3). Distinct from the schema address below: Elite is still a
   // service-area business and the registered office is already public register data.
   registeredOffice: '443 Dumbarton Road, Clydebank, G81 4DU',
-  foundingDate: '2026', // Elite H&S Ltd began trading 2026 (Total H&S, est. 2019, was a separate, now-closed company)
+  // ICO data protection fee register. Printed on the privacy notice.
+  icoRegistration: 'ZC229599',
+  foundingDate: '2026', // Elite H&S Ltd began trading 2026 (an earlier, separate company is closed and not referenced)
   areaServed: ['Glasgow', 'Scotland', 'United Kingdom'],
   priceRange: '££',
   description:
-    'Health & safety consultancy and accredited training based in Glasgow, serving businesses across Scotland and UK-wide — fire risk assessments, IOSH & SSSTS courses, first aid, manual handling, CDM and ISO support.',
+    'Health & safety consultancy and accredited training based in Glasgow, serving businesses across Scotland and UK-wide: fire risk assessments, IOSH & SSSTS courses, first aid, manual handling, CDM and ISO support.',
 
   // Web3Forms free access key for the contact form (get one at https://web3forms.com
   // using info@elitehealthandsafety.co.uk, then paste it here).
@@ -45,7 +47,7 @@ export const business = {
     opens: '07:00',
     closes: '18:00',
   },
-  openingHoursDisplay: 'Mon–Fri, 7am–6pm',
+  openingHoursDisplay: 'Mon to Fri, 7am to 6pm',
 
   // Add a URL here and it appears as a footer icon AND in the schema's sameAs
   // automatically. Leave blank to hide.

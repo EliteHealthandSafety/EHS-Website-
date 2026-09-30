@@ -77,7 +77,7 @@ Why Choose Elite Health and Safety?-
 
 Expertise Across Industries:
 
-Our wealth of knowledge spans various sectors, including construction, rail, and nuclear, allowing us to bring invaluable insights to every project we undertake. –
+Our wealth of knowledge spans various sectors, including construction, rail, and nuclear, allowing us to bring invaluable insights to every project we undertake.
 
 Tailored Solutions:
 

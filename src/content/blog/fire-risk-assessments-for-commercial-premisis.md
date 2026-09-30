@@ -27,7 +27,7 @@ Fire Risk Assessments: Safeguarding Glasgow’s Businesses One Step at a Time
 
 If you’re a business owner in Glasgow or its neighbouring areas, prioritising fire safety is essential.
 
-The impact of a fire can be catastrophic, affecting not just property but also lives and livelihoods—often within a matter of minutes.
+The impact of a fire can be catastrophic, affecting not just property but also lives and livelihoods, often within a matter of minutes.
 
 At Elite Health and Safety Ltd, we are dedicated to providing comprehensive, compliant, and affordable fire risk assessments tailored for businesses throughout Scotland.
 
@@ -73,11 +73,11 @@ We believe that ensuring safety shouldn’t come at a prohibitive cost. We work 
 
 Recognizing that every business is unique, we deliver clear and actionable reports customized to meet your specific conditions and operational needs.
 
-Industries we serve our expertise spans a diverse range of sectors, including but not limited to: – Hospitality and Licensed Premises – Office Buildings – Construction and Trade Services – Retail Stores – Healthcare and Clinics -Industrial Units.
+Industries we serve our expertise spans a diverse range of sectors, including but not limited to: hospitality and licensed premises, office buildings, construction and trade services, retail stores, healthcare and clinics, and industrial units.
 
 Regardless of your industry, we’re equipped to help you create a safer working environment.
 
-Don’t wait for a Fire Officer visit—Take action now, neglecting to perform a fire risk assessment can result in severe repercussions such as hefty fines, legal action, or even business closure. More critically, it jeopardizes the safety of your employees and customers.
+Don’t wait for a Fire Officer visit. Take action now: neglecting to perform a fire risk assessment can result in severe repercussions such as hefty fines, legal action, or even business closure. More critically, it jeopardizes the safety of your employees and customers.
 
 The team at Elite Health and Safety Ltd is here to guide you every step of the way in establishing a safe workplace. Let us alleviate the burden of compliance.
 
@@ -89,7 +89,7 @@ Contact us for a free initial consultation or visit our website at www.eliteheal
 
 Make fire safety a priority for your business. Reach out today and let us help you protect what matters most!
 
-[About Us – Elite Health and Safety](https://elitehealthandsafety.co.uk/about-us/)
+[About Us: Elite Health and Safety](https://elitehealthandsafety.co.uk/about-us/)
 
 Enroll in the Site Safety Plus course now to ensure a safer work environment for you and your team. Gain essential skills and knowledge to prevent accidents and promote safety on-site.
 

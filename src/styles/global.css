@@ -92,7 +92,7 @@
   .btn-ghost{border-color:var(--border);color:var(--ink);background:transparent}
   .btn-ghost:hover{border-color:var(--accent)}
   .btn-onbrand{border-color:rgba(255,255,255,.28);color:var(--on-brand)}
-  /* header secondary action — visible next to the accent CTA without competing */
+  /* header secondary action - visible next to the accent CTA without competing */
   .btn-check{border-color:var(--accent);color:var(--accent);background:transparent;font-weight:700}
   .btn-check:hover{background:var(--accent);color:#fff}
   .btn-onbrand:hover{border-color:var(--accent);background:rgba(255,255,255,.06)}
@@ -180,7 +180,7 @@
   .sec-head h2{font-size:clamp(1.7rem,3.2vw,2.5rem);margin-top:12px}
   .sec-head p{margin-top:14px}
 
-  /* clients strip — set as a deliberate credibility bar, not stray text */
+  /* clients strip - set as a deliberate credibility bar, not stray text */
   .clients{padding-block:26px;border-block:1px solid var(--border);background:var(--surface)}
   .clients .wrap{display:flex;align-items:center;gap:14px 30px;flex-wrap:wrap;justify-content:center}
   .clients .cap{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;

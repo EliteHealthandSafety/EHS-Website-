@@ -37,9 +37,9 @@ Elite Health and Safety Limited is dedicated to revolutionizing workplace safety
 
 Conduct thorough evaluations of your workplace to identify potential hazards and ensure compliance with safety regulations.
 
-#### Unlimited Health & Safety Advice
+#### Health & Safety Advice
 
-Access expert guidance and support whenever you need it to address safety concerns and implement effective solutions.
+Access expert guidance and support when you need it to address safety concerns and implement effective solutions.
 
 #### Detailed Safety Documentation
 

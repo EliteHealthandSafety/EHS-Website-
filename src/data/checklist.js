@@ -34,14 +34,14 @@ export const checklist = [
         t: 'Fire extinguishers',
         d: 'Correct types for the risks, accessible and signed.',
         cycle: 'Service annually · extended service 5-yearly',
-        fix: 'Wrong extinguisher types are common — kitchens, electrical rooms and workshops each need specific classes.',
+        fix: 'Wrong extinguisher types are common: kitchens, electrical rooms and workshops each need specific classes.',
       },
       {
         id: 'fire-escape',
         t: 'Escape routes & signage',
         d: 'Clear, unobstructed and properly signed.',
         cycle: 'Check ongoing',
-        fix: 'Blocked or locked escape routes are the most frequent enforcement finding — worth a walk-round today.',
+        fix: 'Blocked or locked escape routes are the most frequent enforcement finding, so it is worth a walk-round today.',
       },
       {
         id: 'fire-train',
@@ -69,14 +69,14 @@ export const checklist = [
         t: 'Enough trained first-aiders',
         d: 'Covering all shifts, sites and holiday absence.',
         cycle: 'Requalify every 3 years',
-        fix: 'Check certificate expiry dates — lapsed first-aiders are as good as none. We run EFAW and FAW courses.',
+        fix: 'Check certificate expiry dates: lapsed first-aiders are as good as none. We run EFAW and FAW courses.',
       },
       {
         id: 'fa-kit',
         t: 'Stocked, in-date first-aid kits',
         d: 'With a named person responsible for restocking.',
         cycle: 'Check monthly',
-        fix: 'Assign an owner and diarise a monthly kit check — it takes five minutes.',
+        fix: 'Assign an owner and diarise a monthly kit check. It takes five minutes.',
       },
       {
         id: 'fa-record',
@@ -104,7 +104,7 @@ export const checklist = [
         t: 'Risk assessments',
         d: 'Covering your significant hazards, and actually used.',
         cycle: 'Review annually & on change',
-        fix: 'Risk assessments should be specific to your tasks and communicated to staff — generic downloads will not stand up.',
+        fix: 'Risk assessments should be specific to your tasks and communicated to staff. Generic downloads will not stand up.',
       },
       {
         id: 'pol-coshh',
@@ -116,7 +116,7 @@ export const checklist = [
       {
         id: 'pol-legionella',
         t: 'Legionella risk assessment',
-        d: 'For your water systems — commonly missed.',
+        d: 'For your water systems, commonly missed.',
         cycle: 'Review roughly every 2 years',
         fix: 'This one catches most businesses out. If you have water storage, showers or infrequently used outlets, it applies to you.',
       },
@@ -145,7 +145,7 @@ export const checklist = [
         id: 'tr-role',
         t: 'Role-specific training',
         d: 'Manual handling, IOSH/SSSTS, asbestos awareness, work at height.',
-        cycle: 'Refresh every 1–3 years',
+        cycle: 'Refresh every 1 to 3 years',
         fix: 'Map each role to the training it actually needs. We deliver most of these in-house or on your site.',
       },
       {

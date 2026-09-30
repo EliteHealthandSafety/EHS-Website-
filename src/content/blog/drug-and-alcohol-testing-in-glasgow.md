@@ -1,6 +1,6 @@
 ---
 title: "Drug and Alcohol Testing in Glasgow | Workplace Safety Support"
-description: "First Consultation Free Of Charge Drug and Alcohol Testing – Glasgow H1: Drug and Alcohol Testing – Glasgow Expanded Content: Drug and alcohol misuse can"
+description: "First Consultation Free Of Charge Drug and Alcohol Testing in Glasgow H1: Drug and Alcohol Testing in Glasgow Expanded Content: Drug and alcohol misuse can"
 pubDate: 2025-02-04
 draft: false
 ---
@@ -9,9 +9,9 @@ draft: false
 
 **First Consultation Free Of Charge**
 
-## Drug and Alcohol Testing – Glasgow
+## Drug and Alcohol Testing in Glasgow
 
-H1: Drug and Alcohol Testing – Glasgow
+H1: Drug and Alcohol Testing in Glasgow
 
 Expanded Content:
 

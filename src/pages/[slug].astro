@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const url = `https://elitehealthandsafety.co.uk/${post.id}/`;
-// Publish dates are kept in frontmatter for ordering, but not shown — these are
+// Publish dates are kept in frontmatter for ordering, but not shown - these are
 // evergreen guides and a visible 2025 date made a live site read as dormant.
 ---
 <Base title={`${post.data.title} | Elite Health & Safety`} description={post.data.description} canonical={url}>
