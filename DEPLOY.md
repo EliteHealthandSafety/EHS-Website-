@@ -19,6 +19,14 @@ automatically if verification fails**.
 
 ## One-time setup — repo secrets
 
+**Only `SSH_PRIVATE_KEY` is required** (since 26 Oct 2026): the host, user, path and
+Supabase URL have defaults in the workflow, and a secret of the same name still
+overrides them. `SUPABASE_SERVICE_KEY` is optional; without it the build uses the
+committed price snapshot. Until `SSH_PRIVATE_KEY` was set, every nightly run from
+17 Sep 2026 failed at "Set up SSH" and the live site kept its August prices.
+
+The full list, for reference:
+
 Settings → Secrets and variables → Actions → *New repository secret*:
 
 | Secret | Value |

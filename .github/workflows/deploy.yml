@@ -14,6 +14,15 @@ concurrency:
   group: deploy-production      # never let two deploys overlap
   cancel-in-progress: false
 
+# The host, user and path are not secrets (DEPLOY.md prints them), so they have
+# defaults here; a repo secret of the same name still wins. The one thing the
+# repo must hold is SSH_PRIVATE_KEY. Without it every run from 17 Sep to 26 Oct
+# 2026 failed silently at "Set up SSH" and the live site sat on the August prices.
+env:
+  SSH_HOST: ${{ secrets.SSH_HOST || 'access-5019528687.webspace-host.com' }}
+  SSH_USER: ${{ secrets.SSH_USER || 'su41679' }}
+  DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/home/www/clickandbuilds/Elitehealthandsafety' }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,7 +31,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -32,7 +41,7 @@ jobs:
       # prices are currently set in the portal.
       - name: Build (syncs live pricing first)
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://txkfuodkrssvafxyeskg.supabase.co' }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         run: npm run build
 
@@ -46,18 +55,24 @@ jobs:
           [ "$pages" -ge 20 ] || { echo "::error::only $pages pages built — refusing to deploy"; exit 1; }
 
       - name: Set up SSH
+        env:
+          KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
+          if [ -z "$KEY" ]; then
+            echo "::error::The SSH_PRIVATE_KEY repo secret is not set, so nothing can be uploaded. Add it under Settings > Secrets and variables > Actions (the whole of ~/.ssh/ehs_ionos, BEGIN and END lines included), then re-run this workflow."
+            exit 1
+          fi
           mkdir -p ~/.ssh
-          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          printf '%s\n' "$KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -H "${{ env.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: Back up the current live site
         run: |
           ssh -i ~/.ssh/deploy_key -o BatchMode=yes \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "${{ env.SSH_USER }}@${{ env.SSH_HOST }}" \
             'set -e
-             D="${{ secrets.DEPLOY_PATH }}"; B=/home/www/_backups; mkdir -p "$B"
+             D="${{ env.DEPLOY_PATH }}"; B=/home/www/_backups; mkdir -p "$B"
              tar czf "$B/site-predeploy-$(date +%Y%m%d-%H%M%S).tar.gz" -C "$D" .
              # keep the 10 most recent, bin the rest
              ls -1t "$B"/site-predeploy-*.tar.gz | tail -n +11 | xargs -r rm --
@@ -67,7 +82,7 @@ jobs:
         run: |
           rsync -az --delete --checksum \
             -e "ssh -i ~/.ssh/deploy_key -o BatchMode=yes" \
-            dist/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+            dist/ "${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.DEPLOY_PATH }}/"
 
       # Prove the site actually works, and roll back if it genuinely does not.
       # Each check retries with backoff so a single slow response from shared
@@ -125,9 +140,9 @@ jobs:
         if: failure() && steps.verify.outcome == 'failure'
         run: |
           ssh -i ~/.ssh/deploy_key -o BatchMode=yes \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "${{ env.SSH_USER }}@${{ env.SSH_HOST }}" \
             'set -e
-             D="${{ secrets.DEPLOY_PATH }}"; B=/home/www/_backups
+             D="${{ env.DEPLOY_PATH }}"; B=/home/www/_backups
              LATEST=$(ls -1t "$B"/site-predeploy-*.tar.gz | head -1)
              echo "rolling back to $LATEST"
              rm -rf "${D:?}"/* && tar xzf "$LATEST" -C "$D"'
