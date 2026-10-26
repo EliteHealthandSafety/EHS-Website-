@@ -4,7 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { business as b } from '../data/site.js';
 import {
-  serviceGroups, howItWorks, memberDiscountPct, missingCodes, gbp, vatEnabled, vatPctLabel,
+  serviceGroups, howItWorks, memberDiscountPct, missingCodes, contractVisitRate, adhocVisitRate, gbp, displayPrice, vatEnabled, vatPctLabel,
 } from '../data/pricing.js';
 
 // Surface a curation mistake at build time rather than shipping a gap.
@@ -93,6 +93,10 @@ if (missingCodes.length) {
           <p>Membership levels are tailored to your sites, headcount and sector, and we are
             currently updating them, so we would rather quote you properly than publish a number
             that does not fit your business.</p>
+          {contractVisitRate && (
+            <p>Site inspections in a membership programme are <b>{gbp(displayPrice(contractVisitRate))} a visit</b>{vatEnabled ? ' ex VAT' : ''}{adhocVisitRate ? `, against ${gbp(displayPrice(adhocVisitRate))} for a one-off visit` : ''}.
+              Travel outside our home area is charged at cost.</p>
+          )}
           <p><b>Tell us what you have and we will recommend the right level with a fixed monthly
             price.</b></p>
           <div class="ck-cta-row">

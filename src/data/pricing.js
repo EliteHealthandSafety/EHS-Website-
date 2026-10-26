@@ -229,6 +229,12 @@ export const tiers = live.plans.map((p) => ({
 const discounts = live.services.map((s) => s.member_discount_pct).filter((d) => d > 0);
 export const memberDiscountPct = discounts.length ? Math.max(...discounts) : null;
 
+// The rate a site inspection is priced at inside a membership programme, from
+// the portal's location_zones (one rate on every zone). Null if the snapshot
+// predates it, and the page then says nothing rather than a stale figure.
+export const contractVisitRate = Number(live.contract_visit_rate) || null;
+export const adhocVisitRate = byCode.SITE_VISIT ? byCode.SITE_VISIT.adhoc_price : null;
+
 export const vatPct = live.config.vat_pct;
 export const pricesGeneratedAt = live.generatedAt;
 

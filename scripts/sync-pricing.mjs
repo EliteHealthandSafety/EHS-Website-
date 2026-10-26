@@ -85,12 +85,18 @@ async function rpc(name) {
 const num = (v) => (v === null || v === undefined ? null : Number(v));
 
 try {
-  const [services, plans, config, vatRaw] = await Promise.all([
+  const [services, plans, config, vatRaw, zones] = await Promise.all([
     table('services?active=is.true&select=service_code,title,description,category,unit_type,adhoc_price,price_from,member_discount_pct&order=category,sort'),
     table('subscription_plans?active=is.true&status=eq.published&select=plan_code,title,blurb,band,base_monthly,min_term_months,is_anchor&order=sort'),
     table('pricing_config?select=key,value'),
     rpc('vat_config'),
+    // The contract visit rate: one figure on every zone (the portal's
+    // location_zones_one_visit_rate trigger holds them equal). A visit inside a
+    // membership programme is priced at this, not at the ad-hoc SITE_VISIT price.
+    table('location_zones?select=visit_cost'),
   ]);
+  const rates = [...new Set(zones.map((z) => num(z.visit_cost)).filter((v) => v > 0))];
+  if (rates.length !== 1) throw new Error(`location_zones carry ${rates.length} visit rates, expected one: ${rates.join(', ')}`);
 
   // An empty object means the 'vat' key is missing from app_config — a
   // configuration problem, not an answer. Refuse rather than publish net prices.
@@ -113,6 +119,7 @@ try {
     _source: previous._source,
     generatedAt: new Date().toISOString().slice(0, 10),
     vat,
+    contract_visit_rate: rates[0],
     config: Object.fromEntries(config.map((r) => [r.key, num(r.value)])),
     services: services.map((s) => ({
       ...s,

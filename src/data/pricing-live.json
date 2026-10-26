@@ -1,20 +1,21 @@
 {
   "_comment": "GENERATED FILE — do not hand-edit. Prices are set in the portal (Subscription builder → Service catalogue). Refresh with `npm run sync:pricing`.",
-  "_source": "Supabase txkfuodkrssvafxyeskg · tables: services, subscription_plans, pricing_config · rpc: vat_config",
-  "generatedAt": "2026-09-30",
+  "_source": "Supabase txkfuodkrssvafxyeskg · tables: services, subscription_plans, pricing_config · rpc: vat_config · table: location_zones",
+  "generatedAt": "2026-10-26",
   "vat": {
     "enabled": true,
     "rate": 0.2,
     "status": "registered",
     "prices_include_vat": false
   },
+  "contract_visit_rate": 300,
   "config": {
-    "overnight_from_multiplier": 1.5,
-    "overnight_rate": 130,
     "ppc": 17,
     "pppc": 22.95,
     "trainday": 150,
-    "vat_pct": 20
+    "vat_pct": 20,
+    "overnight_rate": 130,
+    "overnight_from_multiplier": 1.5
   },
   "services": [
     {
