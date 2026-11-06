@@ -718,3 +718,37 @@
 .member-aside p b{color:var(--ink)}
 @media (max-width:860px){ .member-band{grid-template-columns:1fr} }
 @media (max-width:560px){ .member-main,.member-aside{padding:24px 20px} }
+
+/* ============ PRICING LADDER (P70) ============ */
+.ladder-sec{padding-block:72px}
+.ladder{list-style:none;padding:0;margin:0 0 28px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ladder>*{min-width:0}
+.rung{border:1px solid var(--border);border-radius:14px;padding:22px;background:var(--surface);display:flex;flex-direction:column;gap:10px}
+.rung-top{border:2px solid var(--accent);padding:21px}
+.rung-no{font-family:var(--mono);font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-strong)}
+.rung h3{font-size:1.2rem}
+.rung p{font-size:.93rem;color:var(--muted)}
+.rung .rung-key{margin-top:auto;color:var(--ink);font-weight:700;font-size:.95rem}
+.ladder-table .lrow{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:12px;padding:14px 20px;align-items:baseline}
+.ladder-table.cols-3 .lrow{grid-template-columns:1.6fr 1fr 1fr}
+.ladder-table .lrow+.lrow{border-top:1px solid var(--border)}
+.ladder-table .lhead{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ladder-table .lrow span:not(.lname){text-align:right;white-space:nowrap}
+.ladder-table .lname{font-weight:700}
+.ladder-table .lhead .lname{font-weight:inherit}
+.terms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.terms-grid>*{min-width:0}
+.terms-grid .rung p{color:var(--muted)}
+.band-table{width:100%;border-collapse:collapse;font-size:.95rem}
+.band-table th,.band-table td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:right}
+.band-table th:first-child,.band-table td:first-child{text-align:left}
+.band-table thead th{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.table-scroll{overflow-x:auto}
+@media (max-width:940px){.ladder,.terms-grid{grid-template-columns:1fr}}
+@media (max-width:560px){
+  .ladder-table .lrow{grid-template-columns:1fr 1fr;gap:6px 12px}
+  .ladder-table .lname{grid-column:1/-1}
+  .ladder-table .lhead{display:none}
+  .ladder-table .lrow span[data-label]::before{content:attr(data-label);display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .ladder-table .lrow span:not(.lname){text-align:left}
+}

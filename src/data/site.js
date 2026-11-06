@@ -1,5 +1,11 @@
 // Single source of truth for business details.
 // Update the TODOs here and every page + the schema updates automatically.
+// Tier (membership) prices on the website: OFF. Whether Lanyard plan prices are
+// published on the site is Reiss's decision (website.md rule 2: they are
+// deliberately not on the site today). Set true to show the band grid on
+// /how-pricing-works/; the figures come from the synced plan_bands, never typed.
+export const showTierPrices = false;
+
 export const business = {
   legalName: 'Elite Health & Safety Ltd',
   name: 'Elite Health & Safety',

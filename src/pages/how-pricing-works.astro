@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import PricingLadder from '../components/PricingLadder.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business as b, showTierPrices } from '../data/site.js';
+import {
+  ladder, terms, travel, tierBands, gbp2, vatEnabled, vatPctLabel, contractVisitRate, displayPrice,
+} from '../data/pricing.js';
+
+// Every figure on this page comes from pricing-live.json (scripts/sync-pricing.mjs).
+// Where a figure is not synced yet, the sentence is worded without it.
+const rolling = terms.rollingPct != null
+  ? `at the term price plus ${terms.rollingPct}%`
+  : 'at the published monthly rolling price, which is higher than the term price';
+const extra24 = terms.extraAllowance24Pct != null
+  ? `with ${terms.extraAllowance24Pct}% more allowance`
+  : 'with more allowance';
+const mileage = travel.mileagePence != null ? `${travel.mileagePence}p a mile` : 'a mileage rate';
+const night = travel.overnight != null ? `${gbp2(travel.overnight)} a night` : 'a night away';
+const memberRates = ladder.memberSitePct != null && ladder.memberDeskPct != null
+  ? `${ladder.memberSitePct}% off site work and ${ladder.memberDeskPct}% off desk work`
+  : 'member rates';
+---
+<Base
+  title="How Our Pricing Works | Pay As You Go, Lanyard, Managed Service | Elite H&S"
+  description="How Elite Health & Safety prices its work: pay as you go at the rate card, member rates for every Lanyard member, and lower rates again on the Elite Managed Service. Terms, travel and VAT explained."
+  canonical="https://elitehealthandsafety.co.uk/how-pricing-works/">
+
+  <PageHero
+    eyebrow="Pricing"
+    title="How our pricing works"
+    lead="Three ways to have Elite do your health and safety work. Every step up costs less per job, and every price is published before you ask for it."
+    ctaText="Get a fixed quote"
+    cta2Text="See the rate card"
+    cta2Href="/pricing/" />
+
+  <PricingLadder />
+
+  <section class="courses">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Terms</div>
+        <h2>Choose how long you sign up for</h2>
+        <p class="lead">A Lanyard membership earns {memberRates} on any of these terms.</p>
+      </div>
+      <div class="terms-grid">
+        <div class="rung">
+          <h3>12-month term</h3>
+          <p>The term price, fixed for the year. Your allowances can be used at any time in the year.{terms.annualPrepayPct != null && ` Pay the year in advance and take ${terms.annualPrepayPct}% off it.`}</p>
+        </div>
+        <div class="rung">
+          <h3>Monthly rolling</h3>
+          <p>No minimum term, {rolling}. Each month's allowance is used in that month. Member rates still apply.</p>
+        </div>
+        <div class="rung">
+          <h3>24-month term</h3>
+          <p>The term price, locked for both years, {extra24}. Price changes reach you only at renewal.</p>
+        </div>
+      </div>
+      <ul class="check-list">
+        <li>We offer a renewal at least 90 days before your term ends.</li>
+        <li>A plan that is not renewed carries on as monthly rolling.</li>
+        <li>The Elite Managed Service runs on a minimum term. If it is not renewed, you carry on with Lanyard Pro monthly rolling, with site work at member rates.</li>
+        <li>Ending a term early costs half the fees left in it, never less than three months' fees and never more than the fees left.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap section-narrow">
+      <div class="sec-head">
+        <div class="eyebrow">Travel</div>
+        <h2>Travel is charged at cost, and never discounted</h2>
+        <p class="lead">It is never marked up and it earns us nothing, so the price of the work is the same wherever you are.</p>
+      </div>
+      <ul class="check-list">
+        <li>Within {travel.homeRadiusMiles} miles of our Clydebank office: no travel charge.</li>
+        <li>Beyond that: {mileage} for the whole round trip.</li>
+        <li>{night} where one leg of the journey is more than {travel.nightBeyondMiles} miles, or a ferry is needed.</li>
+        <li>Desk work never carries a journey. The journey is shown per site on your quote.</li>
+        {contractVisitRate && <li>On the Elite Managed Service a scheduled site inspection is {gbp2(displayPrice(contractVisitRate))}{vatEnabled ? ' ex VAT' : ''} at every site: distance is never in the fee.</li>}
+      </ul>
+    </div>
+  </section>
+
+  {showTierPrices && tierBands.length > 0 && (
+    <section class="courses" id="lanyard-plans">
+      <div class="wrap section-narrow">
+        <div class="sec-head">
+          <div class="eyebrow">Lanyard plans</div>
+          <h2>One monthly price for your company</h2>
+          <p class="lead">Set by the plan you choose and the number of people on your account. No setup fee, no seat charge, no charge for sites.</p>
+        </div>
+        {tierBands.every((t) => t.bands.length > 0) ? (
+          <div class="table-scroll">
+            <table class="band-table">
+              <thead><tr><th>Plan</th><th>Band A</th><th>Band B</th><th>Band C</th><th>Band D</th></tr></thead>
+              <tbody>
+                {tierBands.map((t) => (
+                  <tr>
+                    <td><b>{t.name}</b></td>
+                    {t.bands.map((bd) => <td>{gbp2(bd.price)}<br /><small>{bd.min_people} to {bd.max_people} people</small></td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <ul class="check-list">
+            {tierBands.map((t) => <li>{t.name}: from {gbp2(t.fromPrice)} a month</li>)}
+          </ul>
+        )}
+        <p class="pnote">A month{vatEnabled ? ', ex VAT' : ''}. The Elite Managed Service is quoted to your sites and services.</p>
+      </div>
+    </section>
+  )}
+
+  <section>
+    <div class="wrap section-narrow">
+      <div class="sec-head">
+        <div class="eyebrow">VAT</div>
+        <h2>Prices are shown before VAT</h2>
+      </div>
+      <p>{vatEnabled
+        ? `Every price we publish is net. VAT is added at the rate in force, currently ${vatPctLabel}, and we issue a VAT invoice for it. Our VAT registration number is ${b.vatNumber}.`
+        : 'Every price we publish is the price you pay.'}</p>
+      <p class="pnote">Your own rates are recorded in your agreement when you sign and are fixed for your term.</p>
+    </div>
+  </section>
+
+  <CtaBand
+    heading="Not sure which step fits? Ask us."
+    text={`Twenty minutes on a call and a written price the same day. Call ${b.phoneDisplay} or send us the details.`} />
+</Base>

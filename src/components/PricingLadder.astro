@@ -1,0 +1,73 @@
+---
+// The pricing ladder (P70): pay as you go, Lanyard member, Elite Managed Service.
+// Every figure comes from src/data/pricing.js, which reads pricing-live.json.
+import {
+  ladder, ladderHasManaged, ladderExamples, contractVisitRate, displayPrice, gbp2, vatEnabled,
+} from '../data/pricing.js';
+
+const { compact = false } = Astro.props;
+const m = ladder;
+const memberLine = m.memberSitePct != null && m.memberDeskPct != null
+  ? `${m.memberSitePct}% off site work and ${m.memberDeskPct}% off desk work`
+  : 'member rates on every job';
+const managedLine = ladderHasManaged
+  ? `${m.managedSitePct}% off site work and ${m.managedDeskPct}% off desk work beyond your plan`
+  : 'work beyond your plan at your Managed Service rate, set out in your proposal';
+const exVat = vatEnabled ? ' ex VAT' : '';
+---
+<section id="how-pricing-works" class="ladder-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">How pricing works</div>
+      <h2>Three ways to work with us. Every step up costs less per job.</h2>
+      <p class="lead">Every price is published before you ask for it, and nothing chargeable is booked until you have accepted the quote.</p>
+    </div>
+
+    <ol class="ladder">
+      <li class="rung">
+        <div class="rung-no">Step 1</div>
+        <h3>Pay as you go</h3>
+        <p>No plan and no monthly fee. You sign our agreement once, by a secure link, and pay the published rate card price for each job.</p>
+        <p class="rung-key">You pay the rate card</p>
+      </li>
+      <li class="rung">
+        <div class="rung-no">Step 2</div>
+        <h3>Lanyard member</h3>
+        <p>Lanyard Lite, Standard or Pro: Lanyard by Elite Health &amp; Safety, our health and safety platform, with an advice line and Elite as your competent person, for one monthly price.</p>
+        <p class="rung-key">You pay member rates: {memberLine}, on a 12 or 24-month term or monthly rolling</p>
+      </li>
+      <li class="rung rung-top">
+        <div class="rung-no">Step 3</div>
+        <h3>Elite Managed Service</h3>
+        <p>We deliver your health and safety for you, priced site by site, with full Lanyard Pro access included.</p>
+        <p class="rung-key">
+          {contractVisitRate ? `Scheduled site inspections at ${gbp2(displayPrice(contractVisitRate))} each${exVat}, wherever the site is, and ` : ''}{managedLine}
+        </p>
+      </li>
+    </ol>
+
+    {ladderExamples.length > 0 && (
+      <div class={`ptable ladder-table ${ladderHasManaged ? 'cols-4' : 'cols-3'}`} role="table" aria-label="What a job costs at each step">
+        <div class="lrow lhead" role="row">
+          <span role="columnheader" class="lname">Work</span>
+          <span role="columnheader">Pay as you go</span>
+          <span role="columnheader">Lanyard member</span>
+          {ladderHasManaged && <span role="columnheader">Managed Service</span>}
+        </div>
+        {ladderExamples.map((r) => (
+          <div class="lrow" role="row">
+            <span role="cell" class="lname">{r.label}</span>
+            <span role="cell" data-label="Pay as you go"><b>{r.from ? 'from ' : ''}{gbp2(r.payg)}</b></span>
+            <span role="cell" data-label="Lanyard member"><b>{r.member != null ? `${r.from ? 'from ' : ''}${gbp2(r.member)}` : 'Member rate'}</b></span>
+            {ladderHasManaged && <span role="cell" data-label="Managed Service"><b>{r.from ? 'from ' : ''}{gbp2(r.managed)}</b></span>}
+          </div>
+        ))}
+      </div>
+    )}
+    <p class="pnote">
+      {vatEnabled ? 'Prices ex VAT. ' : ''}Site work is work done at your premises; a job that is partly on site counts as site work. Desk work is consultancy and work done away from your site. Quoted work is discounted in the same way. Travel is charged at cost and is never discounted.
+      {!ladderHasManaged && ' The Managed Service rate for work beyond your plan is set out in your proposal.'}
+      {compact && <> <a href="/how-pricing-works/">How pricing works, in full</a>.</>}
+    </p>
+  </div>
+</section>
