@@ -128,6 +128,12 @@ const memberRates = ladder.memberSitePct != null && ladder.memberDeskPct != null
             {tierBands.map((t) => <li>{t.name}: from {gbp2(t.fromPrice)} a month</li>)}
           </ul>
         )}
+        {/* P77 (7 Nov 2026): no plan is closed by size. Above each tier's top band it carries a
+            per-person rate, read from the synced plan_bands (extra_per_person), never typed. */}
+        {tierBands.filter((t) => t.bands.length && t.bands[t.bands.length - 1].extra_per_person != null).map((t) => {
+          const top = t.bands[t.bands.length - 1];
+          return <p class="pnote">{t.name} above {top.max_people} people: {gbp2(top.price)} plus {gbp2(top.extra_per_person)} a person a month{vatEnabled ? ', ex VAT' : ''}.</p>;
+        })}
         <p class="pnote">A month{vatEnabled ? ', ex VAT' : ''}. The Elite Managed Service is quoted to your sites and services.</p>
       </div>
     </section>

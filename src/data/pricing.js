@@ -356,6 +356,6 @@ export const tierBands = TIER_ORDER.map((code) => {
   return {
     code, name: TIER_NAME[code],
     fromPrice: displayPrice(rows.length ? Math.min(...rows.map((b) => Number(b.price))) : plan.base_monthly),
-    bands: rows.map((b) => ({ ...b, price: displayPrice(b.price) })),
+    bands: rows.map((b) => ({ ...b, price: displayPrice(b.price), extra_per_person: b.extra_per_person == null ? null : displayPrice(b.extra_per_person) })),
   };
 }).filter(Boolean);
