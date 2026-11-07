@@ -232,10 +232,10 @@ export const tiers = live.plans.map((p) => ({
 const discounts = live.services.map((s) => s.member_discount_pct).filter((d) => d > 0);
 export const memberDiscountPct = discounts.length ? Math.max(...discounts) : null;
 
-// The rate a site inspection is priced at inside a membership programme, from
-// the portal's location_zones (one rate on every zone). Null if the snapshot
-// predates it, and the page then says nothing rather than a stale figure.
-export const contractVisitRate = Number(live.contract_visit_rate) || null;
+// P75 (Reiss, 7 Nov 2026): the Managed Service plan rate for a site inspection
+// (live.contract_visit_rate, location_zones.visit_cost) is still synced but is
+// NOT published: it is a per-client figure recorded on the client's Schedule 1.
+// The site says "your plan rate" instead. Do not export it for a page.
 export const adhocVisitRate = byCode.SITE_VISIT ? byCode.SITE_VISIT.adhoc_price : null;
 
 export const vatPct = live.config.vat_pct;
@@ -273,32 +273,40 @@ export const ladder = {
   managedDeskPct: n(L.managed_desk_pct),
 };
 // P72 (Reiss, 7 Nov 2026, as corrected): site inspections are not on the Managed
-// Service percentage. Each inspection in the plan is the contract visit rate
-// (location_zones.visit_cost, synced: £300 today); one beyond the plan is the
-// member rate. The percentages apply to all other work.
+// Service percentage. Each inspection in the plan is at the client's plan rate
+// (Schedule 1); one beyond the plan is at the member rate. The percentages apply
+// to all other work.
 export const ladderHasManaged = ladder.managedSitePct != null && ladder.managedDeskPct != null;
+// "Up to": the larger of the two percentages on each rung, null when not synced.
+const upTo = (a, b) => (a == null && b == null ? null : Math.max(a ?? 0, b ?? 0));
+export const memberUpToPct = upTo(ladder.memberSitePct, ladder.memberDeskPct);
+export const managedUpToPct = ladderHasManaged ? upTo(ladder.managedSitePct, ladder.managedDeskPct) : null;
 
-const less = (price, pct) => (price == null || pct == null ? null : Math.round(price * (100 - pct)) / 100);
 const svc = (code) => byCode[code] || null;
 
-// Example rates for the ladder table, from the live catalogue. Every figure is
-// the public display price (see displayPrice above), net.
+// P75 (Reiss, 7 Nov 2026): the website shows the rate card (list) price and the
+// ladder as PERCENTAGES. No member or Managed Service figure is computed here,
+// so none can reach a page; each client's exact rates are on its Schedule 1 and
+// each quote. Each row: the list price, and the member and Managed Service
+// percentage off for that line (null when not synced: the page then words it
+// without a number).
 function exampleRow(code, label, kind) {
   const row = svc(code);
   if (!row) return null;
   const base = Number(row.adhoc_price);
-  const pctM = kind === 'desk' ? ladder.memberDeskPct : ladder.memberSitePct;
-  const pctX = kind === 'desk' ? ladder.managedDeskPct : ladder.managedSitePct;
-  const member = less(displayPrice(base), pctM);
   const siteInspection = code === 'SITE_VISIT';
+  const own = Number(row.member_discount_pct);
+  // A line the catalogue does not discount is not discounted on either rung.
+  const undiscounted = Number.isFinite(own) && own === 0;
+  const memberPct = undiscounted ? 0 : (kind === 'desk' ? ladder.memberDeskPct : ladder.memberSitePct);
+  const managedPct = undiscounted ? 0 : siteInspection ? null
+    : (ladderHasManaged ? (kind === 'desk' ? ladder.managedDeskPct : ladder.managedSitePct) : null);
   return {
     code, label, from: !!row.price_from, siteInspection,
     payg: displayPrice(base),
-    member,
-    // A site inspection: the plan rate, and the member rate beyond the plan.
-    managed: siteInspection ? null : ladderHasManaged ? less(displayPrice(base), pctX) : null,
-    managedInPlan: siteInspection && contractVisitRate ? displayPrice(contractVisitRate) : null,
-    managedBeyond: siteInspection ? member : null,
+    memberPct,
+    // A site inspection: the plan rate in the plan, the member percentage beyond it.
+    managedPct,
   };
 }
 export const ladderExamples = [
@@ -307,7 +315,7 @@ export const ladderExamples = [
   exampleRow('FRA', 'Fire risk assessment, per building', 'site'),
 ].filter(Boolean);
 
-// Pence, for prices that are not whole pounds (member rates usually are not).
+// Pence, for prices that are not whole pounds (a banded plan price usually is not).
 export const gbp2 = (v) =>
   '£' + (Number(v) || 0).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 

@@ -5,7 +5,7 @@ import CtaBand from '../components/CtaBand.astro';
 import PricingLadder from '../components/PricingLadder.astro';
 import { business as b, showTierFromPrices } from '../data/site.js';
 import {
-  serviceGroups, howItWorks, missingCodes, contractVisitRate, gbp, gbp2, displayPrice, vatEnabled, vatPctLabel, ladder, tierBands,
+  serviceGroups, howItWorks, missingCodes, memberUpToPct, gbp, gbp2, displayPrice, vatEnabled, vatPctLabel, ladder, tierBands,
 } from '../data/pricing.js';
 
 // Surface a curation mistake at build time rather than shipping a gap.
@@ -62,7 +62,7 @@ if (missingCodes.length) {
     {vatEnabled ? `Prices are ex VAT, with VAT added at ${vatPctLabel}, and shown as a guide` : 'Prices are shown as a guide'} to help you budget. Your final fixed price is confirmed in
     your written quote once we've scoped the work: number of sites, size, sector and complexity.
     Travel outside our standard area and any third-party or scheme fees are charged at cost.
-    {ladder.memberSitePct != null && ladder.memberDeskPct != null && ` Lanyard members pay member rates: ${ladder.memberSitePct}% off site work and ${ladder.memberDeskPct}% off desk work.`}
+    {ladder.memberSitePct != null && ladder.memberDeskPct != null && ` Lanyard members get up to ${memberUpToPct}% off: ${ladder.memberSitePct}% off site work and ${ladder.memberDeskPct}% off desk work. Your own rates are on your quote.`}
   </p>
 
   <PricingLadder compact />
@@ -104,7 +104,7 @@ if (missingCodes.length) {
           ) : (
             <p>Your membership price depends on how many people are on your account, and Lanyard shows it before you sign.</p>
           )}
-          <p>The Elite Managed Service is <b>quoted</b> to your sites and services.{contractVisitRate && <> Site inspections in your plan are <b>{gbp2(displayPrice(contractVisitRate))}</b>{vatEnabled ? ' ex VAT' : ''} each at every site. Travel outside our home area is charged at cost.</>} <a href="/how-pricing-works/">How pricing works</a>.</p>
+          <p>The Elite Managed Service is <b>quoted</b> to your sites and services. Site inspections in your plan are at your plan rate, the same at every site and always lower than booking them one at a time. Travel outside our home area is charged at cost. <a href="/how-pricing-works/">How pricing works</a>.</p>
           <p><b>Tell us what you have and we will recommend the right level with a fixed monthly
             price.</b></p>
           <div class="ck-cta-row">

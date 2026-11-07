@@ -5,7 +5,7 @@ import PricingLadder from '../components/PricingLadder.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { business as b, showTierPrices, showTierFromPrices } from '../data/site.js';
 import {
-  ladder, terms, travel, tierBands, gbp2, vatEnabled, vatPctLabel, contractVisitRate, displayPrice,
+  ladder, terms, travel, tierBands, gbp2, vatEnabled, vatPctLabel, memberUpToPct,
 } from '../data/pricing.js';
 
 // Every figure on this page comes from pricing-live.json (scripts/sync-pricing.mjs).
@@ -19,18 +19,18 @@ const extra24 = terms.extraAllowance24Pct != null
 const mileage = travel.mileagePence != null ? `${travel.mileagePence}p a mile` : 'a mileage rate';
 const night = travel.overnight != null ? `${gbp2(travel.overnight)} a night` : 'a night away';
 const memberRates = ladder.memberSitePct != null && ladder.memberDeskPct != null
-  ? `${ladder.memberSitePct}% off site work and ${ladder.memberDeskPct}% off desk work`
-  : 'member rates';
+  ? `up to ${memberUpToPct}% off every job (${ladder.memberSitePct}% off site work, ${ladder.memberDeskPct}% off desk work)`
+  : 'the member discount';
 ---
 <Base
   title="How Our Pricing Works | Pay As You Go, Lanyard, Managed Service | Elite H&S"
-  description="How Elite Health & Safety prices its work: pay as you go at the rate card, member rates for every Lanyard member, and lower rates again on the Elite Managed Service. Terms, travel and VAT explained."
+  description="How Elite Health & Safety prices its work: pay as you go at the rate card, a member discount for every Lanyard member, and a bigger discount on the Elite Managed Service. Terms, travel and VAT explained."
   canonical="https://elitehealthandsafety.co.uk/how-pricing-works/">
 
   <PageHero
     eyebrow="Pricing"
     title="How our pricing works"
-    lead="Three ways to have Elite do your health and safety work. Every step up costs less per job, and every price is published before you ask for it."
+    lead="Three ways to have Elite do your health and safety work. Every step up takes more off each job, and the rate card is published before you ask for it."
     ctaText="Get a fixed quote"
     cta2Text="See the rate card"
     cta2Href="/pricing/" />
@@ -79,7 +79,7 @@ const memberRates = ladder.memberSitePct != null && ladder.memberDeskPct != null
         <li>Beyond that: {mileage} for the whole round trip.</li>
         <li>{night} where one leg of the journey is more than {travel.nightBeyondMiles} miles, or a ferry is needed.</li>
         <li>Desk work never carries a journey. The journey is shown per site on your quote.</li>
-        {contractVisitRate && <li>On the Elite Managed Service a site inspection in your plan is {gbp2(displayPrice(contractVisitRate))}{vatEnabled ? ' ex VAT' : ''} at every site: distance is never in the fee.</li>}
+        <li>On the Elite Managed Service a site inspection in your plan is at your plan rate, the same at every site: distance is never in the fee.</li>
       </ul>
     </div>
   </section>
