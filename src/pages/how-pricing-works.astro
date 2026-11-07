@@ -94,7 +94,7 @@ const seatPlans = tierBands.length > 0 && tierBands.every((t) => t.bands.length 
         <div class="sec-head">
           <div class="eyebrow">Lanyard plans</div>
           <h2>One monthly price for your company</h2>
-          <p class="lead">Indicative prices. Your price depends on how many people are on your account, and Lanyard shows it before you sign. No setup fee, no seat charge, no charge for sites.</p>
+          <p class="lead">Indicative prices. Your price depends on how many people are on your account, and Lanyard shows it before you sign. A base price includes a number of people, then a small charge for each person above it. No setup fee, no charge for sites.</p>
         </div>
         <ul class="check-list">
           {tierBands.map((t) => <li><span><b>{t.name}</b>: from {gbp2(t.fromPrice)} a month{vatEnabled ? ' plus VAT' : ''}</span></li>)}
@@ -111,7 +111,7 @@ const seatPlans = tierBands.length > 0 && tierBands.every((t) => t.bands.length 
         <div class="sec-head">
           <div class="eyebrow">Lanyard plans</div>
           <h2>One monthly price for your company</h2>
-          <p class="lead">{seatPlans ? 'A base price that includes a number of people, then a price for each person above it. No setup fee, no charge for sites or sign-ins.' : 'Set by the plan you choose and the number of people on your account. No setup fee, no seat charge, no charge for sites.'}</p>
+          <p class="lead">{seatPlans ? 'A base price that includes a number of people, then a price for each person above it. No setup fee, no charge for sites or sign-ins.' : 'Set by the plan you choose and the number of people on your account. No setup fee, no charge for sites.'}</p>
         </div>
         {/* P78 (7 Nov 2026): each plan is a base price including a block of people, then a price a
             person above it, held as ONE plan_bands row per plan version (min 1, max = the block,
