@@ -3,9 +3,9 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import PricingLadder from '../components/PricingLadder.astro';
-import { business as b } from '../data/site.js';
+import { business as b, showTierFromPrices } from '../data/site.js';
 import {
-  serviceGroups, howItWorks, missingCodes, contractVisitRate, gbp, displayPrice, vatEnabled, vatPctLabel, ladder,
+  serviceGroups, howItWorks, missingCodes, contractVisitRate, gbp, gbp2, displayPrice, vatEnabled, vatPctLabel, ladder, tierBands,
 } from '../data/pricing.js';
 
 // Surface a curation mistake at build time rather than shipping a gap.
@@ -67,8 +67,9 @@ if (missingCodes.length) {
 
   <PricingLadder compact />
 
-  <!-- MEMBERSHIP - described, not priced. Tiers are being revised, so this
-       sends people to a conversation rather than publishing figures that move. -->
+  <!-- MEMBERSHIP. P72 (Reiss, 7 Nov 2026): each Lanyard plan as an indicative
+       "from" price only (the lowest synced band), never the band table; the
+       Managed Service is quoted. -->
   <section id="membership" class="courses">
     <div class="wrap section-narrow">
       <div class="sec-head">
@@ -88,18 +89,22 @@ if (missingCodes.length) {
             <li>Elite as your competent person, named on PQQs and accreditation returns</li>
             <li>Your policy pack, built from our template library</li>
             <li>Member rates on every job we do for you, on a term or monthly rolling</li>
-            <li>Want the work delivered as well? The Elite Managed Service adds scheduled site inspections, with full Lanyard Pro access included</li>
+            <li>Want the work delivered as well? The Elite Managed Service adds a planned programme of site inspections, with full Lanyard Pro access included</li>
           </ul>
         </div>
         <div class="member-aside">
           <div class="eyebrow" style="color:var(--accent)">Pricing</div>
-          <p>Membership levels are tailored to your sites, headcount and sector, and we are
-            currently updating them, so we would rather quote you properly than publish a number
-            that does not fit your business.</p>
-          {contractVisitRate && (
-            <p>On the Elite Managed Service, scheduled site inspections are <b>{gbp(displayPrice(contractVisitRate))} a visit</b>{vatEnabled ? ' ex VAT' : ''} at every site.
-              Travel outside our home area is charged at cost. <a href="/how-pricing-works/">How pricing works</a>.</p>
+          {showTierFromPrices && tierBands.length > 0 ? (
+            <>
+              <ul class="check-list">
+                {tierBands.map((t) => <li><span>{t.name}: from <b>{gbp2(t.fromPrice)}</b> a month{vatEnabled ? ' plus VAT' : ''}</span></li>)}
+              </ul>
+              <p class="pnote">Indicative: your price depends on how many people are on your account, and Lanyard shows it before you sign.</p>
+            </>
+          ) : (
+            <p>Your membership price depends on how many people are on your account, and Lanyard shows it before you sign.</p>
           )}
+          <p>The Elite Managed Service is <b>quoted</b> to your sites and services.{contractVisitRate && <> Site inspections in your plan are <b>{gbp2(displayPrice(contractVisitRate))}</b>{vatEnabled ? ' ex VAT' : ''} each at every site. Travel outside our home area is charged at cost.</>} <a href="/how-pricing-works/">How pricing works</a>.</p>
           <p><b>Tell us what you have and we will recommend the right level with a fixed monthly
             price.</b></p>
           <div class="ck-cta-row">

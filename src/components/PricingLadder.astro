@@ -10,10 +10,15 @@ const m = ladder;
 const memberLine = m.memberSitePct != null && m.memberDeskPct != null
   ? `${m.memberSitePct}% off site work and ${m.memberDeskPct}% off desk work`
   : 'member rates on every job';
+// P72: the Managed Service is quoted. Site inspections in the plan are the synced
+// contract visit rate; one beyond the plan is the member rate; the percentages
+// (margin_rules, when synced) apply to all other work.
 const managedLine = ladderHasManaged
-  ? `${m.managedSitePct}% off site work and ${m.managedDeskPct}% off desk work beyond your plan`
-  : 'work beyond your plan at your Managed Service rate, set out in your proposal';
+  ? `${m.managedSitePct}% off other site work and ${m.managedDeskPct}% off desk work`
+  : 'other work at your Managed Service rate, set out in your proposal';
 const exVat = vatEnabled ? ' ex VAT' : '';
+const siteRow = ladderExamples.find((r) => r.siteInspection);
+const showManaged = ladderHasManaged || !!(siteRow && siteRow.managedInPlan);
 ---
 <section id="how-pricing-works" class="ladder-sec">
   <div class="wrap">
@@ -41,32 +46,41 @@ const exVat = vatEnabled ? ' ex VAT' : '';
         <h3>Elite Managed Service</h3>
         <p>We deliver your health and safety for you, priced site by site, with full Lanyard Pro access included.</p>
         <p class="rung-key">
-          {contractVisitRate ? `Scheduled site inspections at ${gbp2(displayPrice(contractVisitRate))} each${exVat}, wherever the site is, and ` : ''}{managedLine}
+          Quoted to your sites and services.{' '}
+          {contractVisitRate ? `Site inspections in your plan at ${gbp2(displayPrice(contractVisitRate))} each${exVat}, wherever the site is${siteRow && siteRow.member != null ? `; further ones at the member rate, from ${gbp2(siteRow.member)}` : ''}; ` : ''}{managedLine}
         </p>
       </li>
     </ol>
 
     {ladderExamples.length > 0 && (
-      <div class={`ptable ladder-table ${ladderHasManaged ? 'cols-4' : 'cols-3'}`} role="table" aria-label="What a job costs at each step">
+      <div class={`ptable ladder-table ${showManaged ? 'cols-4' : 'cols-3'}`} role="table" aria-label="What a job costs at each step">
         <div class="lrow lhead" role="row">
           <span role="columnheader" class="lname">Work</span>
           <span role="columnheader">Pay as you go</span>
           <span role="columnheader">Lanyard member</span>
-          {ladderHasManaged && <span role="columnheader">Managed Service</span>}
+          {showManaged && <span role="columnheader">Managed Service</span>}
         </div>
         {ladderExamples.map((r) => (
           <div class="lrow" role="row">
             <span role="cell" class="lname">{r.label}</span>
             <span role="cell" data-label="Pay as you go"><b>{r.from ? 'from ' : ''}{gbp2(r.payg)}</b></span>
             <span role="cell" data-label="Lanyard member"><b>{r.member != null ? `${r.from ? 'from ' : ''}${gbp2(r.member)}` : 'Member rate'}</b></span>
-            {ladderHasManaged && <span role="cell" data-label="Managed Service"><b>{r.from ? 'from ' : ''}{gbp2(r.managed)}</b></span>}
+            {showManaged && (
+              <span role="cell" class="lms" data-label="Managed Service">
+                {r.siteInspection
+                  ? (r.managedInPlan != null
+                      ? <><b>{gbp2(r.managedInPlan)}</b> in your plan<br /><small>further: member rate{r.managedBeyond != null ? `, from ${gbp2(r.managedBeyond)}` : ''}</small></>
+                      : <b>Quoted</b>)
+                  : (r.managed != null ? <b>{r.from ? 'from ' : ''}{gbp2(r.managed)}</b> : <b>Quoted</b>)}
+              </span>
+            )}
           </div>
         ))}
       </div>
     )}
     <p class="pnote">
       {vatEnabled ? 'Prices ex VAT. ' : ''}Site work is work done at your premises; a job that is partly on site counts as site work. Desk work is consultancy and work done away from your site. Quoted work is discounted in the same way. Travel is charged at cost and is never discounted.
-      {!ladderHasManaged && ' The Managed Service rate for work beyond your plan is set out in your proposal.'}
+      {' '}The Elite Managed Service is quoted to your sites and services.{!ladderHasManaged && ' Its rate for other work is set out in your proposal.'}
       {compact && <> <a href="/how-pricing-works/">How pricing works, in full</a>.</>}
     </p>
   </div>

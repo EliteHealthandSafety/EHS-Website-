@@ -79,8 +79,11 @@ const GROUPS = [
     title: 'Assessments & site inspections',
     blurb: 'Identify the hazards, evidence your compliance, and keep your people safe.',
     items: [
-      { code: 'SITE_VISIT' },
-      { code: 'INSPECTION_DAY', unit: 'per day' },
+      // P72: from £365 since migration 843 (price_from true): the journey at cost,
+      // a larger site quoted up. Read from the sync, never typed.
+      { code: 'SITE_VISIT', unit: 'per site address',
+        detail: 'One site address, one report. The journey is added at cost beyond 25 miles of Clydebank; a larger site is quoted up before you accept.' },
+      // No 'INSPECTION_DAY': it is not a client-facing product (DECISIONS P64(13)).
       { code: 'GEN_RA' },
       { code: 'COSHH' },
       { code: 'DSE', name: 'DSE workstation assessment' },
@@ -269,6 +272,10 @@ export const ladder = {
   managedSitePct: n(L.managed_site_pct),
   managedDeskPct: n(L.managed_desk_pct),
 };
+// P72 (Reiss, 7 Nov 2026, as corrected): site inspections are not on the Managed
+// Service percentage. Each inspection in the plan is the contract visit rate
+// (location_zones.visit_cost, synced: £300 today); one beyond the plan is the
+// member rate. The percentages apply to all other work.
 export const ladderHasManaged = ladder.managedSitePct != null && ladder.managedDeskPct != null;
 
 const less = (price, pct) => (price == null || pct == null ? null : Math.round(price * (100 - pct)) / 100);
@@ -282,11 +289,16 @@ function exampleRow(code, label, kind) {
   const base = Number(row.adhoc_price);
   const pctM = kind === 'desk' ? ladder.memberDeskPct : ladder.memberSitePct;
   const pctX = kind === 'desk' ? ladder.managedDeskPct : ladder.managedSitePct;
+  const member = less(displayPrice(base), pctM);
+  const siteInspection = code === 'SITE_VISIT';
   return {
-    code, label, from: !!row.price_from,
+    code, label, from: !!row.price_from, siteInspection,
     payg: displayPrice(base),
-    member: less(displayPrice(base), pctM),
-    managed: ladderHasManaged ? less(displayPrice(base), pctX) : null,
+    member,
+    // A site inspection: the plan rate, and the member rate beyond the plan.
+    managed: siteInspection ? null : ladderHasManaged ? less(displayPrice(base), pctX) : null,
+    managedInPlan: siteInspection && contractVisitRate ? displayPrice(contractVisitRate) : null,
+    managedBeyond: siteInspection ? member : null,
   };
 }
 export const ladderExamples = [
@@ -323,8 +335,10 @@ export const travel = {
   overnight: n(live.travel?.overnight_rate) ?? n(live.config?.overnight_rate),
 };
 
-// Tier prices: the full band grid, from plan_bands via the sync. Whether they
-// appear on the site at all is Reiss's decision: see showTierPrices in site.js.
+// Tier prices, from plan_bands via the sync. The full grid shows only with
+// showTierPrices; the "from" price (showTierFromPrices, P72) is the LOWEST band
+// price of the tier's live version, falling back to base_monthly (the band A
+// headline) only when the snapshot predates the band sync.
 const TIER_ORDER = ['LITE', 'STANDARD', 'PRO'];
 const TIER_NAME = { LITE: 'Lanyard Lite', STANDARD: 'Lanyard Standard', PRO: 'Lanyard Pro' };
 export const tierBands = TIER_ORDER.map((code) => {
@@ -333,7 +347,7 @@ export const tierBands = TIER_ORDER.map((code) => {
   const rows = (live.bands || []).filter((b) => b.plan_code === code);
   return {
     code, name: TIER_NAME[code],
-    fromPrice: displayPrice(plan.base_monthly),
+    fromPrice: displayPrice(rows.length ? Math.min(...rows.map((b) => Number(b.price))) : plan.base_monthly),
     bands: rows.map((b) => ({ ...b, price: displayPrice(b.price) })),
   };
 }).filter(Boolean);

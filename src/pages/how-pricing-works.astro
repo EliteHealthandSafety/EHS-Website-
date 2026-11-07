@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import PricingLadder from '../components/PricingLadder.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { business as b, showTierPrices } from '../data/site.js';
+import { business as b, showTierPrices, showTierFromPrices } from '../data/site.js';
 import {
   ladder, terms, travel, tierBands, gbp2, vatEnabled, vatPctLabel, contractVisitRate, displayPrice,
 } from '../data/pricing.js';
@@ -79,10 +79,27 @@ const memberRates = ladder.memberSitePct != null && ladder.memberDeskPct != null
         <li>Beyond that: {mileage} for the whole round trip.</li>
         <li>{night} where one leg of the journey is more than {travel.nightBeyondMiles} miles, or a ferry is needed.</li>
         <li>Desk work never carries a journey. The journey is shown per site on your quote.</li>
-        {contractVisitRate && <li>On the Elite Managed Service a scheduled site inspection is {gbp2(displayPrice(contractVisitRate))}{vatEnabled ? ' ex VAT' : ''} at every site: distance is never in the fee.</li>}
+        {contractVisitRate && <li>On the Elite Managed Service a site inspection in your plan is {gbp2(displayPrice(contractVisitRate))}{vatEnabled ? ' ex VAT' : ''} at every site: distance is never in the fee.</li>}
       </ul>
     </div>
   </section>
+
+  {!showTierPrices && showTierFromPrices && tierBands.length > 0 && (
+    <section class="courses" id="lanyard-plans">
+      <div class="wrap section-narrow">
+        <div class="sec-head">
+          <div class="eyebrow">Lanyard plans</div>
+          <h2>One monthly price for your company</h2>
+          <p class="lead">Indicative prices. Your price depends on how many people are on your account, and Lanyard shows it before you sign. No setup fee, no seat charge, no charge for sites.</p>
+        </div>
+        <ul class="check-list">
+          {tierBands.map((t) => <li><span><b>{t.name}</b>: from {gbp2(t.fromPrice)} a month{vatEnabled ? ' plus VAT' : ''}</span></li>)}
+          <li><span><b>Elite Managed Service</b>: quoted to your sites and services, with full Lanyard Pro access included</span></li>
+        </ul>
+        <p class="pnote">From {vatEnabled ? 'prices are net, plus VAT, and are' : 'prices are'} the smallest size on each plan; your price depends on how many people are on your account.</p>
+      </div>
+    </section>
+  )}
 
   {showTierPrices && tierBands.length > 0 && (
     <section class="courses" id="lanyard-plans">

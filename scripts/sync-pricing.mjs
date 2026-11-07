@@ -142,8 +142,12 @@ try {
     // Desk work: a dedicated key if the portal grows one, else the live
     // consultancy row, which carries the desk rate.
     member_desk_pct: pct(mr.member_desk_discount_pct) ?? pct(byCode.CONSULTANCY?.member_discount_pct),
-    managed_site_pct: pct(mr.managed_service_discount_pct),
-    managed_desk_pct: pct(mr.managed_service_desk_discount_pct),
+    // The portal stores the rung as { site, desk } (ehs-app migration 890); a flat
+    // number pair is read too. Never defaulted: absent means the page says less.
+    managed_site_pct: typeof mr.managed_service_discount_pct === 'object' && mr.managed_service_discount_pct
+      ? pct(mr.managed_service_discount_pct.site) : pct(mr.managed_service_discount_pct),
+    managed_desk_pct: typeof mr.managed_service_discount_pct === 'object' && mr.managed_service_discount_pct
+      ? pct(mr.managed_service_discount_pct.desk) : pct(mr.managed_service_desk_discount_pct),
   };
   const annualPrepayPct = pct(cfg.annual_prepay?.pct);
   const termRows = terms.map((t) => ({

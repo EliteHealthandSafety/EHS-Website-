@@ -734,6 +734,8 @@
 .ladder-table .lrow+.lrow{border-top:1px solid var(--border)}
 .ladder-table .lhead{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .ladder-table .lrow span:not(.lname){text-align:right;white-space:nowrap}
+.ladder-table .lrow span.lms{white-space:normal}
+.ladder-table .lms small{color:var(--muted)}
 .ladder-table .lname{font-weight:700}
 .ladder-table .lhead .lname{font-weight:inherit}
 .terms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -751,4 +753,5 @@
   .ladder-table .lhead{display:none}
   .ladder-table .lrow span[data-label]::before{content:attr(data-label);display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .ladder-table .lrow span:not(.lname){text-align:left}
+  .ladder-table .lrow span.lms{grid-column:1/-1}
 }
