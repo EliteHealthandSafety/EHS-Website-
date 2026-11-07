@@ -21,6 +21,9 @@ const night = travel.overnight != null ? `${gbp2(travel.overnight)} a night` : '
 const memberRates = ladder.memberSitePct != null && ladder.memberDeskPct != null
   ? `up to ${memberUpToPct}% off every job (${ladder.memberSitePct}% off site work, ${ladder.memberDeskPct}% off desk work)`
   : 'the member discount';
+// P78: every plan is a base price including a block of people, then a seat rate (one band row each).
+const seatPlans = tierBands.length > 0 && tierBands.every((t) => t.bands.length === 1 && Number(t.bands[0].min_people) === 1
+  && t.bands[0].max_people != null && t.bands[0].extra_per_person != null);
 ---
 <Base
   title="How Our Pricing Works | Pay As You Go, Lanyard, Managed Service | Elite H&S"
@@ -107,9 +110,28 @@ const memberRates = ladder.memberSitePct != null && ladder.memberDeskPct != null
         <div class="sec-head">
           <div class="eyebrow">Lanyard plans</div>
           <h2>One monthly price for your company</h2>
-          <p class="lead">Set by the plan you choose and the number of people on your account. No setup fee, no seat charge, no charge for sites.</p>
+          <p class="lead">{seatPlans ? 'A base price that includes a number of people, then a price for each person above it. No setup fee, no charge for sites or sign-ins.' : 'Set by the plan you choose and the number of people on your account. No setup fee, no seat charge, no charge for sites.'}</p>
         </div>
-        {tierBands.every((t) => t.bands.length > 0) ? (
+        {/* P78 (7 Nov 2026): each plan is a base price including a block of people, then a price a
+            person above it, held as ONE plan_bands row per plan version (min 1, max = the block,
+            extra_per_person = the seat rate). Read from the synced data, never typed. */}
+        {seatPlans ? (
+          <div class="table-scroll">
+            <table class="band-table">
+              <thead><tr><th>Plan</th><th>A month</th><th>Includes</th><th>Each person above that</th></tr></thead>
+              <tbody>
+                {tierBands.map((t) => (
+                  <tr>
+                    <td><b>{t.name}</b></td>
+                    <td>{gbp2(t.bands[0].price)}</td>
+                    <td>{t.bands[0].max_people} people</td>
+                    <td>{gbp2(t.bands[0].extra_per_person)} a month</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : tierBands.every((t) => t.bands.length > 0) ? (
           <div class="table-scroll">
             <table class="band-table">
               <thead><tr><th>Plan</th><th>Band A</th><th>Band B</th><th>Band C</th><th>Band D</th></tr></thead>
@@ -130,10 +152,11 @@ const memberRates = ladder.memberSitePct != null && ladder.memberDeskPct != null
         )}
         {/* P77 (7 Nov 2026): no plan is closed by size. Above each tier's top band it carries a
             per-person rate, read from the synced plan_bands (extra_per_person), never typed. */}
-        {tierBands.filter((t) => t.bands.length && t.bands[t.bands.length - 1].extra_per_person != null).map((t) => {
+        {!seatPlans && tierBands.filter((t) => t.bands.length && t.bands[t.bands.length - 1].extra_per_person != null).map((t) => {
           const top = t.bands[t.bands.length - 1];
           return <p class="pnote">{t.name} above {top.max_people} people: {gbp2(top.price)} plus {gbp2(top.extra_per_person)} a person a month{vatEnabled ? ', ex VAT' : ''}.</p>;
         })}
+        {seatPlans && <p class="pnote">Each month is charged on its highest headcount; when it falls, the next month costs less. Nothing is backdated.</p>}
         <p class="pnote">A month{vatEnabled ? ', ex VAT' : ''}. The Elite Managed Service is quoted to your sites and services.</p>
       </div>
     </section>
