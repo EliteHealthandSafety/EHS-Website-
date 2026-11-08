@@ -1,0 +1,182 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import PricingLadder from '../components/PricingLadder.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business as b, showTierPrices, showTierFromPrices } from '../data/site.js';
+import {
+  ladder, terms, travel, tierBands, gbp2, vatEnabled, vatPctLabel, memberUpToPct,
+} from '../data/pricing.js';
+
+// Every figure on this page comes from pricing-live.json (scripts/sync-pricing.mjs).
+// Where a figure is not synced yet, the sentence is worded without it.
+const rolling = terms.rollingPct != null
+  ? `at the term price plus ${terms.rollingPct}%`
+  : 'at the published monthly rolling price, which is higher than the term price';
+const extra24 = terms.extraAllowance24Pct != null
+  ? `with ${terms.extraAllowance24Pct}% more allowance`
+  : 'with more allowance';
+const mileage = travel.mileagePence != null ? `${travel.mileagePence}p a mile` : 'a mileage rate';
+const night = travel.overnight != null ? `${gbp2(travel.overnight)} a night` : 'a night away';
+const memberRates = ladder.memberSitePct != null && ladder.memberDeskPct != null
+  ? `up to ${memberUpToPct}% off every job (${ladder.memberSitePct}% off site work, ${ladder.memberDeskPct}% off desk work)`
+  : 'the member discount';
+// P78: every plan is a base price including a block of people, then a seat rate (one band row each).
+const seatPlans = tierBands.length > 0 && tierBands.every((t) => t.bands.length === 1 && Number(t.bands[0].min_people) === 1
+  && t.bands[0].max_people != null && t.bands[0].extra_per_person != null);
+---
+<Base
+  title="How Our Pricing Works | Pay As You Go, Lanyard, Managed Service | Elite H&S"
+  description="How Elite Health & Safety prices its work: pay as you go at the rate card, a member discount for every Lanyard member, and a bigger discount on the Elite Managed Service. Terms, travel and VAT explained."
+  canonical="https://elitehealthandsafety.co.uk/how-pricing-works/">
+
+  <PageHero
+    eyebrow="Pricing"
+    title="How our pricing works"
+    lead="Three ways to have Elite do your health and safety work. Every step up takes more off each job, and the rate card is published before you ask for it."
+    ctaText="Get a fixed quote"
+    cta2Text="See the rate card"
+    cta2Href="/pricing/" />
+
+  <PricingLadder />
+
+  <section class="courses">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Terms</div>
+        <h2>Choose how long you sign up for</h2>
+        <p class="lead">A Lanyard membership earns {memberRates} on any of these terms.</p>
+      </div>
+      <div class="terms-grid">
+        <div class="rung">
+          <h3>12-month term</h3>
+          <p>The term price, fixed for the year. Any allowances in your plan can be used at any time in the year. Lanyard plans are paid monthly by Direct Debit.</p>
+        </div>
+        <div class="rung">
+          <h3>Monthly rolling</h3>
+          <p>No minimum term, {rolling}. No counted allowances: any work is booked at member rates. Your support line and Lanyard carry on.</p>
+        </div>
+        <div class="rung">
+          <h3>24-month term</h3>
+          <p>The term price, locked for both years, {extra24}. Price changes reach you only at renewal.</p>
+        </div>
+      </div>
+      <ul class="check-list">
+        <li>We offer a renewal at least 90 days before your term ends, and you accept it in Lanyard.</li>
+        <li>A plan that is not renewed carries on as monthly rolling.</li>
+        <li>The Elite Managed Service can be paid monthly, or annually with 10% off its Lanyard Pro part (never the inspections); people above the 25 Lanyard Pro includes are charged monthly.</li>
+        <li>The Elite Managed Service runs on a minimum term. If it is not renewed, you carry on with Lanyard Pro monthly rolling, with site work at member rates.</li>
+        <li>Ending a term early costs half the fees left in it, never less than three months' fees and never more than the fees left.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap section-narrow">
+      <div class="sec-head">
+        <div class="eyebrow">Travel</div>
+        <h2>Travel is charged at cost, and never discounted</h2>
+        <p class="lead">It is never marked up and it earns us nothing, so the price of the work is the same wherever you are.</p>
+      </div>
+      <ul class="check-list">
+        <li>Within {travel.homeRadiusMiles} miles of our Clydebank office: no travel charge.</li>
+        <li>Beyond that: {mileage} for the whole round trip.</li>
+        <li>{night} where one leg of the journey is more than {travel.nightBeyondMiles} miles, or a ferry is needed.</li>
+        <li>Desk work never carries a journey. The journey is shown per site on your quote.</li>
+        <li>On the Elite Managed Service a site inspection in your plan is at your plan rate, the same at every site: distance is never in the fee.</li>
+      </ul>
+    </div>
+  </section>
+
+  {!showTierPrices && showTierFromPrices && tierBands.length > 0 && (
+    <section class="courses" id="lanyard-plans">
+      <div class="wrap section-narrow">
+        <div class="sec-head">
+          <div class="eyebrow">Lanyard plans</div>
+          <h2>One monthly price for your company</h2>
+          <p class="lead">Indicative prices. Your price depends on how many people are on your account, and Lanyard shows it before you sign. A base price includes a number of people, then a small charge for each person above it. No setup fee, no charge for sites.</p>
+        </div>
+        <ul class="check-list">
+          {tierBands.map((t) => <li><span><b>{t.name}</b>: from {gbp2(t.fromPrice)} a month{vatEnabled ? ' plus VAT' : ''}</span></li>)}
+          <li><span><b>Elite Managed Service</b>: quoted to your sites and services, with full Lanyard Pro access included</span></li>
+        </ul>
+        <p class="pnote">From {vatEnabled ? 'prices are net, plus VAT, and are' : 'prices are'} the smallest size on each plan; your price depends on how many people are on your account.</p>
+      </div>
+    </section>
+  )}
+
+  {showTierPrices && tierBands.length > 0 && (
+    <section class="courses" id="lanyard-plans">
+      <div class="wrap section-narrow">
+        <div class="sec-head">
+          <div class="eyebrow">Lanyard plans</div>
+          <h2>One monthly price for your company</h2>
+          <p class="lead">{seatPlans ? 'A base price that includes a number of people, then a price for each person above it. No setup fee, no charge for sites or sign-ins.' : 'Set by the plan you choose and the number of people on your account. No setup fee, no charge for sites.'}</p>
+        </div>
+        {/* P78 (7 Nov 2026): each plan is a base price including a block of people, then a price a
+            person above it, held as ONE plan_bands row per plan version (min 1, max = the block,
+            extra_per_person = the seat rate). Read from the synced data, never typed. */}
+        {seatPlans ? (
+          <div class="table-scroll">
+            <table class="band-table">
+              <thead><tr><th>Plan</th><th>A month</th><th>Includes</th><th>Each person above that</th></tr></thead>
+              <tbody>
+                {tierBands.map((t) => (
+                  <tr>
+                    <td><b>{t.name}</b></td>
+                    <td>{gbp2(t.bands[0].price)}</td>
+                    <td>{t.bands[0].max_people} people</td>
+                    <td>{gbp2(t.bands[0].extra_per_person)} a month</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : tierBands.every((t) => t.bands.length > 0) ? (
+          <div class="table-scroll">
+            <table class="band-table">
+              <thead><tr><th>Plan</th><th>Band A</th><th>Band B</th><th>Band C</th><th>Band D</th></tr></thead>
+              <tbody>
+                {tierBands.map((t) => (
+                  <tr>
+                    <td><b>{t.name}</b></td>
+                    {t.bands.map((bd) => <td>{gbp2(bd.price)}<br /><small>{bd.min_people} to {bd.max_people} people</small></td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <ul class="check-list">
+            {tierBands.map((t) => <li>{t.name}: from {gbp2(t.fromPrice)} a month</li>)}
+          </ul>
+        )}
+        {/* P77 (7 Nov 2026): no plan is closed by size. Above each tier's top band it carries a
+            per-person rate, read from the synced plan_bands (extra_per_person), never typed. */}
+        {!seatPlans && tierBands.filter((t) => t.bands.length && t.bands[t.bands.length - 1].extra_per_person != null).map((t) => {
+          const top = t.bands[t.bands.length - 1];
+          return <p class="pnote">{t.name} above {top.max_people} people: {gbp2(top.price)} plus {gbp2(top.extra_per_person)} a person a month{vatEnabled ? ', ex VAT' : ''}.</p>;
+        })}
+        {seatPlans && <p class="pnote">Each month is charged on its highest headcount; when it falls, the next month costs less. Nothing is backdated.</p>}
+        <p class="pnote">A month{vatEnabled ? ', ex VAT' : ''}. The Elite Managed Service is quoted to your sites and services.</p>
+      </div>
+    </section>
+  )}
+
+  <section>
+    <div class="wrap section-narrow">
+      <div class="sec-head">
+        <div class="eyebrow">VAT</div>
+        <h2>Prices are shown before VAT</h2>
+      </div>
+      <p>{vatEnabled
+        ? `Every price we publish is net. VAT is added at the rate in force, currently ${vatPctLabel}, and we issue a VAT invoice for it. Our VAT registration number is ${b.vatNumber}.`
+        : 'Every price we publish is the price you pay.'}</p>
+      <p class="pnote">Your own rates are recorded in your agreement when you sign and are fixed for your term.</p>
+    </div>
+  </section>
+
+  <CtaBand
+    heading="Not sure which step fits? Ask us."
+    text={`Twenty minutes on a call and a written price the same day. Call ${b.phoneDisplay} or send us the details.`} />
+</Base>

@@ -1,0 +1,83 @@
+---
+// The pricing ladder (P70): pay as you go, Lanyard member, Elite Managed Service.
+// Every figure comes from src/data/pricing.js, which reads pricing-live.json.
+// P75 (Reiss, 7 Nov 2026): the rate card (list) price and the ladder as
+// percentages only. No member or Managed Service figure is shown; each client's
+// exact rates are on its Schedule 1 and each quote.
+import {
+  ladder, ladderHasManaged, ladderExamples, memberUpToPct, managedUpToPct, gbp2, vatEnabled,
+} from '../data/pricing.js';
+
+const { compact = false } = Astro.props;
+const m = ladder;
+const memberLine = m.memberSitePct != null && m.memberDeskPct != null
+  ? `up to ${memberUpToPct}% off every job: ${m.memberSitePct}% off site work and ${m.memberDeskPct}% off desk work`
+  : 'a member discount on every job';
+// TODO(P70/P75): the Managed Service percentages come from app_config
+// margin_rules.managed_service_discount_pct via the sync. Until it is synced the
+// line carries no number; never type one here.
+const managedLine = ladderHasManaged
+  ? `up to ${managedUpToPct}% off work beyond your plan: ${m.managedSitePct}% off site work and ${m.managedDeskPct}% off desk work`
+  : 'a bigger discount than members on work beyond your plan, set out in your proposal';
+const pctOff = (p) => (p === 0 ? 'No discount' : `${p}% off`);
+---
+<section id="how-pricing-works" class="ladder-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">How pricing works</div>
+      <h2>Three ways to work with us. Every step up takes more off each job.</h2>
+      <p class="lead">The rate card is published here. Your own rates are worked out in Lanyard and shown on your quote before you accept it, and nothing chargeable is booked until you have.</p>
+    </div>
+
+    <ol class="ladder">
+      <li class="rung">
+        <div class="rung-no">Step 1</div>
+        <h3>Pay as you go</h3>
+        <p>No plan and no monthly fee. You sign our agreement once, by a secure link, and pay the published rate card price for each job.</p>
+        <p class="rung-key">You pay the rate card</p>
+      </li>
+      <li class="rung">
+        <div class="rung-no">Step 2</div>
+        <h3>Lanyard member</h3>
+        <p>Lanyard Lite, Standard or Pro: Lanyard by Elite Health &amp; Safety, our health and safety platform, with a dedicated support line and Elite as your competent person, for one monthly price, paid by Direct Debit.</p>
+        <p class="rung-key">Members get {memberLine}, on a 12 or 24-month term or monthly rolling</p>
+      </li>
+      <li class="rung rung-top">
+        <div class="rung-no">Step 3</div>
+        <h3>Elite Managed Service</h3>
+        <p>We deliver your health and safety for you, priced site by site, with full Lanyard Pro access included.</p>
+        <p class="rung-key">
+          Quoted to your sites and services. Site inspections planned in at your plan rate, the same at every site and always lower than booking them one at a time; further ones at the member rate; {managedLine}.
+        </p>
+      </li>
+    </ol>
+
+    {ladderExamples.length > 0 && (
+      <div class="ptable ladder-table cols-4" role="table" aria-label="The rate card and the discount at each step">
+        <div class="lrow lhead" role="row">
+          <span role="columnheader" class="lname">Work</span>
+          <span role="columnheader">Rate card (list) price</span>
+          <span role="columnheader">Lanyard member</span>
+          <span role="columnheader">Managed Service</span>
+        </div>
+        {ladderExamples.map((r) => (
+          <div class="lrow" role="row">
+            <span role="cell" class="lname">{r.label}</span>
+            <span role="cell" data-label="Rate card (list) price"><b>{r.from ? 'from ' : ''}{gbp2(r.payg)}</b></span>
+            <span role="cell" data-label="Lanyard member"><b>{r.memberPct != null ? pctOff(r.memberPct) : 'Member discount'}</b></span>
+            <span role="cell" class="lms" data-label="Managed Service">
+              {r.siteInspection
+                ? <><b>Your plan rate</b> in your plan<br /><small>further: the member rate{r.memberPct ? `, ${r.memberPct}% off` : ''}</small></>
+                : <b>{r.managedPct != null ? pctOff(r.managedPct) : 'Quoted'}</b>}
+            </span>
+          </div>
+        ))}
+      </div>
+    )}
+    <p class="pnote">
+      {vatEnabled ? 'Prices ex VAT. ' : ''}We say "up to" because some lines carry less or no discount. Site work is work done at your premises; a job that is partly on site counts as site work. Desk work is consultancy and work done away from your site. Quoted work is discounted in the same way. Travel is charged at cost and is never discounted.
+      {' '}The Elite Managed Service is quoted to your sites and services, and your plan rate is set out in your proposal.
+      {compact && <> <a href="/how-pricing-works/">How pricing works, in full</a>.</>}
+    </p>
+  </div>
+</section>

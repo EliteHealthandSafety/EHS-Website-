@@ -2,9 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { business as b } from '../data/site.js';
+import PricingLadder from '../components/PricingLadder.astro';
+import { business as b, showTierFromPrices } from '../data/site.js';
 import {
-  serviceGroups, howItWorks, memberDiscountPct, missingCodes, contractVisitRate, adhocVisitRate, gbp, displayPrice, vatEnabled, vatPctLabel,
+  serviceGroups, howItWorks, missingCodes, memberUpToPct, gbp, gbp2, displayPrice, vatEnabled, vatPctLabel, ladder, tierBands,
 } from '../data/pricing.js';
 
 // Surface a curation mistake at build time rather than shipping a gap.
@@ -14,7 +15,7 @@ if (missingCodes.length) {
 ---
 <Base
   title="Health & Safety Pricing Glasgow | What It Costs | Elite H&S"
-  description="Clear prices for fire risk assessments, risk assessments, H&S advice and accredited training in Glasgow and Scotland, plus Elite Assured membership for ongoing support. Fixed quote before any work begins."
+  description="Clear prices for fire risk assessments, risk assessments, H&S advice and accredited training in Glasgow and Scotland, plus Lanyard membership and the Elite Managed Service for ongoing support. Fixed quote before any work begins."
   canonical="https://elitehealthandsafety.co.uk/pricing/">
 
   <PageHero
@@ -61,42 +62,49 @@ if (missingCodes.length) {
     {vatEnabled ? `Prices are ex VAT, with VAT added at ${vatPctLabel}, and shown as a guide` : 'Prices are shown as a guide'} to help you budget. Your final fixed price is confirmed in
     your written quote once we've scoped the work: number of sites, size, sector and complexity.
     Travel outside our standard area and any third-party or scheme fees are charged at cost.
-    {memberDiscountPct && ` Elite Assured members pay up to ${memberDiscountPct}% less on work beyond their included allowance.`}
+    {ladder.memberSitePct != null && ladder.memberDeskPct != null && ` Lanyard members get up to ${memberUpToPct}% off: ${ladder.memberSitePct}% off site work and ${ladder.memberDeskPct}% off desk work. Your own rates are on your quote.`}
   </p>
 
-  <!-- MEMBERSHIP - described, not priced. Tiers are being revised, so this
-       sends people to a conversation rather than publishing figures that move. -->
+  <PricingLadder compact />
+
+  <!-- MEMBERSHIP. P72 (Reiss, 7 Nov 2026): each Lanyard plan as an indicative
+       "from" price only (the lowest synced band), never the band table; the
+       Managed Service is quoted. -->
   <section id="membership" class="courses">
     <div class="wrap section-narrow">
       <div class="sec-head">
-        <div class="eyebrow">Elite Assured membership</div>
+        <div class="eyebrow">Lanyard membership</div>
         <h2>Prefer not to buy piece by piece?</h2>
         <p class="lead">If you would rather not raise a purchase order every time something needs
-          doing, our Elite Assured membership rolls your health &amp; safety into one predictable
-          monthly fee, with your own online portal included.</p>
+          doing, a Lanyard membership gives you the platform, a dedicated support line and Elite as your
+          competent person for one predictable monthly fee, with member rates on every job.</p>
       </div>
 
       <div class="member-band">
         <div class="member-main">
           <h3>What membership covers</h3>
           <ul class="check-list">
-            <li>An agreed programme of site inspections and reports through the year</li>
-            <li>Your policies, risk assessments and documents kept current</li>
-            <li>An advice line for the questions that come up week to week</li>
-            <li>Included training days, booked straight from the portal</li>
-            <li>Member rates on anything beyond your allowance</li>
-            <li>The portal on every level: documents, renewal reminders and booking in one place</li>
+            <li>Lanyard by Elite Health &amp; Safety: your documents, renewals and reminders, staff and training records in one place</li>
+            <li>A dedicated support line for quick questions. Anything that needs work is quoted first, at your member rate</li>
+            <li>Elite as your competent person, named on PQQs and accreditation returns</li>
+            <li>Your policy pack, built from our template library</li>
+            <li>Member rates on every job we do for you, on a term or monthly rolling</li>
+            <li>Want the work delivered as well? The Elite Managed Service adds a planned programme of site inspections, with full Lanyard Pro access included</li>
           </ul>
         </div>
         <div class="member-aside">
           <div class="eyebrow" style="color:var(--accent)">Pricing</div>
-          <p>Membership levels are tailored to your sites, headcount and sector, and we are
-            currently updating them, so we would rather quote you properly than publish a number
-            that does not fit your business.</p>
-          {contractVisitRate && (
-            <p>Site inspections in a membership programme are <b>{gbp(displayPrice(contractVisitRate))} a visit</b>{vatEnabled ? ' ex VAT' : ''}{adhocVisitRate ? `, against ${gbp(displayPrice(adhocVisitRate))} for a one-off visit` : ''}.
-              Travel outside our home area is charged at cost.</p>
+          {showTierFromPrices && tierBands.length > 0 ? (
+            <>
+              <ul class="check-list">
+                {tierBands.map((t) => <li><span>{t.name}: from <b>{gbp2(t.fromPrice)}</b> a month{vatEnabled ? ' plus VAT' : ''}</span></li>)}
+              </ul>
+              <p class="pnote">Indicative: your price depends on how many people are on your account, and Lanyard shows it before you sign.</p>
+            </>
+          ) : (
+            <p>Your membership price depends on how many people are on your account, and Lanyard shows it before you sign.</p>
           )}
+          <p>The Elite Managed Service is <b>quoted</b> to your sites and services. Site inspections in your plan are at your plan rate, the same at every site and always lower than booking them one at a time. Travel outside our home area is charged at cost. <a href="/how-pricing-works/">How pricing works</a>.</p>
           <p><b>Tell us what you have and we will recommend the right level with a fixed monthly
             price.</b></p>
           <div class="ck-cta-row">

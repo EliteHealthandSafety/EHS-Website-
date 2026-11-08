@@ -1,5 +1,16 @@
 // Single source of truth for business details.
 // Update the TODOs here and every page + the schema updates automatically.
+// Tier (membership) prices on the website (DECISIONS P72, Reiss 7 Nov 2026):
+//   showTierPrices      the FULL band grid. OFF: Reiss does not want the band table
+//                       on the site. Set true only on his say-so.
+//   showTierFromPrices  each Lanyard plan as an indicative "from" price only: the
+//                       lowest band price per tier from the synced plan_bands (never
+//                       typed), "from £X a month plus VAT; your price depends on how
+//                       many people are on your account". ON per P72(3).
+// The Elite Managed Service is never priced here: it is quoted.
+export const showTierPrices = false;
+export const showTierFromPrices = true;
+
 export const business = {
   legalName: 'Elite Health & Safety Ltd',
   name: 'Elite Health & Safety',

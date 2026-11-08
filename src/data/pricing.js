@@ -79,8 +79,11 @@ const GROUPS = [
     title: 'Assessments & site inspections',
     blurb: 'Identify the hazards, evidence your compliance, and keep your people safe.',
     items: [
-      { code: 'SITE_VISIT' },
-      { code: 'INSPECTION_DAY', unit: 'per day' },
+      // P72: from £365 since migration 843 (price_from true): the journey at cost,
+      // a larger site quoted up. Read from the sync, never typed.
+      { code: 'SITE_VISIT', unit: 'per site address',
+        detail: 'One site address, one report. The journey is added at cost beyond 25 miles of Clydebank; a larger site is quoted up before you accept.' },
+      // No 'INSPECTION_DAY': it is not a client-facing product (DECISIONS P64(13)).
       { code: 'GEN_RA' },
       { code: 'COSHH' },
       { code: 'DSE', name: 'DSE workstation assessment' },
@@ -229,10 +232,10 @@ export const tiers = live.plans.map((p) => ({
 const discounts = live.services.map((s) => s.member_discount_pct).filter((d) => d > 0);
 export const memberDiscountPct = discounts.length ? Math.max(...discounts) : null;
 
-// The rate a site inspection is priced at inside a membership programme, from
-// the portal's location_zones (one rate on every zone). Null if the snapshot
-// predates it, and the page then says nothing rather than a stale figure.
-export const contractVisitRate = Number(live.contract_visit_rate) || null;
+// P75 (Reiss, 7 Nov 2026): the Managed Service plan rate for a site inspection
+// (live.contract_visit_rate, location_zones.visit_cost) is still synced but is
+// NOT published: it is a per-client figure recorded on the client's Schedule 1.
+// The site says "your plan rate" instead. Do not export it for a page.
 export const adhocVisitRate = byCode.SITE_VISIT ? byCode.SITE_VISIT.adhoc_price : null;
 
 export const vatPct = live.config.vat_pct;
@@ -242,5 +245,117 @@ export const howItWorks = [
   { no: '1', title: 'Quick scoping call', text: 'A short conversation about your sites, sector and obligations, at no charge.' },
   { no: '2', title: 'Clear fixed quote', text: 'A written proposal with the exact scope and price, drawn from these rates.' },
   { no: '3', title: 'Delivery & report', text: 'We carry out the work and hand over clear, audit-ready documentation.' },
-  { no: '4', title: 'Ongoing support', text: 'Keep us on hand for advice and renewals, ad-hoc or on an Elite Assured membership.' },
+  { no: '4', title: 'Ongoing support', text: 'Keep us on hand for advice and renewals, pay as you go or on a Lanyard membership.' },
 ];
+
+// ---------------------------------------------------------------------------
+// THE PRICING LADDER (P70, 6 Nov 2026): pay as you go pays the rate card; every
+// Lanyard member (Lite, Standard, Pro, on a term or monthly rolling) pays member
+// rates; an Elite Managed Service client pays less again on work beyond its plan.
+//
+// No percentage is typed here. Each comes from pricing-live.json:
+//   ladder.*   app_config margin_rules, read by scripts/sync-pricing.mjs
+//   fallback   the catalogue rows already in the snapshot (SITE_VISIT for site
+//              work, CONSULTANCY for desk work), so a snapshot taken before the
+//              sync learned about margin_rules still states the member rates.
+// The Managed Service discount has no fallback: until the portal holds it, the
+// page shows the member rate only and says the Managed Service rate is quoted.
+// TODO(P70): app_config margin_rules needs managed_service_discount_pct (site,
+// 20 per P70) and managed_service_desk_discount_pct (desk, 17) before the site
+// can state them. Add them in the portal, re-run the sync, and the page follows.
+// ---------------------------------------------------------------------------
+const L = live.ladder || {};
+const n = (v) => (v === null || v === undefined || Number.isNaN(Number(v)) ? null : Number(v));
+export const ladder = {
+  memberSitePct: n(L.member_site_pct) ?? n(byCode.SITE_VISIT?.member_discount_pct),
+  memberDeskPct: n(L.member_desk_pct) ?? n(byCode.CONSULTANCY?.member_discount_pct),
+  managedSitePct: n(L.managed_site_pct),
+  managedDeskPct: n(L.managed_desk_pct),
+};
+// P72 (Reiss, 7 Nov 2026, as corrected): site inspections are not on the Managed
+// Service percentage. Each inspection in the plan is at the client's plan rate
+// (Schedule 1); one beyond the plan is at the member rate. The percentages apply
+// to all other work.
+export const ladderHasManaged = ladder.managedSitePct != null && ladder.managedDeskPct != null;
+// "Up to": the larger of the two percentages on each rung, null when not synced.
+const upTo = (a, b) => (a == null && b == null ? null : Math.max(a ?? 0, b ?? 0));
+export const memberUpToPct = upTo(ladder.memberSitePct, ladder.memberDeskPct);
+export const managedUpToPct = ladderHasManaged ? upTo(ladder.managedSitePct, ladder.managedDeskPct) : null;
+
+const svc = (code) => byCode[code] || null;
+
+// P75 (Reiss, 7 Nov 2026): the website shows the rate card (list) price and the
+// ladder as PERCENTAGES. No member or Managed Service figure is computed here,
+// so none can reach a page; each client's exact rates are on its Schedule 1 and
+// each quote. Each row: the list price, and the member and Managed Service
+// percentage off for that line (null when not synced: the page then words it
+// without a number).
+function exampleRow(code, label, kind) {
+  const row = svc(code);
+  if (!row) return null;
+  const base = Number(row.adhoc_price);
+  const siteInspection = code === 'SITE_VISIT';
+  const own = Number(row.member_discount_pct);
+  // A line the catalogue does not discount is not discounted on either rung.
+  const undiscounted = Number.isFinite(own) && own === 0;
+  const memberPct = undiscounted ? 0 : (kind === 'desk' ? ladder.memberDeskPct : ladder.memberSitePct);
+  const managedPct = undiscounted ? 0 : siteInspection ? null
+    : (ladderHasManaged ? (kind === 'desk' ? ladder.managedDeskPct : ladder.managedSitePct) : null);
+  return {
+    code, label, from: !!row.price_from, siteInspection,
+    payg: displayPrice(base),
+    memberPct,
+    // A site inspection: the plan rate in the plan, the member percentage beyond it.
+    managedPct,
+  };
+}
+export const ladderExamples = [
+  exampleRow('SITE_VISIT', 'Site inspection', 'site'),
+  exampleRow('CONSULTANCY', 'Consultancy, an hour', 'desk'),
+  exampleRow('FRA', 'Fire risk assessment, per building', 'site'),
+].filter(Boolean);
+
+// Pence, for prices that are not whole pounds (a banded plan price usually is not).
+export const gbp2 = (v) =>
+  '£' + (Number(v) || 0).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// Terms (P69), from plan_terms. null until the sync has run with the new fields,
+// and the page then words the term without a figure.
+const termBy = Object.fromEntries((live.terms || []).map((t) => [t.term_months, t]));
+const pctOver = (f) => (f == null ? null : Math.round((Number(f) - 1) * 100));
+export const terms = {
+  rollingPct: pctOver(termBy[1]?.price_factor),
+  extraAllowance24Pct: pctOver(termBy[24]?.allowance_factor),
+  annualPrepayPct: n(live.annual_prepay_pct),
+};
+
+// Travel (P9, P10): charged at cost, never discounted. The mileage and overnight
+// rates come from the published rate card via the sync (overnight also from
+// pricing_config, already in the snapshot). The two distances are the rule
+// itself, not prices; they are named here because the portal does not publish
+// them as config yet.
+// TODO(P9/P10): sync the home radius (client_subscriptions.home_radius_miles
+// default) and the 120-mile night threshold once the portal exposes them.
+export const travel = {
+  homeRadiusMiles: 25,
+  nightBeyondMiles: 120,
+  mileagePence: live.travel?.mileage_rate != null ? Math.round(Number(live.travel.mileage_rate) * 100) : null,
+  overnight: n(live.travel?.overnight_rate) ?? n(live.config?.overnight_rate),
+};
+
+// Tier prices, from plan_bands via the sync. The full grid shows only with
+// showTierPrices; the "from" price (showTierFromPrices, P72) is the LOWEST band
+// price of the tier's live version, falling back to base_monthly (the band A
+// headline) only when the snapshot predates the band sync.
+const TIER_ORDER = ['LITE', 'STANDARD', 'PRO'];
+const TIER_NAME = { LITE: 'Lanyard Lite', STANDARD: 'Lanyard Standard', PRO: 'Lanyard Pro' };
+export const tierBands = TIER_ORDER.map((code) => {
+  const plan = live.plans.find((p) => p.plan_code === code);
+  if (!plan) return null;
+  const rows = (live.bands || []).filter((b) => b.plan_code === code);
+  return {
+    code, name: TIER_NAME[code],
+    fromPrice: displayPrice(rows.length ? Math.min(...rows.map((b) => Number(b.price))) : plan.base_monthly),
+    bands: rows.map((b) => ({ ...b, price: displayPrice(b.price), extra_per_person: b.extra_per_person == null ? null : displayPrice(b.extra_per_person) })),
+  };
+}).filter(Boolean);
